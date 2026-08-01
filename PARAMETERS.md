@@ -19,6 +19,15 @@
 | LLM temperature (diagnosis) | 0.1 | Low: deterministic diagnosis |
 | LLM temperature (exploration) | 0.7 | Creative problem-solving |
 
+## Infrastructure
+
+| Parameter | Value |
+|-----------|-------|
+| **AIS Global Server** | Dedicated server (8+ vCPU, 16+ GB RAM) |
+| **Cost** | ~$150/мес |
+| **Period** | 10 years |
+| **Total** | **$18,000** |
+
 ## Safety Parameters
 
 | Parameter | Value | Rationale |
