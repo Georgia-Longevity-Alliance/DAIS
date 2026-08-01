@@ -8,7 +8,24 @@
 import Config
 
 config :web,
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  ecto_repos: [Web.Repo]
+
+# Configure Ecto with SQLite3
+config :web, Web.Repo,
+  database: Path.expand("../priv/repo/ais.db", __DIR__),
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 5
+
+# Configure Google OAuth
+config :ueberauth, Ueberauth,
+  providers: [
+    google: {Ueberauth.Strategy.Google, [default_scope: "email profile"]}
+  ]
+
+config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+  client_id: System.get_env("GOOGLE_CLIENT_ID") || "REPLACE_ME",
+  client_secret: System.get_env("GOOGLE_CLIENT_SECRET") || "REPLACE_ME"
 
 # Configure the endpoint
 config :web, WebWeb.Endpoint,

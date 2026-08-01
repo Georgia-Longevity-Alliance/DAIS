@@ -1,105 +1,177 @@
 defmodule WebWeb.DashboardLive do
   use WebWeb, :live_view
+  alias Web.Repo
+  alias Web.Registry.Passport
+  import Ecto.Query
 
   @impl true
-  def mount(_params, _session, socket) do
-    socket =
-      socket
-      |> assign(:page_title, "DAIS Dashboard")
-      |> assign(:devices, mock_devices())
-      |> assign(:recent_traces, mock_traces())
+  def mount(_params, session, socket) do
+    user_email = session["user_email"]
 
-    {:ok, socket}
+    if is_nil(user_email) do
+      {:ok, socket |> put_flash(:error, "Please log in first") |> redirect(to: ~p"/")}
+    else
+      passports =
+        Repo.all(
+          from p in Passport,
+            where: p.user_email == ^user_email,
+            order_by: [desc: p.updated_at]
+        )
+
+      {:ok,
+       socket
+       |> assign(:user_email, user_email)
+       |> assign(:user_name, session["user_name"])
+       |> assign(:passports, passports)
+       |> assign(:selected_passport, nil)
+       |> assign(:page_title, "Device Dashboard")}
+    end
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="px-4 py-6 sm:px-6 lg:px-8">
-      <h1 class="text-2xl font-semibold text-gray-900">DAIS Dashboard</h1>
-      <p class="mt-1 text-sm text-gray-500">
-        Autonomous Intelligence Socket — device overview
-      </p>
-
-      <!-- Stats -->
-      <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-        <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-          <dt class="truncate text-sm font-medium text-gray-500">Active Devices</dt>
-          <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-            <%= length(@devices) %>
-          </dd>
+    <div class="min-h-screen bg-base-200">
+      <div class="navbar bg-base-100 shadow-sm px-6">
+        <div class="flex-1">
+          <h1 class="text-xl font-bold">🛂 AIS Device Dashboard</h1>
         </div>
-        <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-          <dt class="truncate text-sm font-medium text-gray-500">Recent Traces</dt>
-          <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-            <%= length(@recent_traces) %>
-          </dd>
-        </div>
-        <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-          <dt class="truncate text-sm font-medium text-gray-500">System Status</dt>
-          <dd class="mt-1 text-3xl font-semibold tracking-tight text-green-600">
-            Online
-          </dd>
-        </div>
-      </dl>
-
-      <!-- Devices Table -->
-      <h2 class="mt-8 text-lg font-medium text-gray-900">Registered Devices</h2>
-      <div class="mt-4 flow-root">
-        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <table class="min-w-full divide-y divide-gray-300">
-              <thead>
-                <tr>
-                  <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Device</th>
-                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Platform</th>
-                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Risk Class</th>
-                  <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200">
-                <%= for device <- @devices do %>
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
-                      <%= device.name %>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <%= device.platform %>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm">
-                      <span class={"inline-flex rounded-full px-2 text-xs font-semibold leading-5 #{risk_color(device.risk)}"}>
-                        <%= device.risk %>
-                      </span>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm">
-                      <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-                        online
-                      </span>
-                    </td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
+        <div class="flex-none gap-2">
+          <span class="text-sm opacity-70"><%= @user_name || @user_email %></span>
+          <a href="/auth/logout" class="btn btn-ghost btn-sm">Logout</a>
         </div>
       </div>
 
-      <!-- Recent Traces -->
-      <h2 class="mt-8 text-lg font-medium text-gray-900">Recent Intervention Traces</h2>
-      <div class="mt-4 space-y-4">
-        <%= for trace <- @recent_traces do %>
-          <div class="rounded-lg bg-white p-4 shadow">
-            <div class="flex items-center justify-between">
-              <h3 class="text-sm font-medium text-gray-900"><%= trace.device %></h3>
-              <span class={[
-                "inline-flex rounded-full px-2 text-xs font-semibold leading-5",
-                outcome_color(trace.outcome)
-              ]}>
-                <%= trace.outcome %>
-              </span>
+      <div class="max-w-5xl mx-auto p-4">
+        <!-- Actions -->
+        <div class="flex gap-2 mb-6">
+          <a href="/passport/new" class="btn btn-primary">
+            + New Passport
+          </a>
+          <span class="flex-1"></span>
+          <div class="stats shadow">
+            <div class="stat py-2 px-4">
+              <div class="stat-title text-xs">Devices</div>
+              <div class="stat-value text-lg"><%= length(@passports) %></div>
             </div>
-            <p class="mt-1 text-sm text-gray-500"><%= trace.diagnosis %></p>
-            <p class="mt-1 text-xs text-gray-400">Confidence: <%= trace.confidence %>%</p>
+          </div>
+        </div>
+
+        <!-- Passport Table -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body p-0">
+            <div class="overflow-x-auto">
+              <table class="table table-zebra">
+                <thead>
+                  <tr>
+                    <th>Device</th>
+                    <th>Platform</th>
+                    <th>Risk</th>
+                    <th>Capabilities</th>
+                    <th>Updated</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%= for p <- @passports do %>
+                    <tr class="hover">
+                      <td>
+                        <div class="font-bold"><%= p.name %></div>
+                        <div class="text-xs opacity-50"><%= p.device_id |> String.slice(0, 8) %>...</div>
+                      </td>
+                      <td><span class="badge badge-ghost text-xs"><%= p.platform %></span></td>
+                      <td><span class={"badge text-xs " <> risk_badge(p.risk_class)}><%= p.risk_class %></span></td>
+                      <td>
+                        <%= caps = get_in(p.payload || %{}, ["capabilities"]) || [] %>
+                        <%= length(caps) %> caps
+                      </td>
+                      <td class="text-xs opacity-70">
+                        <%= p.updated_at |> Calendar.strftime("%d %b %H:%M") %>
+                      </td>
+                      <td>
+                        <button class="btn btn-ghost btn-xs" phx-click="view_passport" phx-value-id={p.id}>
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  <% end %>
+                  <%= if @passports == [] do %>
+                    <tr>
+                      <td colspan="6" class="text-center py-8 opacity-50">
+                        No devices yet. <a href="/passport/new" class="link link-primary">Create your first passport</a>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected Passport Detail -->
+        <%= if @selected_passport do %>
+          <div class="card bg-base-100 shadow-xl mt-6">
+            <div class="card-body">
+              <h2 class="card-title">
+                <%= @selected_passport.name %>
+                <span class={"badge " <> risk_badge(@selected_passport.risk_class)}><%= @selected_passport.risk_class %></span>
+              </h2>
+              <p class="text-sm opacity-70"><%= @selected_passport.description %></p>
+              <div class="divider my-1"></div>
+
+              <div class="grid grid-cols-3 gap-4 text-sm">
+                <div>
+                  <div class="font-bold text-xs uppercase opacity-50">Device ID</div>
+                  <div class="font-mono text-xs"><%= @selected_passport.device_id %></div>
+                </div>
+                <div>
+                  <div class="font-bold text-xs uppercase opacity-50">Platform</div>
+                  <div><%= @selected_passport.platform %></div>
+                </div>
+                <div>
+                  <div class="font-bold text-xs uppercase opacity-50">Registered</div>
+                  <div><%= @selected_passport.inserted_at |> Calendar.strftime("%d %b %Y %H:%M") %></div>
+                </div>
+              </div>
+
+              <div class="divider my-1"></div>
+
+              <h3 class="font-bold text-sm">
+                Capabilities (<%= caps_count(@selected_passport) %>)
+              </h3>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <%= for cap <- get_in(@selected_passport.payload || %{}, ["capabilities"]) || [] do %>
+                  <div class="flex items-center gap-1 p-1 bg-base-200 rounded">
+                    <span class={"badge badge-xs " <> risk_badge(cap["risk"] || "low")}></span>
+                    <span><%= cap["name"] %></span>
+                    <span class="opacity-50">(<%= length(cap["parameters"] || []) %> params)</span>
+                  </div>
+                <% end %>
+              </div>
+
+              <div class="divider my-1"></div>
+
+              <h3 class="font-bold text-sm">
+                Forbidden Always (<%= forbids_count(@selected_passport) %>)
+              </h3>
+              <div class="space-y-1 text-xs">
+                <%= for f <- get_in(@selected_passport.payload || %{}, ["forbidden_always"]) || [] do %>
+                  <div class="flex items-start gap-2">
+                    <span class={"badge badge-xs mt-0.5 " <> if(f["constitutional"], do: "badge-error", else: "badge-warning")}>
+                      <%= if(f["constitutional"], do: "CONST", else: "soft") %>
+                    </span>
+                    <div>
+                      <strong><%= f["name"] %></strong>
+                      <span class="opacity-70"> — <%= String.slice(f["reason"] || "", 0, 100) %></span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+
+              <div class="card-actions justify-end mt-2">
+                <button class="btn btn-sm btn-ghost" phx-click="close_detail">Close</button>
+              </div>
+            </div>
           </div>
         <% end %>
       </div>
@@ -107,44 +179,24 @@ defmodule WebWeb.DashboardLive do
     """
   end
 
-  defp mock_devices do
-    [
-      %{name: "ARGUS-OS1 V6", platform: "Jetson Orin NX", risk: "medium"},
-      %{name: "Mower V1", platform: "ESP32", risk: "low"},
-      %{name: "Lab Incubator", platform: "Raspberry Pi", risk: "medium"},
-    ]
+  @impl true
+  def handle_event("view_passport", %{"id" => id}, socket) do
+    passport = Repo.get!(Passport, id)
+    {:noreply, assign(socket, :selected_passport, passport)}
   end
 
-  defp mock_traces do
-    [
-      %{
-        device: "ARGUS-OS1 V6",
-        diagnosis: "Photobleaching detected — reduced 488nm power by 30%",
-        confidence: 85,
-        outcome: "resolved",
-      },
-      %{
-        device: "Mower V1",
-        diagnosis: "Obstacle in path — rerouting around garden bed",
-        confidence: 92,
-        outcome: "resolved",
-      },
-      %{
-        device: "Lab Incubator",
-        diagnosis: "Temperature drift +0.3°C — recalibrating PID",
-        confidence: 78,
-        outcome: "mitigated",
-      },
-    ]
+  @impl true
+  def handle_event("close_detail", _params, socket) do
+    {:noreply, assign(socket, :selected_passport, nil)}
   end
 
-  defp risk_color("low"), do: "bg-green-100 text-green-800"
-  defp risk_color("medium"), do: "bg-yellow-100 text-yellow-800"
-  defp risk_color("high"), do: "bg-red-100 text-red-800"
-  defp risk_color(_), do: "bg-gray-100 text-gray-800"
+  defp risk_badge("critical"), do: "badge-error"
+  defp risk_badge("high"), do: "badge-error"
+  defp risk_badge("medium"), do: "badge-warning"
+  defp risk_badge("low"), do: "badge-success"
+  defp risk_badge("informational"), do: "badge-ghost"
+  defp risk_badge(_), do: "badge-ghost"
 
-  defp outcome_color("resolved"), do: "bg-green-100 text-green-800"
-  defp outcome_color("mitigated"), do: "bg-yellow-100 text-yellow-800"
-  defp outcome_color("escalated"), do: "bg-red-100 text-red-800"
-  defp outcome_color(_), do: "bg-gray-100 text-gray-800"
+  defp caps_count(p), do: length(get_in(p.payload || %{}, ["capabilities"]) || [])
+  defp forbids_count(p), do: length(get_in(p.payload || %{}, ["forbidden_always"]) || [])
 end
