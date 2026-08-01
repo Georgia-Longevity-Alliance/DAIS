@@ -1,0 +1,661 @@
+{
+  "device_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "name": "argus_os1_v6",
+  "description": "Automated centriole-tracking microscope for mother-daughter cell lineage tracing via differential fluorescence. Built on OpenFlexure frame with Sangaboard X-Y stage, Jetson Orin NX controller, 488/561/640nm excitation, 405nm photoconversion, and focused 355nm ablation laser. Used for Hayflick limit determination in somatic cells by selectively ablating daughter cells (new centriole) while preserving mother cells (old centriole).",
+  "capabilities": [
+    {
+      "name": "incubator_temperature",
+      "description": "Maintain petri dish incubator at set temperature. Cells must remain viable — deviation beyond ±1°C causes stress; beyond ±3°C causes death.",
+      "parameters": [
+        {
+          "name": "target_temperature_c",
+          "param_type": "float",
+          "required": true,
+          "default": 37.0,
+          "constraints": {
+            "min": 20.0,
+            "max": 39.0
+          }
+        },
+        {
+          "name": "tolerance_c",
+          "param_type": "float",
+          "required": false,
+          "default": 0.5,
+          "constraints": {
+            "min": 0.1,
+            "max": 2.0
+          }
+        }
+      ],
+      "risk": "medium"
+    },
+    {
+      "name": "normal_light",
+      "description": "Global brightfield/phase-contrast illumination for standard imaging. Low-power white LED, safe for continuous operation.",
+      "parameters": [
+        {
+          "name": "intensity_percent",
+          "param_type": "float",
+          "required": false,
+          "default": 50.0,
+          "constraints": {
+            "min": 1.0,
+            "max": 100.0
+          }
+        },
+        {
+          "name": "duration_ms",
+          "param_type": "integer",
+          "required": false,
+          "default": 100,
+          "constraints": {
+            "min": 10,
+            "max": 5000
+          }
+        }
+      ],
+      "risk": "low"
+    },
+    {
+      "name": "provocation_light",
+      "description": "Global illumination at wavelength calibrated to excite centriole-specific fluorescent markers (SAS-4::GFP at 488nm, SPD-2::mCherry at 561nm). Causes centrioles to emit distinct signal from cytoplasm background. Used to reveal mother vs daughter centriole positions.",
+      "parameters": [
+        {
+          "name": "wavelength_nm",
+          "param_type": "integer",
+          "required": true,
+          "constraints": {
+            "enum": ["488", "561", "640"]
+          }
+        },
+        {
+          "name": "intensity_percent",
+          "param_type": "float",
+          "required": false,
+          "default": 30.0,
+          "constraints": {
+            "min": 1.0,
+            "max": 100.0
+          }
+        },
+        {
+          "name": "exposure_ms",
+          "param_type": "integer",
+          "required": false,
+          "default": 200,
+          "constraints": {
+            "min": 50,
+            "max": 2000
+          }
+        }
+      ],
+      "risk": "medium"
+    },
+    {
+      "name": "dye_switch_laser",
+      "description": "Global photoconversion laser (405nm). Switches photoconvertible fluorescent dye from one emission spectrum to another. In ARGUS-OS1: converts Dendra2 or similar dye on centriole marker, allowing temporal discrimination — pre-conversion signal = old (mother centriole), post-conversion new signal = new (daughter centriole). This is the KEY mechanism for mother-daughter identification.",
+      "parameters": [
+        {
+          "name": "intensity_percent",
+          "param_type": "float",
+          "required": false,
+          "default": 15.0,
+          "constraints": {
+            "min": 1.0,
+            "max": 50.0
+          }
+        },
+        {
+          "name": "exposure_ms",
+          "param_type": "integer",
+          "required": false,
+          "default": 500,
+          "constraints": {
+            "min": 100,
+            "max": 5000
+          }
+        },
+        {
+          "name": "wavelength_nm",
+          "param_type": "integer",
+          "required": false,
+          "default": 405,
+          "constraints": {
+            "enum": ["405"]
+          }
+        }
+      ],
+      "risk": "medium"
+    },
+    {
+      "name": "ablation_laser",
+      "description": "FOCUSED 355nm pulsed UV laser for single-cell ablation. Destroys a specific cell at a specific X-Y coordinate. USED TO KILL DAUGHTER CELLS (those with new centriole) so that only mother cells (old centriole) remain, allowing Hayflick limit counting. THIS IS THE MOST DANGEROUS COMPONENT. Focused beam — if misaligned, can destroy wrong cell, damage optics, or (if enclosure open) injure human eye.",
+      "parameters": [
+        {
+          "name": "target_x_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 0.0,
+            "max": 25000.0
+          }
+        },
+        {
+          "name": "target_y_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 0.0,
+            "max": 25000.0
+          }
+        },
+        {
+          "name": "power_mw",
+          "param_type": "float",
+          "required": false,
+          "default": 5.0,
+          "constraints": {
+            "min": 1.0,
+            "max": 15.0
+          }
+        },
+        {
+          "name": "pulse_count",
+          "param_type": "integer",
+          "required": false,
+          "default": 3,
+          "constraints": {
+            "min": 1,
+            "max": 20
+          }
+        },
+        {
+          "name": "spot_diameter_um",
+          "param_type": "float",
+          "required": false,
+          "default": 2.0,
+          "constraints": {
+            "min": 1.0,
+            "max": 10.0
+          }
+        }
+      ],
+      "risk": "high"
+    },
+    {
+      "name": "move_stage_x",
+      "description": "Move microscope stage along X axis via Sangaboard stepper motor. Positions the petri dish under the objective.",
+      "parameters": [
+        {
+          "name": "position_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 0.0,
+            "max": 25000.0
+          }
+        },
+        {
+          "name": "speed_um_per_s",
+          "param_type": "float",
+          "required": false,
+          "default": 1000.0,
+          "constraints": {
+            "min": 10.0,
+            "max": 5000.0
+          }
+        }
+      ],
+      "risk": "low"
+    },
+    {
+      "name": "move_stage_y",
+      "description": "Move microscope stage along Y axis via Sangaboard stepper motor.",
+      "parameters": [
+        {
+          "name": "position_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 0.0,
+            "max": 25000.0
+          }
+        },
+        {
+          "name": "speed_um_per_s",
+          "param_type": "float",
+          "required": false,
+          "default": 1000.0,
+          "constraints": {
+            "min": 10.0,
+            "max": 5000.0
+          }
+        }
+      ],
+      "risk": "low"
+    },
+    {
+      "name": "acquire_image",
+      "description": "Capture a single image from the camera at current position with specified illumination. Saves raw TIFF to flight recorder buffer.",
+      "parameters": [
+        {
+          "name": "illumination",
+          "param_type": "string",
+          "required": true,
+          "constraints": {
+            "enum": ["normal", "provocation_488", "provocation_561", "provocation_640", "fluorescence_405"]
+          }
+        },
+        {
+          "name": "exposure_ms",
+          "param_type": "integer",
+          "required": false,
+          "default": 100,
+          "constraints": {
+            "min": 10,
+            "max": 5000
+          }
+        },
+        {
+          "name": "gain",
+          "param_type": "float",
+          "required": false,
+          "default": 1.0,
+          "constraints": {
+            "min": 0.5,
+            "max": 10.0
+          }
+        },
+        {
+          "name": "binning",
+          "param_type": "integer",
+          "required": false,
+          "default": 1,
+          "constraints": {
+            "enum": ["1", "2", "4"]
+          }
+        }
+      ],
+      "risk": "low"
+    },
+    {
+      "name": "acquire_image_pair",
+      "description": "Capture TWO images in rapid succession: (1) normal light, (2) provocation light at specified wavelength. The differential between these two images reveals centriole positions — bright spots in provocation image that are absent in normal image. This is the PRIMARY DATA ACQUISITION step in the ARGUS-OS1 work cycle.",
+      "parameters": [
+        {
+          "name": "provocation_wavelength_nm",
+          "param_type": "integer",
+          "required": true,
+          "constraints": {
+            "enum": ["488", "561"]
+          }
+        },
+        {
+          "name": "normal_exposure_ms",
+          "param_type": "integer",
+          "required": false,
+          "default": 100
+        },
+        {
+          "name": "provocation_exposure_ms",
+          "param_type": "integer",
+          "required": false,
+          "default": 200
+        },
+        {
+          "name": "x_position_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 0.0,
+            "max": 25000.0
+          }
+        },
+        {
+          "name": "y_position_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 0.0,
+            "max": 25000.0
+          }
+        }
+      ],
+      "risk": "low"
+    },
+    {
+      "name": "identify_mother_daughter",
+      "description": "Process acquired image pair + dye-switch history to classify cells at a given position as MOTHER (old centriole, pre-conversion signal dominant) or DAUGHTER (new centriole, post-conversion signal dominant). Uses differential fluorescence: mother centriole retains pre-conversion dye signal; daughter centriole shows exclusively post-conversion dye signal. Returns list of (x, y, classification, confidence).",
+      "parameters": [
+        {
+          "name": "region_x_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 0.0,
+            "max": 25000.0
+          }
+        },
+        {
+          "name": "region_y_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 0.0,
+            "max": 25000.0
+          }
+        },
+        {
+          "name": "region_width_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 50.0,
+            "max": 5000.0
+          }
+        },
+        {
+          "name": "region_height_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 50.0,
+            "max": 5000.0
+          }
+        },
+        {
+          "name": "confidence_threshold",
+          "param_type": "float",
+          "required": false,
+          "default": 0.7,
+          "constraints": {
+            "min": 0.5,
+            "max": 0.99
+          }
+        }
+      ],
+      "risk": "low"
+    },
+    {
+      "name": "ablate_daughter_cells",
+      "description": "HIGH-LEVEL COMPOUND OPERATION: (1) acquire image pair at current field, (2) identify mother vs daughter cells, (3) for each daughter cell with confidence > threshold, fire ablation laser at its coordinates, (4) acquire confirmation image, (5) log results. This is the CORE EXPERIMENTAL OPERATION — the reason ARGUS-OS1 exists.",
+      "parameters": [
+        {
+          "name": "region_x_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 0.0,
+            "max": 25000.0
+          }
+        },
+        {
+          "name": "region_y_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 0.0,
+            "max": 25000.0
+          }
+        },
+        {
+          "name": "region_width_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 50.0,
+            "max": 5000.0
+          }
+        },
+        {
+          "name": "region_height_um",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 50.0,
+            "max": 5000.0
+          }
+        },
+        {
+          "name": "ablation_power_mw",
+          "param_type": "float",
+          "required": false,
+          "default": 5.0,
+          "constraints": {
+            "min": 1.0,
+            "max": 15.0
+          }
+        },
+        {
+          "name": "max_cells_to_ablate",
+          "param_type": "integer",
+          "required": false,
+          "default": 10,
+          "constraints": {
+            "min": 1,
+            "max": 100
+          }
+        },
+        {
+          "name": "require_confirmation",
+          "param_type": "boolean",
+          "required": false,
+          "default": true
+        }
+      ],
+      "risk": "high"
+    },
+    {
+      "name": "scan_plate",
+      "description": "Systematically scan the entire petri dish in a grid pattern, acquiring image pairs at each position. Used for initial survey to find all cells in culture.",
+      "parameters": [
+        {
+          "name": "grid_step_um",
+          "param_type": "float",
+          "required": false,
+          "default": 500.0,
+          "constraints": {
+            "min": 100.0,
+            "max": 2000.0
+          }
+        },
+        {
+          "name": "provocation_wavelength_nm",
+          "param_type": "integer",
+          "required": false,
+          "default": 488,
+          "constraints": {
+            "enum": ["488", "561"]
+          }
+        },
+        {
+          "name": "overlap_percent",
+          "param_type": "float",
+          "required": false,
+          "default": 15.0,
+          "constraints": {
+            "min": 0.0,
+            "max": 30.0
+          }
+        }
+      ],
+      "risk": "low"
+    },
+    {
+      "name": "overnight_protocol",
+      "description": "Run the full ARGUS-OS1 centriole tracking protocol autonomously: scan plate → photoconvert dye with 405nm laser → wait for division → acquire image pairs at each position → identify mother/daughter → ablate daughters → record lineage → repeat at intervals. This is the UNATTENDED mode — may run for up to 12 hours with up to 100 embryos.",
+      "parameters": [
+        {
+          "name": "total_duration_hours",
+          "param_type": "float",
+          "required": true,
+          "constraints": {
+            "min": 1.0,
+            "max": 12.0
+          }
+        },
+        {
+          "name": "interval_minutes",
+          "param_type": "integer",
+          "required": true,
+          "constraints": {
+            "min": 5,
+            "max": 120
+          }
+        },
+        {
+          "name": "max_embryos",
+          "param_type": "integer",
+          "required": false,
+          "default": 100,
+          "constraints": {
+            "min": 1,
+            "max": 200
+          }
+        },
+        {
+          "name": "division_rate_min_percent",
+          "param_type": "float",
+          "required": false,
+          "default": 90.0,
+          "constraints": {
+            "min": 50.0,
+            "max": 100.0
+          }
+        }
+      ],
+      "risk": "high"
+    },
+    {
+      "name": "emergency_stop",
+      "description": "Immediately halt all motors, disable all lasers, close shutter, and lock stage. Can be triggered by software command, hardware button, or autonomous anomaly detection.",
+      "parameters": [],
+      "risk": "low"
+    },
+    {
+      "name": "read_temperature",
+      "description": "Read current incubator temperature from sensor.",
+      "parameters": [],
+      "risk": "informational"
+    },
+    {
+      "name": "read_laser_status",
+      "description": "Read current laser status — which lasers are active, power levels, interlock state.",
+      "parameters": [],
+      "risk": "informational"
+    },
+    {
+      "name": "system_self_test",
+      "description": "Run internal diagnostics: motor homing, laser power calibration, camera dark frame, temperature sensor validation, interlock check.",
+      "parameters": [],
+      "risk": "low"
+    }
+  ],
+  "forbidden_always": [
+    {
+      "name": "exceed_laser_power_15mw",
+      "reason": "Ablation laser above 15mW can penetrate through the target cell and damage neighboring cells or the petri dish substrate. At >50mW, eye safety cannot be guaranteed even with enclosure, and retina damage is irreversible. Constitutional: NO override possible — not even for emergency rescue agents.",
+      "constitutional": true
+    },
+    {
+      "name": "exceed_temperature_39C",
+      "reason": "Temperature above 39°C causes rapid cell death in mammalian culture. At 42°C, heat shock proteins denature. At 45°C, all cells die within 5 minutes. The incubator heating element is physically limited to 50°C by a hardware fuse, but software must enforce 39°C as the operational ceiling.",
+      "constitutional": true
+    },
+    {
+      "name": "operate_ablation_laser_without_enclosure",
+      "reason": "The 355nm UV ablation laser is Class 3B. Without enclosure interlock, reflected or scattered beam can cause permanent eye injury to anyone in the room. The enclosure interlock is a HARDWARE circuit — software cannot override it. This rule ensures software also never attempts to fire the laser if the interlock signal is absent.",
+      "constitutional": true
+    },
+    {
+      "name": "ablate_unidentified_cell",
+      "reason": "The ablation laser MUST only fire at coordinates confirmed by identify_mother_daughter() with confidence ≥ threshold. Blind ablation (without prior identification) could destroy mother cells (ruining the experiment) or hit empty substrate (wasting the laser and potentially damaging optics via back-reflection).",
+      "constitutional": false
+    },
+    {
+      "name": "exceed_phototoxicity_ceiling",
+      "reason": "Cumulative light exposure that drops division rate below 90% of baseline indicates phototoxicity. Continued illumination under phototoxic conditions invalidates the experiment: cells that divide slowly due to light damage are indistinguishable from cells that divide slowly due to Hayflick limit exhaustion. The division_rate_min_percent parameter in overnight_protocol is the enforcement threshold.",
+      "constitutional": false
+    },
+    {
+      "name": "overwrite_raw_data",
+      "reason": "Raw TIFF images and flight recorder logs are the primary experimental record. Overwriting them destroys scientific reproducibility. All data must be append-only. Disk full → stop experiment and notify, never overwrite.",
+      "constitutional": true
+    },
+    {
+      "name": "disable_laser_interlock",
+      "reason": "The laser interlock is a hardware safety circuit. Any attempt to disable it via software indicates either a bug or malicious intent. The firmware must reject ANY command containing 'interlock' or 'safety_disable' regardless of the agent's authority level.",
+      "constitutional": true
+    },
+    {
+      "name": "change_protocol_during_overnight_run",
+      "reason": "During an unattended overnight_protocol, the experimental parameters (interval, max_embryos, ablation_power) are locked at start. Changing them mid-run without human authorization could invalidate the entire experiment. The LLM can SUGGEST changes but cannot APPLY them without waking the human operator.",
+      "constitutional": false
+    },
+    {
+      "name": "move_stage_beyond_calibrated_range",
+      "reason": "Moving the Sangaboard stage beyond 0–25000 μm risks mechanical collision with end-stops, motor stall, or belt slippage. After a collision, all subsequent coordinate tracking is invalid because the stage may have physically shifted.",
+      "constitutional": true
+    }
+  ],
+  "risk_class": "high",
+  "autonomous_mandate": {
+    "max_duration_seconds": 43200,
+    "allowed_offline_actions": [
+      "read_temperature",
+      "read_laser_status",
+      "incubator_temperature",
+      "normal_light",
+      "provocation_light",
+      "acquire_image",
+      "acquire_image_pair",
+      "move_stage_x",
+      "move_stage_y",
+      "scan_plate",
+      "identify_mother_daughter",
+      "ablate_daughter_cells",
+      "overnight_protocol",
+      "emergency_stop"
+    ],
+    "on_anomaly": "pause_and_notify",
+    "on_power_loss": "safe_shutdown"
+  },
+  "emergency_contacts": [
+    {
+      "name": "Jaba Tqemaladze (primary operator)",
+      "method": {
+        "email": "jaba@longevity.ge"
+      },
+      "priority": 1
+    },
+    {
+      "name": "Jaba Tqemaladze (WhatsApp)",
+      "method": {
+        "phone": "+995555185161"
+      },
+      "priority": 1
+    },
+    {
+      "name": "ARGUS Lab Emergency Webhook",
+      "method": {
+        "webhook": "https://googuly.online/aisocket/emergency.php"
+      },
+      "priority": 2
+    },
+    {
+      "name": "Giorgi Tsomaia (AIS developer)",
+      "method": {
+        "email": "gakely@googuly.online"
+      },
+      "priority": 3
+    }
+  ],
+  "platform": "jetson",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "signature": null
+}

@@ -31,3 +31,11 @@ credentials.json
 
 # Archives
 _archive/
+
+# Runtime
+*.pid
+*.heartbeat
+*.db
+*.sqlite
+__pycache__/
+
