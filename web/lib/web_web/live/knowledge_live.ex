@@ -1,7 +1,7 @@
 defmodule WebWeb.KnowledgeLive do
   use WebWeb, :live_view
   alias Web.Repo
-  alias Web.Knowledge.{Claim, Source, Evidence}
+  alias Web.Knowledge.Claim
   import Ecto.Query
 
   @impl true
