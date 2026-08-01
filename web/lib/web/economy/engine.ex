@@ -13,7 +13,7 @@ defmodule Web.Economy.Engine do
   alias Web.Repo
   alias Web.Accounts.User
   alias Web.Economy.{Transaction, Listing}
-  alias Web.Knowledge.{Claim, Review}
+  alias Web.Knowledge.Claim
 
   @reward_base 10.0       # Base credits for a verified claim
   @reward_bonus 5.0       # Bonus for high-quality evidence

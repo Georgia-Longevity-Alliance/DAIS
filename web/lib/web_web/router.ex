@@ -41,5 +41,19 @@ defmodule WebWeb.Router do
     get "/passports", ApiController, :list_passports
     get "/passports/:id", ApiController, :get_passport
     post "/passports", ApiController, :register_passport
+
+    # Knowledge Graph API
+    get "/knowledge/claims", ApiController, :list_claims
+    post "/knowledge/claims", ApiController, :create_claim
+    get "/knowledge/claims/:id", ApiController, :get_claim
+
+    # Marketplace API
+    get "/marketplace/listings", ApiController, :list_listings
+    post "/marketplace/listings", ApiController, :create_listing
+    post "/marketplace/buy/:id", ApiController, :buy_listing
+
+    # Economy API
+    get "/economy/stats", ApiController, :economy_stats
+    get "/economy/transactions", ApiController, :list_transactions
   end
 end
