@@ -29,6 +29,8 @@ defmodule WebWeb.Router do
     get "/", PageController, :home
     live "/passport/new", PassportLive, :index
     live "/dashboard", DashboardLive, :index
+    live "/knowledge", KnowledgeLive, :index
+    live "/marketplace", MarketplaceLive, :index
   end
 
   # API — local passport registry
