@@ -223,7 +223,30 @@ Design: [ARGUS-OS1/docs/V9_PROTOTYPE.md](https://github.com/Georgia-Longevity-Al
 
 ---
 
-## 6. References
+## 6. Infrastructure
+
+### AIS Global Server
+
+| Parameter | Value |
+|-----------|-------|
+| **Type** | Dedicated server |
+| **Specs** | 8+ vCPU, 16+ GB RAM, SSD |
+| **Cost** | ~$150/мес |
+| **Period** | 10 years |
+| **Total** | **$18,000** |
+
+**Components hosted:**
+- AIS Dashboard + Device Registry (Phoenix)
+- Noepedia Knowledge Browser + API
+- Event Store (PostgreSQL)
+- Trace Network (global trace replication)
+- LLM Bridge endpoint
+
+**Shared across all AIS-based robots:** ARGUS-OS1, OS2, OS3, and future longevity robots.
+
+---
+
+## 7. References
 
 - DAISocket: https://github.com/gakelytemp-creator/DAISocket
 - Proven: https://github.com/gakelytemp-creator/Proven

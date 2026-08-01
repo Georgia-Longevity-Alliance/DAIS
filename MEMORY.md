@@ -2,6 +2,14 @@
 
 **Created:** 2026-07-31
 
+## 2026-08-01 — AIS Global Server: Dedicated server 10yr ($18,000)
+
+**Decision:** Dedicated server (~$150/мес, 10 лет) для глобальной платформы AIS.
+
+**Rationale:** AIS обслуживает всех longevity-роботов (ARGUS-OS1/OS2/OS3 и будущие). Нужен выделенный сервер для Dashboard, Registry, Event Store, Noepedia API, Trace Network.
+
+**Budget:** $18,000. Записано в: AIS/CONCEPT.md, AIS/PARAMETERS.md, ARGUS-OS1/CONCEPT.md, GLA/CONCEPT.md.
+
 ## 2026-07-31 — Project Creation
 
 **Decision:** Created DAIS as umbrella project under Marketing/ — merging DAISocket + Proven into single implementation.
