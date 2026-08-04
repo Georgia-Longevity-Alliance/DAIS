@@ -31,7 +31,7 @@ DAIS/                           # Root: core files only
 │   ├── requirements.txt
 │   └── aisocket/
 │       ├── core/src/main.rs
-│       ├── client.py          # Registry HTTP client
+│       ├── core/src/main.rs          # Registry HTTP client
 │       ├── llm_bridge.py      # LLM ↔ DAISocket
 │       └── noepedia_api.py    # Proven client
 │
