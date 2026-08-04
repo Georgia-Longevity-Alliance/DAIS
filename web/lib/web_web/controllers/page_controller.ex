@@ -10,7 +10,7 @@ defmodule WebWeb.PageController do
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>AIS — Autonomous Intelligence Socket</title>
+      <title>DAIS — Autonomous Intelligence Socket</title>
       <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
       <link href="https://cdn.jsdelivr.net/npm/daisyui@5/dist/full.css" rel="stylesheet">
     </head>
@@ -18,7 +18,7 @@ defmodule WebWeb.PageController do
       <div class="hero min-h-screen">
         <div class="hero-content text-center">
           <div class="max-w-md">
-            <h1 class="text-5xl font-bold mb-2">🛂 AIS</h1>
+            <h1 class="text-5xl font-bold mb-2">🛂 DAIS</h1>
             <p class="text-xl mb-1">Autonomous Intelligence Socket</p>
             <p class="text-sm opacity-70 mb-8">
               Open protocol for safe embodied AI.<br/>
@@ -34,7 +34,7 @@ defmodule WebWeb.PageController do
               </a>
             </div>
             <div class="mt-8 flex gap-4 justify-center text-xs opacity-50">
-              <a href="https://github.com/Georgia-Longevity-Alliance/AIS" class="link">GitHub</a>
+              <a href="https://github.com/Georgia-Longevity-Alliance/DAIS" class="link">GitHub</a>
               <span>Apache 2.0</span>
             </div>
           </div>

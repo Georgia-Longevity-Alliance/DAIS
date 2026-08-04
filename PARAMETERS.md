@@ -23,7 +23,7 @@
 
 | Parameter | Value |
 |-----------|-------|
-| **AIS Global Server** | Dedicated server (8+ vCPU, 16+ GB RAM) |
+| **DAIS Global Server** | Dedicated server (8+ vCPU, 16+ GB RAM) |
 | **Cost** | ~$150/мес |
 | **Period** | 10 years |
 | **Total** | **$18,000** |

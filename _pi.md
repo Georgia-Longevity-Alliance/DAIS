@@ -15,7 +15,7 @@
 
 ## Project Structure
 ```
-DAIS/
+AIS/
 ├── core/           # Rust — DAISocket protocol core
 │   ├── Cargo.toml
 │   └── src/

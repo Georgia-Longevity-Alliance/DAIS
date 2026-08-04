@@ -33,7 +33,7 @@ DAIS/                           # Root: core files only
 │       ├── __init__.py
 │       ├── client.py          # Registry HTTP client
 │       ├── llm_bridge.py      # LLM ↔ DAISocket
-│       └── proven_api.py    # Proven client
+│       └── noepedia_api.py    # Proven client
 │
 ├── web/                        # Elixir/Phoenix — Dashboard
 │   ├── mix.exs

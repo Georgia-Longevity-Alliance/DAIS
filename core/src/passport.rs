@@ -14,6 +14,7 @@
 //! who a body is or what it is forbidden.
 
 use crate::types::*;
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -77,6 +78,21 @@ pub struct Passport {
     /// device itself or its authorized delegate.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub signature: Option<String>,
+
+    /// Hardware safety configuration (physical STOP, deadman switch, etc.).
+    /// These are enforced in firmware, not software.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub safety_hardware: Option<SafetyHardware>,
+
+    /// History of bodies this intelligence has inhabited.
+    /// One intelligence, many bodies — Multi-Body architecture.
+    #[serde(default)]
+    pub body_history: Vec<BodyChange>,
+
+    /// The ID of the current body (may differ from device_id if intelligence migrated).
+    /// When None, current_body_id == device_id.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub current_body_id: Option<Id>,
 }
 
 impl Passport {
@@ -94,6 +110,9 @@ impl Passport {
             platform,
             version: SemVer::new(1, 0, 0),
             signature: None,
+            safety_hardware: None,
+            body_history: Vec::new(),
+            current_body_id: None,
         }
     }
 
@@ -123,6 +142,24 @@ impl Passport {
     /// Add an emergency contact.
     pub fn with_emergency_contact(&mut self, contact: EmergencyContact) -> &mut Self {
         self.emergency_contacts.push(contact);
+        self
+    }
+
+    /// Record a body change — intelligence moves to a new physical body.
+    /// The flight recorder and trace memory persist; only the body-specific
+    /// state changes.
+    pub fn change_body(&mut self, new_body_id: Id, reason: &str) -> &mut Self {
+        let change = BodyChange {
+            change_id: Uuid::new_v4(),
+            previous_body_id: self.current_body_id.unwrap_or(self.device_id),
+            new_body_id,
+            timestamp: Utc::now(),
+            reason: reason.to_string(),
+            gained_capabilities: Vec::new(),
+            lost_capabilities: Vec::new(),
+        };
+        self.body_history.push(change);
+        self.current_body_id = Some(new_body_id);
         self
     }
 

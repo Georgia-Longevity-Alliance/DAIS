@@ -31,12 +31,12 @@
 The passport interview IS the product, not the data structure. The Rust Passport struct defines the TARGET. The interview is the PROCESS. Without the interview, the passport is just a struct. With the interview, it's a Socratic method for extracting tacit device knowledge into formal safety constraints.
 
 ## 2026-07-31 — Project Creation
-Decision: Created AIS as umbrella project under Marketing/ — merging AISocket + Noepedia into single implementation.
+Decision: Created DAIS as umbrella project under Marketing/ — merging DAISocket + Proven into single implementation.
 Rationale:
-- Gakely's AISocket and Noepedia are conceptually strong but lacked code
+- Gakely's DAISocket and Proven are conceptually strong but lacked code
 - ARGUS-OS1 is the perfect first integration target
 - Rust for core protocol (safety + performance), Python for AI/ML, Phoenix for web
 Key insights from code review:
-- AISocket: Python "Ready" but no Python code in repo — need to build it
-- Noepedia: pure concept paper, no implementation — need MVP with 3-4 object types
+- DAISocket: Python "Ready" but no Python code in repo — need to build it
+- Proven: pure concept paper, no implementation — need MVP with 3-4 object types
 - Both share architectural DNA: addressable, append-only, deterministic safety boundaries

@@ -1,36 +1,38 @@
 # TODO — DAIS
 
-**Updated:** 2026-08-01
+**Updated:** 2026-08-02
 
 ## Phase 0: Foundation ✅ COMPLETE
-- [x] Create core Rust project (`core/Cargo.toml` + `src/lib.rs`)
-- [x] Implement Passport struct + serialization (serde)
-- [x] Implement Body Law — 6-layer validation pipeline
-- [x] Implement Flight Recorder — ring buffer
-- [x] Implement Trace Network — intervention trace struct
-- [x] Implement Delta Protocol — legal operations
-- [x] Implement Event Store — append-only log (SQLite)
-- [x] Implement Validator — schema + status transitions
-- [x] Implement Consolidator + Renderer
-- [x] Create Python backend (`py_backend/`)
-- [x] Implement LLM Bridge — standard prompt + tool interface
-- [x] Implement HTTP Client — googuly.online + local registry
-- [x] Implement PassportInterview — Socratic interview agent
-- [x] Create Phoenix web project (`web/`)
-- [x] Implement Dashboard LiveView
-- [x] Implement Passport Interview LiveView (chat interface)
-- [x] Implement local passport registry (SQLite API)
-- [x] Google OAuth integration
-- [x] Integration: ARGUS-OS1 Passport example (650+ lines JSON)
+- [x] Create core Rust project
+- [x] Passport + serde
+- [x] Body Law — 7-layer validation (0: Hardware Safety → 7: RBAC)
+- [x] Flight Recorder — ring buffer
+- [x] Trace Network — intervention traces + publish/remix/community
+- [x] Proven: Delta Protocol, Event Store, Validator, Consolidator, Renderer
+- [x] Python backend — LLM Bridge, HTTP Client, PassportInterview
+- [x] Phoenix web — Dashboard, Passport Interview, Registry, OAuth
+- [x] ARGUS-OS1 Passport example (650+ lines JSON)
 - [x] All core files (11/11)
-- [x] 33 tests passing, 0 warnings
+- [x] 32 tests passing, 0 warnings
+
+## Phase 0.5: LEGO Proposal Integration ✅ COMPLETE (2026-08-02)
+- [x] Multi-Body / Device Swarm (Passport::change_body, body_history)
+- [x] Hardware Safety (SafetyHardware: physical STOP, deadman switch, key-lock)
+- [x] RBAC — 5 roles (Owner, Operator, Observer, Parent, EmergencyRescue)
+- [x] Challenge Framework — 5 standard benchmarks, compliance scoring
+- [x] Prizes/Unlockables — requirements → rewards system
+- [x] Community Trace Library — publish, tags, discover
+- [x] Improvement Loops — challenge→construct→test→result→new_parts cycle
+- [x] Public Remixes — remix_of, find_remixes_of, remix_count
+- [x] Pilot Success Criterion — multi-body evaluation
+- [x] Save LEGO analysis to docs/
 
 ## Phase 1: ARGUS-OS1 Integration
-- [ ] Deploy Flight Recorder on Jetson Orin NX
-- [ ] Connect local registry to ARGUS-OS1
-- [ ] LLM anomaly diagnosis test (3 simulated failures)
-- [ ] Trace Network: record + retrieve across sessions
-- [ ] Proven: publish ARGUS-OS1 findings as knowledge field
+- [ ] Deploy Flight Recorder on Jetson Orin NX (⏳ needs hardware)
+- [x] Connect local registry to ARGUS-OS1 ✅ (ArgusRegistry + cross-session queries)
+- [x] LLM anomaly diagnosis test (3 simulated failures) ✅
+- [x] Trace Network: record + retrieve across sessions ✅
+- [x] Proven: publish ARGUS-OS1 findings as knowledge field ✅
 
 ## Phase 2: Production Hardening
 - [ ] Google OAuth credentials (GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET)

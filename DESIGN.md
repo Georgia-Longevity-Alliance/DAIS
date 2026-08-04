@@ -54,4 +54,4 @@ SQL query:     ~1 µJ
 Rust match:    ~1 pJ
 ```
 
-AIS enforces: LLM only for novel situations. 99.9% of operations are deterministic (SQL queries, Rust pattern matching, graph traversal). The LLM is called only when the flight recorder shows an anomaly that no prior trace has solved.
+DAIS enforces: LLM only for novel situations. 99.9% of operations are deterministic (SQL queries, Rust pattern matching, graph traversal). The LLM is called only when the flight recorder shows an anomaly that no prior trace has solved.

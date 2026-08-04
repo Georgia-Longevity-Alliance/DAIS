@@ -112,6 +112,200 @@ pub struct ForbiddenAction {
     pub constitutional: bool,
 }
 
+// ── Safety Hardware (LEGO proposal: physical STOP) ──
+
+/// Hardware-level safety configuration.
+/// These are NOT software checks — they correspond to physical pins,
+/// deadman switches, and hardware kill-switches on the device.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SafetyHardware {
+    /// GPIO pin for physical STOP button (None = no hardware stop).
+    pub physical_stop_pin: Option<u8>,
+    /// Deadman switch: if released for > this ms, emergency stop.
+    pub deadman_switch_ms: Option<u32>,
+    /// Hardware current limit (mA). 0 = no hardware limit.
+    pub max_current_ma: Option<u32>,
+    /// Hardware voltage limit (mV). 0 = no hardware limit.
+    pub max_voltage_mv: Option<u32>,
+    /// If true, device has a physical key-lock for parent/teacher.
+    pub physical_key_lock: bool,
+}
+
+impl Default for SafetyHardware {
+    fn default() -> Self {
+        Self {
+            physical_stop_pin: None,
+            deadman_switch_ms: None,
+            max_current_ma: None,
+            max_voltage_mv: None,
+            physical_key_lock: false,
+        }
+    }
+}
+
+// ── RBAC Roles (LEGO proposal: parent/teacher control) ──
+
+/// Role-based access control for DAIS agents.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[serde(rename_all = "lowercase")]
+pub enum AisRole {
+    /// Full control: can modify passport, delegate, transfer ownership.
+    Owner,
+    /// Can operate device within mandate, cannot modify passport.
+    Operator,
+    /// Read-only: can view Flight Recorder, Traces, status.
+    Observer,
+    /// Can restrict capabilities, set time limits, approve commands.
+    Parent,
+    /// Limited access: read flight recorder, diagnose, safe restart only.
+    EmergencyRescue,
+}
+
+// ── Multi-Body / Device Swarm (LEGO proposal: one intelligence, many bodies) ──
+
+/// Record of a body change — when intelligence migrates to a new physical body.
+/// The flight recorder and trace memory persist across body changes.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct BodyChange {
+    pub change_id: Id,
+    pub previous_body_id: Id,
+    pub new_body_id: Id,
+    pub timestamp: DateTime<Utc>,
+    /// Why the body changed (child rebuilt, module moved, upgrade).
+    pub reason: String,
+    /// Capabilities gained in the new body.
+    pub gained_capabilities: Vec<String>,
+    /// Capabilities lost from the old body.
+    pub lost_capabilities: Vec<String>,
+}
+
+// ── Challenge Framework (LEGO proposal: One Brain, Many Bodies challenges) ──
+
+/// A standardised test scenario for AIS-compatible devices.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Challenge {
+    pub challenge_id: Id,
+    pub name: String,
+    pub description: String,
+    /// What this challenge tests.
+    pub category: ChallengeCategory,
+    /// Steps to execute.
+    pub scenario: Vec<ChallengeStep>,
+    /// Pass criteria.
+    pub pass_criteria: Vec<PassCriterion>,
+    /// Estimated energy cost to run (joules).
+    pub energy_cost_j: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum ChallengeCategory {
+    Safety,
+    Autonomy,
+    Diagnosis,
+    TraceReuse,
+    EnergyEfficiency,
+    Collaboration,
+    Adaptation,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ChallengeStep {
+    pub order: u32,
+    pub action: String,
+    pub expected: String,
+    pub timeout_ms: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PassCriterion {
+    pub name: String,
+    pub check: String,
+    pub weight: f64, // 0.0–1.0, sum of weights = score denominator
+}
+
+/// Result of running a challenge against a device.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ChallengeResult {
+    pub result_id: Id,
+    pub challenge_id: Id,
+    pub device_id: Id,
+    pub timestamp: DateTime<Utc>,
+    pub passed: bool,
+    pub score: f64, // 0.0–100.0
+    pub step_results: Vec<StepResult>,
+    pub traces_generated: Vec<Id>,
+    pub total_energy_j: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StepResult {
+    pub step_order: u32,
+    pub passed: bool,
+    pub actual: String,
+    pub duration_ms: u64,
+    pub notes: Option<String>,
+}
+
+// ── Unlockables / Prizes (LEGO proposal: prizes that create the next invention) ──
+
+/// Something unlocked by completing challenges or resolving anomalies.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Unlockable {
+    pub unlock_id: Id,
+    pub name: String,
+    pub description: String,
+    /// What must be achieved to unlock.
+    pub requirements: Vec<UnlockRequirement>,
+    /// What becomes available.
+    pub reward: UnlockReward,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum UnlockRequirement {
+    ChallengesCompleted { count: usize },
+    ChallengesPassed { count: usize },
+    AnomaliesResolved { count: usize },
+    ScoreThreshold { score: f64 },
+    SpecificChallenge { challenge_id: Id },
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum UnlockReward {
+    AdvancedDiagnosticMode,
+    ExtendedAutonomousMandate { max_hours: u64 },
+    NewCapability { capability: String },
+    AccessToDevice { device_id: Id },
+    KnowledgePack { publication_id: Id },
+}
+
+// ── Improvement Loop (LEGO: challenge→construct→test→result→new_parts) ──
+
+/// Tracks a full improvement cycle: challenge → solution → learning.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ImprovementLoop {
+    pub loop_id: Id,
+    pub device_id: Id,
+    pub started: DateTime<Utc>,
+    pub completed: Option<DateTime<Utc>>,
+    pub trigger: String, // what started this loop (anomaly, challenge, curiosity)
+    pub diagnosis: Option<String>,
+    pub solution_applied: Option<String>,
+    pub result: Option<LoopResult>,
+    pub traces_linked: Vec<Id>,
+    pub unlocked: Vec<Id>, // Unlockable IDs earned
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum LoopResult {
+    Improved { metric: String, before: f64, after: f64 },
+    Solved { description: String },
+    Learned { insight: String },
+    Failed { reason: String },
+}
+
 /// Autonomous mandate: what the device may do when offline.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct AutonomousMandate {
@@ -210,6 +404,18 @@ pub struct InterventionTrace {
     pub outcome: TraceOutcome,
     pub timestamp: DateTime<Utc>,
     pub references: Vec<Id>,
+    /// If this trace is a remix/improvement of a prior trace (LEGO: rebuild, change one idea).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub remix_of: Option<Id>,
+    /// Whether this trace is published to the community library.
+    #[serde(default)]
+    pub published: bool,
+    /// Tags for community discovery.
+    #[serde(default)]
+    pub community_tags: Vec<String>,
+    /// Skill level: beginner, intermediate, advanced.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub skill_level: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -343,8 +549,15 @@ pub struct Agent {
     pub agent_id: Id,
     pub name: String,
     pub agent_type: AgentType,
+    /// RBAC role for access control.
+    #[serde(default = "default_role")]
+    pub role: AisRole,
     pub affiliation: Option<String>,
     pub public_key: Option<String>,
+}
+
+fn default_role() -> AisRole {
+    AisRole::Operator
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

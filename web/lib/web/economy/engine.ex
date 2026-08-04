@@ -1,6 +1,6 @@
 defmodule Web.Economy.Engine do
   @moduledoc """
-  Central economic engine for the AIS Knowledge Marketplace.
+  Central economic engine for the DAIS Knowledge Marketplace.
 
   Rules:
   - Contributors earn credits for verified knowledge contributions
