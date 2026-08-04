@@ -657,5 +657,14 @@
     "minor": 0,
     "patch": 0
   },
-  "signature": null
+  "signature": null,
+  "safety_hardware": {
+    "physical_stop_pin": 17,
+    "deadman_switch_ms": 500,
+    "max_current_ma": 5000,
+    "max_voltage_mv": 12000,
+    "physical_key_lock": false
+  },
+  "body_history": [],
+  "current_body_id": null
 }

@@ -1,12 +1,12 @@
-# AIS — Autonomous Intelligence Socket
+# DAIS — Autonomous Intelligence Socket
 
 **Open-source protocol for safe embodied AI + hallucination-resistant knowledge.**
 
-AIS gives every autonomous device a **passport** — so any LLM can safely understand it, help it, and leave a trace that every other machine learns from.
+DAIS gives every autonomous device a **passport** — so any LLM can safely understand it, help it, and leave a trace that every other machine learns from.
 
 Built on two complementary protocols:
-- **AISocket** — Safe AI control of physical devices (Body Law, Flight Recorder, Trace Network)
-- **Noepedia** — Structured knowledge with provenance (claims → sources → evidence → status)
+- **DAISocket** — Safe AI control of physical devices (Body Law, Flight Recorder, Trace Network)
+- **Proven** — Structured knowledge with provenance (claims → sources → evidence → status)
 
 ## Quick Start
 
@@ -32,9 +32,9 @@ cd web && mix setup && mix phx.server
 ## License
 
 Core (Rust): Apache 2.0  
-Noepedia components: AGPL v3.0  
+Proven components: AGPL v3.0  
 Web: MIT
 
 ---
 
-*Born from AISocket + Noepedia. Built for ARGUS-OS1.*
+*Born from DAISocket + Proven. Built for ARGUS-OS1.*

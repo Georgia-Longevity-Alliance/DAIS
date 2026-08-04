@@ -27,7 +27,7 @@ defmodule WebWeb.KnowledgeLive do
     <div class="min-h-screen bg-base-200">
       <div class="navbar bg-base-100 shadow-sm px-6">
         <div class="flex-1">
-          <h1 class="text-xl font-bold">🧠 AIS Knowledge Graph</h1>
+          <h1 class="text-xl font-bold">🧠 DAIS Knowledge Graph</h1>
         </div>
         <div class="flex-none gap-2">
           <a href="/dashboard" class="btn btn-ghost btn-sm">Dashboard</a>

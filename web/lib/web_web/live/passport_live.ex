@@ -21,7 +21,7 @@ defmodule WebWeb.PassportLive do
     <div class="min-h-screen bg-base-200">
       <div class="navbar bg-base-100 shadow-sm px-6">
         <div class="flex-1">
-          <h1 class="text-xl font-bold">🛂 AISocket Passport Interview</h1>
+          <h1 class="text-xl font-bold">🛂 DAISocket Passport Interview</h1>
         </div>
         <div class="flex-none gap-2">
           <div class="badge badge-ghost text-xs"><%= @interview.phase %></div>

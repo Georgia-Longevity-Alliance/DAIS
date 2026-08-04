@@ -13,7 +13,7 @@
 | Max passport size (ESP32) | 512B | JSON+signature fits in RAM |
 | Max passport size (server) | 64KB | Rich layered documents |
 | Delta types | 5 | CREATE, UPDATE, RELATE, DEPRECATE, CONSOLIDATE |
-| Object types (Noepedia v1) | 5 | CLAIM, SOURCE, EVIDENCE, OPEN, CONFLICT |
+| Object types (Proven v1) | 5 | CLAIM, SOURCE, EVIDENCE, OPEN, CONFLICT |
 | Event store batch size | 100 | SQLite pragma optimization |
 | LLM max context tokens | 128K | Flight recorder + passport + prompt |
 | LLM temperature (diagnosis) | 0.1 | Low: deterministic diagnosis |
@@ -23,7 +23,7 @@
 
 | Parameter | Value |
 |-----------|-------|
-| **AIS Global Server** | Dedicated server (8+ vCPU, 16+ GB RAM) |
+| **DAIS Global Server** | Dedicated server (8+ vCPU, 16+ GB RAM) |
 | **Cost** | ~$150/мес |
 | **Period** | 10 years |
 | **Total** | **$18,000** |

@@ -8,7 +8,7 @@ defmodule WebWeb.ApiController do
   import Ecto.Query
 
   def health(conn, _params) do
-    json(conn, %{status: "ok", service: "AIS local registry"})
+    json(conn, %{status: "ok", service: "DAIS local registry"})
   end
 
   def register_passport(conn, %{"passport" => passport_data} = params) do

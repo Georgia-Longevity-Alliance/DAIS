@@ -34,7 +34,7 @@ defmodule WebWeb.DashboardLive do
     <div class="min-h-screen bg-base-200">
       <div class="navbar bg-base-100 shadow-sm px-6">
         <div class="flex-1">
-          <h1 class="text-xl font-bold">🛂 AIS Device Dashboard</h1>
+          <h1 class="text-xl font-bold">🛂 DAIS Device Dashboard</h1>
         </div>
         <div class="flex-none gap-2">
           <span class="text-sm opacity-70"><%= @user_name || @user_email %></span>

@@ -33,6 +33,7 @@ impl TraceNetwork {
         actions_taken: Vec<TraceAction>,
         outcome: TraceOutcome,
         references: Vec<Uuid>,
+        remix_of: Option<Uuid>,
     ) -> Uuid {
         let trace = InterventionTrace {
             trace_id: Uuid::new_v4(),
@@ -45,6 +46,10 @@ impl TraceNetwork {
             outcome,
             timestamp: Utc::now(),
             references,
+            remix_of,
+            published: false,
+            community_tags: Vec::new(),
+            skill_level: None,
         };
         let id = trace.trace_id;
         self.traces.push(trace);
@@ -98,7 +103,49 @@ impl TraceNetwork {
         self.traces.is_empty()
     }
 
-    /// Export traces as LLM-readable context.
+    /// Publish a trace to the community library.
+    /// Published traces are discoverable by other devices.
+    pub fn publish_trace(
+        &mut self,
+        trace_id: Uuid,
+        tags: Vec<String>,
+        skill_level: Option<String>,
+    ) -> Result<(), String> {
+        if let Some(trace) = self.traces.iter_mut().find(|t| t.trace_id == trace_id) {
+            trace.published = true;
+            trace.community_tags = tags;
+            trace.skill_level = skill_level;
+            Ok(())
+        } else {
+            Err(format!("Trace {} not found", trace_id))
+        }
+    }
+
+    /// Get all published traces (community library).
+    pub fn community_library(&self) -> Vec<&InterventionTrace> {
+        self.traces.iter().filter(|t| t.published).collect()
+    }
+
+    /// Find traces by community tag.
+    pub fn find_by_tag(&self, tag: &str) -> Vec<&InterventionTrace> {
+        self.traces
+            .iter()
+            .filter(|t| t.community_tags.iter().any(|t2| t2 == tag))
+            .collect()
+    }
+
+    /// Find remixes (improvements) of a given trace.
+    pub fn find_remixes_of(&self, original_trace_id: Uuid) -> Vec<&InterventionTrace> {
+        self.traces
+            .iter()
+            .filter(|t| t.remix_of == Some(original_trace_id))
+            .collect()
+    }
+
+    /// Count remixes — measures community engagement.
+    pub fn remix_count(&self, original_trace_id: Uuid) -> usize {
+        self.find_remixes_of(original_trace_id).len()
+    }
     pub fn to_llm_context(&self, max_traces: usize) -> String {
         let count = std::cmp::min(max_traces, self.traces.len());
         let recent: Vec<_> = self.traces.iter().rev().take(count).collect();
@@ -144,6 +191,7 @@ mod tests {
             vec![],
             TraceOutcome::Resolved,
             vec![],
+            None,
         );
 
         assert_eq!(tn.len(), 1);
@@ -164,6 +212,7 @@ mod tests {
             vec![],
             TraceOutcome::Resolved,
             vec![],
+            None,
         );
         tn.record(
             Uuid::new_v4(),
@@ -174,6 +223,7 @@ mod tests {
             vec![],
             TraceOutcome::Mitigated,
             vec![],
+            None,
         );
 
         let results = tn.search_diagnosis("photobleaching");

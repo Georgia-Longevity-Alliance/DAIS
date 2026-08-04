@@ -128,7 +128,7 @@ impl Validator {
             .map(|s| s.to_string())
     }
 
-    /// Valid status transitions in Noepedia.
+    /// Valid status transitions in Proven.
     ///
     /// PROPOSED → SUPPORTED → TESTED → REPLICATED
     ///          → CONTESTED

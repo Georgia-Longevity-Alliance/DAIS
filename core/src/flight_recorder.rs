@@ -1,6 +1,6 @@
 //! Flight Recorder — ring buffer for device events.
 //!
-//! Every AISocket body keeps a trace of its recent life.
+//! Every DAISocket body keeps a trace of its recent life.
 //! On ESP32: a ring buffer of 256 events. On an android: 65536.
 //! Without a flight recorder the emergency doctor is blind;
 //! with one, a rare failure becomes a readable story.

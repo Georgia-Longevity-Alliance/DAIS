@@ -43,9 +43,9 @@ Cost(anomaly X) =
 
 The energy cost of solving X decreases to zero over time, asymptotically approaching O(1) as the trace network grows.
 
-### 4. Noepedia = Structured Epistemology
+### 4. Proven = Structured Epistemology
 
-Noepedia is the knowledge counterpart. It extends the trace network from "what happened" to "what is true." Every claim has:
+Proven is the knowledge counterpart. It extends the trace network from "what happened" to "what is true." Every claim has:
 - Status: PROPOSED → SUPPORTED → TESTED → REPLICATED (or: CONTESTED, REFUTED, SUPERSEDED)
 - Sources: DOI, PMID, experiment ID, personal communication
 - Evidence: supporting, contradicting, inconclusive, with strength 0.0–1.0
@@ -60,7 +60,7 @@ SQL SELECT:    ~1 µJ
 Rust match:    ~1 pJ
 ```
 
-AIS counts joules. Every operation is classified:
+DAIS counts joules. Every operation is classified:
 - **Green:** Deterministic, <1 µJ (SQL, Rust, graph traversal)
 - **Yellow:** Small model inference, <1 mJ (local classifier, anomaly detector)
 - **Red:** LLM inference, ~1 J/token (diagnosis, interview, synthesis)

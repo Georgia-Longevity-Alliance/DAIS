@@ -1,8 +1,8 @@
-//! AIS Core — Autonomous Intelligence Socket protocol library.
+//! DAIS Core — Autonomous Intelligence Socket protocol library.
 //!
 //! This crate implements the core protocols for:
-//! - **AISocket**: Safe embodied AI — Passport, Body Law, Flight Recorder, Trace Network
-//! - **Noepedia**: Hallucination-resistant knowledge — Delta Protocol, Event Store, Validator, Consolidator
+//! - **DAISocket**: Safe embodied AI — Passport, Body Law, Flight Recorder, Trace Network
+//! - **Proven**: Hallucination-resistant knowledge — Delta Protocol, Event Store, Validator, Consolidator
 //!
 //! # Architecture
 //!
@@ -11,13 +11,13 @@
 //!                                      ↓ (on anomaly)
 //!                              Flight Recorder → LLM → Trace Network
 //!                                                         ↓
-//!                                                  Noepedia (Event Store)
+//!                                                  Proven (Event Store)
 //! ```
 //!
 //! # Quick Example
 //!
 //! ```rust
-//! use ais_core::prelude::*;
+//! use dais_core::prelude::*;
 //!
 //! // Create a device passport
 //! let mut passport = Passport::new(
@@ -54,7 +54,21 @@
 //! let mut traces = TraceNetwork::new();
 //! ```
 
+pub mod anomaly;
+pub mod argus;
 pub mod body_law;
+pub mod compliance;
+pub mod edge_ml;
+pub mod federated;
+pub mod fleet;
+pub mod formal;
+pub mod genome;
+pub mod neural;
+pub mod ota;
+pub mod proof;
+pub mod ros2;
+pub mod swarm;
+pub mod challenge;
 pub mod consolidator;
 pub mod delta;
 pub mod event_store;
@@ -68,6 +82,7 @@ pub mod validator;
 /// Prelude — commonly used types for convenience.
 pub mod prelude {
     pub use crate::body_law::{BodyLaw, Command, DeviceContext, FirmwareLimits};
+    pub use crate::challenge::{ChallengeRegistry, PilotEvaluation};
     pub use crate::consolidator::{ConsolidatedView, Consolidator};
     pub use crate::delta::Delta;
     pub use crate::event_store::EventStore;

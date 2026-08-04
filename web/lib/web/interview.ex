@@ -381,7 +381,7 @@ defmodule Web.Interview do
 
   defp greeting_message do
     """
-    👋 **Welcome to the AISocket Passport Interview!**
+    👋 **Welcome to the DAISocket Passport Interview!**
 
     I'll help you create a **Passport** for your device — a document that tells any AI what your device can do, what it must NEVER do, and how to safely control it.
 
@@ -472,7 +472,7 @@ defmodule Web.Interview do
     do: "Any more parameters? (name, or 'no')"
 
   defp q(:capability_detail, "risk"),
-    do: "Risk level?\n- informational: just reads data\n- low: minor effect (LED)\n- medium: motor, heater\n- high: laser, blade, potential harm\n- critical: life-critical (FORBIDDEN by AIS)"
+    do: "Risk level?\n- informational: just reads data\n- low: minor effect (LED)\n- medium: motor, heater\n- high: laser, blade, potential harm\n- critical: life-critical (FORBIDDEN by DAIS)"
 
   defp q(:capability_detail, "more_capabilities"),
     do: "Any other capabilities? (yes/no)"

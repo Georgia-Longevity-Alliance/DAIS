@@ -1,6 +1,6 @@
 //! Delta Protocol — legal operations for knowledge revision.
 //!
-//! Knowledge in Noepedia changes through deltas — proposed changes
+//! Knowledge in Proven changes through deltas — proposed changes
 //! that are validated before becoming part of the consolidated view.
 //! A delta is a SIGNED proposal from an agent, not a silent rewrite.
 
