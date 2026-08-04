@@ -18,7 +18,7 @@ DAIS/                           # Root: core files only
 │       ├── lib.rs             # Public API + prelude
 │       ├── types.rs           # Shared types + serde
 │       ├── passport.rs        # Passport struct
-│       ├── body_law.rs        # 6-layer validator
+│       ├── core/src/body_law.rs        # 6-layer validator
 │       ├── flight_recorder.rs # Ring buffer
 │       ├── trace.rs           # Intervention traces
 │       ├── delta.rs           # Proven delta protocol
@@ -29,8 +29,8 @@ DAIS/                           # Root: core files only
 │
 ├── py_backend/                # Python — AI/ML + HTTP
 │   ├── requirements.txt
-│   └── daisocket/
-│       ├── __init__.py
+│   └── aisocket/
+│       ├── core/src/main.rs
 │       ├── client.py          # Registry HTTP client
 │       ├── llm_bridge.py      # LLM ↔ DAISocket
 │       └── noepedia_api.py    # Proven client
@@ -49,7 +49,7 @@ DAIS/                           # Root: core files only
 │   │       │   ├── dashboard_live.ex
 │   │       │   └── device_live.ex
 │   │       └── controllers/
-│   │           └── api_controller.ex
+│   │           └── mix.exs
 │   └── test/
 │
 ├── integration/                # End-to-end tests
