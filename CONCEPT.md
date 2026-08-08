@@ -18,16 +18,16 @@ DAIS is a production-grade platform for safe, verifiable, and energy-honest auto
 
 ## What is this
 
-> TODO (deep review): one-paragraph description of the project.
+DAIS is a production-grade platform for safe, verifiable, and energy-honest autonomous intelligence: every autonomous body gets a passport, every intervention a trace, every knowledge claim a provenance — open-source and deterministic.
 
 ## Purpose
 
-> TODO (deep review): why this project exists, what problem it solves.
+Current autonomous/AI systems are probabilistic black boxes: unsafe for safety-critical decisions, unverifiable, and energy-hungry. DAIS makes safety-critical decisions deterministic (firmware, SQL, graph traversal) and uses LLMs only for novelty, conflict, and open questions, so systems can be audited, insured, and trusted.
 
 ## How it works
 
-> TODO (deep review): key components and workflow.
+Three pillars: (1) DAISocket Core (Rust) — Passport, Body Law (7 layers), Flight Recorder, Trace Network; (2) Proven Core (Rust) — knowledge provenance chain claims → sources → evidence → status; (3) DAIS Web (Phoenix/Elixir) — dashboard, device registry, knowledge browser. LLM is confined to clearly-marked non-deterministic lanes.
 
 ## Status
 
-> TODO (deep review): current state — planned / active / archived.
+Active development (2026-08-02, v2.0). Rust cores are the foundation; Web dashboard follows. Production target: embedded and server deployments with auditable traces.
