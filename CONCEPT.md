@@ -194,6 +194,21 @@ The first real-world deployment target is **ARGUS-OS1** (automated centriole tra
 | Trace Network | Solved anomalies recorded → all ARGUS devices learn |
 | Knowledge Field | Published findings → Noepedia claims with provenance |
 
+### V9 — Robot Hands + Shared Local LLM Brain (2026-08-17)
+
+V9 is an autonomy layer over every OS stage (OS1/OS2/OS3): robot hands operate through the glove ports instead of human hands (24/7 servicing), and an external LLM brain runs on the same local host that controls the micromanipulators and micro-robots inside the enclosure.
+
+| AIS Component | V9 Instantiation |
+|---------------|------------------|
+| Passport | +15 capabilities: pick-and-place, pipette, wipe, UV, capillary, rake, charge, calibrate, transfer-in, transfer-out, door-interlock |
+| Body Law | force ≤5 N, speed ≤200 mm/s, no-touch zones around the objective during fs-laser |
+| Flight Recorder | every hand action: pose (x,y,z,theta), force, timestamp, camera frame |
+| LLM Bridge | arm error diagnosis → safe restart; escalation to human at confidence <0.7 |
+| Trace Network | servicing procedures (objective cleaning, capillary replacement) in the shared registry |
+| Knowledge Field | servicing procedures → Noepedia claims with verification |
+
+Design: [ARGUS-OS1/docs/V9_PROTOTYPE.md](https://github.com/Georgia-Longevity-Alliance/ARGUS-OS1/blob/main/docs/V9_PROTOTYPE.md) | [ARGUS-OS1/docs/STERILIZATION_TRANSFER.md](https://github.com/Georgia-Longevity-Alliance/ARGUS-OS1/blob/main/docs/STERILIZATION_TRANSFER.md)
+
 ---
 
 ## 5. Success Criteria
