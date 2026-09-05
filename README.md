@@ -38,3 +38,12 @@ Web: MIT
 ---
 
 *Born from AISocket + Noepedia. Built for ARGUS-OS1.*
+
+## Parent project (ARGUS-OS1)
+
+AIS is a **subproject of [ARGUS-OS1](https://github.com/Georgia-Longevity-Alliance/ARGUS-OS1)** — the open microscopy platform for tracking centrioles in living embryos. AIS is mounted as `dais/` (git submodule) inside ARGUS-OS1 and provides its safe, deterministic AI layer (V9 shared local LLM brain).
+
+```bash
+# clone ARGUS-OS1 with AIS attached
+ git clone --recurse-submodules git@github.com:Georgia-Longevity-Alliance/ARGUS-OS1.git
+```
