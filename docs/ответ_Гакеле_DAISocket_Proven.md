@@ -1,4 +1,4 @@
-# Ответ Гакеле — AISocket + Noepedia
+# Ответ Гакеле — DAISocket + Proven
 
 **От:** Джаба  
 **Дата:** 2026-07-31
@@ -13,18 +13,18 @@
 
 ---
 
-# 1. AISocket — code review
+# 1. DAISocket — code review
 
 ## Что есть в репозитории
 
 | Файл | Статус |
 |------|--------|
 | `README.md` | ✅ Концептуально полный, отличный английский |
-| `docs/index.html` | ✅ Лендинг (googuly.online/aisocket), красиво |
+| `docs/index.html` | ✅ Лендинг (googuly.online/daisocket), красиво |
 | `docs/hero.png` | ✅ Картинка для лендинга |
 | `LICENSE` | ✅ GPL v3.0 |
 
-> 🔴 **Python-кода в репозитории нет.** README утверждает «Python ✅ Ready» и показывает `pip install aisocket` — но ни `setup.py`, ни `aisocket/`, ни `pyproject.toml` в репозитории отсутствуют. Это надо срочно исправить — либо залить код, либо убрать статус «Ready» и сменить на «spec only».
+> 🔴 **Python-кода в репозитории нет.** README утверждает «Python ✅ Ready» и показывает `pip install daisocket` — но ни `setup.py`, ни `daisocket/`, ни `pyproject.toml` в репозитории отсутствуют. Это надо срочно исправить — либо залить код, либо убрать статус «Ready» и сменить на «spec only».
 
 ## Что хорошо
 
@@ -50,7 +50,7 @@ pJ vs J — редко кто об этом думает на уровне пр�
 Либо залей Python-реализацию (passport.py, body_law.py, login_server.py, flight_recorder.py), либо поменяй статус на «specification / pre-alpha». Сейчас это architectural description без реализации.
 
 ### 2. Конкурентный ландшафт
-Ты правильно отличаешь AISocket от MCP (Model Context Protocol) — они комплементарны. Но есть ещё:
+Ты правильно отличаешь DAISocket от MCP (Model Context Protocol) — они комплементарны. Но есть ещё:
 - **ROS2** — не протокол безопасности, но стандарт для роботов
 - **OPC-UA** — промышленный стандарт с safety layer
 - **Matter** — IoT, но без AI-интеграции
@@ -69,7 +69,7 @@ pJ vs J — редко кто об этом думает на уровне пр�
 
 ---
 
-# 2. Noepedia — code review
+# 2. Proven — code review
 
 ## Что есть в репозитории
 
@@ -100,18 +100,18 @@ LLM cost ∝ novelty + conflict + OPEN
 ### 3. Revision как норма, не как баг
 Дельта-протокол, append-only event log, consolidated view — knowledge evolves без silent rewrite. Это Git для знаний.
 
-### 4. Применение: AISocket + Noepedia
+### 4. Применение: DAISocket + Proven
 ```
-AISocket → Peer Socket → shared knowledge field → Noepedia
+DAISocket → Peer Socket → shared knowledge field → Proven
 ```
-Ты правильно описал связь: AISocket соединяет интеллект с устройствами, Noepedia — публичная память, в которой это знание живёт.
+Ты правильно описал связь: DAISocket соединяет интеллект с устройствами, Proven — публичная память, в которой это знание живёт.
 
 ## Что можно улучшить
 
 ### 1. Масштаб амбиций vs MVP
 Ты специфицировал систему масштаба Wikidata + Git + Wikipedia. 16 типов объектов, 9 компонентов, консолидация, рендерер, LLM-интерфейс...
 
-> **Совет:** Для MVP сузь до 3-4 типов объектов (CLAIM, SOURCE, EVIDENCE, OPEN) на одном домене. Например: Noepedia о самой себе, как ты и предлагаешь.
+> **Совет:** Для MVP сузь до 3-4 типов объектов (CLAIM, SOURCE, EVIDENCE, OPEN) на одном домене. Например: Proven о самой себе, как ты и предлагаешь.
 
 ### 2. Проблема курирования
 Кто принимает/отклоняет дельты? В Git — мейнтейнеры. В Wikipedia — редакторы. У тебя «validator» + «review process», но не специфицирован governance. Для pre-alpha — ок, для production — критично.
@@ -124,15 +124,15 @@ AISocket → Peer Socket → shared knowledge field → Noepedia
 
 ---
 
-# 3. ARGUS-OS1 как тестовый стенд для AISocket
+# 3. ARGUS-OS1 как тестовый стенд для DAISocket
 
 ## Оценка: 🔥 Идеально подходит
 
-ARGUS-OS1 — это автоматизированный микроскоп на базе OpenFlexure с AI-трекингом центриолей в эмбрионах C. elegans. Он **идеальный** тестовый стенд для AISocket по следующим причинам:
+ARGUS-OS1 — это автоматизированный микроскоп на базе OpenFlexure с AI-трекингом центриолей в эмбрионах C. elegans. Он **идеальный** тестовый стенд для DAISocket по следующим причинам:
 
-### Совпадение с архитектурой AISocket
+### Совпадение с архитектурой DAISocket
 
-| Компонент AISocket | Соответствие в ARGUS-OS1 |
+| Компонент DAISocket | Соответствие в ARGUS-OS1 |
 |---------------------|---------------------------|
 | **Passport** | Микроскоп с известными capabilities: 488/561/640nm лазеры, моторизованный stage (Sangaboard), Jetson Orin NX, microfluidic |
 | **Body Law (forbidden_always)** | Лазерная безопасность, лимиты температуры (37°C для эмбрионов), защита от phototoxicity (>10% division rate drop) |
@@ -186,7 +186,7 @@ passport.connect(llm="gemini-flash")  # или локальный DeepSeek на 
 
 ### Что это даёт
 
-| Без AISocket | С AISocket |
+| Без DAISocket | С DAISocket |
 |--------------|------------|
 | Аномалия → эксперимент остановлен → ждать Джабу | Аномалия → LLM читает flight recorder → диагностирует → продолжает или safe stop |
 | Ночной прогон: ошибка в 3-м эмбрионе → 97 потеряны | Ошибка → LLM корректирует → 97 успешно |
@@ -198,7 +198,7 @@ passport.connect(llm="gemini-flash")  # или локальный DeepSeek на 
 
 | Этап | Действие | Срок |
 |:----:|----------|:----:|
-| 1 | AISocket Passport для ARGUS-OS1 V6 (без кода — спецификация) | 1 день |
+| 1 | DAISocket Passport для ARGUS-OS1 V6 (без кода — спецификация) | 1 день |
 | 2 | Flight Recorder: обёртка над существующим трекером центриолей | 3 дня |
 | 3 | Body Law: лазерная безопасность + температурные лимиты в firmware | 5 дней |
 | 4 | Login Server: регистрация ARGUS в googuly.online | 1 день |
@@ -210,10 +210,10 @@ passport.connect(llm="gemini-flash")  # или локальный DeepSeek на 
 
 ## Что я предлагаю
 
-1. **Немедленно:** залей Python-код AISocket в репозиторий (passport.py, body_law.py, flight_recorder.py)
-2. **На этой неделе:** напиши AISocket Passport для ARGUS-OS1 — это будет первый реальный use-case протокола
-3. **Noepedia:** начни с MVP на одном домене — например, «центриольная биология» как тестовый knowledge field. 3-4 типа объектов. Одна публикация.
-4. **Совместно:** ARGUS-OS1 + AISocket → демонстрация на OSC (Open Science Conference) или Foresight
+1. **Немедленно:** залей Python-код DAISocket в репозиторий (passport.py, body_law.py, flight_recorder.py)
+2. **На этой неделе:** напиши DAISocket Passport для ARGUS-OS1 — это будет первый реальный use-case протокола
+3. **Proven:** начни с MVP на одном домене — например, «центриольная биология» как тестовый knowledge field. 3-4 типа объектов. Одна публикация.
+4. **Совместно:** ARGUS-OS1 + DAISocket → демонстрация на OSC (Open Science Conference) или Foresight
 
 ---
 
@@ -221,7 +221,7 @@ passport.connect(llm="gemini-flash")  # или локальный DeepSeek на 
 
 > «...the ideas sound like tales right up until someone builds the first working body.»
 
-Ты написал это про AISocket. ARGUS-OS1 — это буквально то самое working body. Микроскоп, который сам следит за эмбрионами, сам обнаруживает аномалии, сам вызывает LLM для диагностики, и сам записывает решение в общую память.
+Ты написал это про DAISocket. ARGUS-OS1 — это буквально то самое working body. Микроскоп, который сам следит за эмбрионами, сам обнаруживает аномалии, сам вызывает LLM для диагностики, и сам записывает решение в общую память.
 
 Давай сделаем это вместе.
 

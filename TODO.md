@@ -1,4 +1,4 @@
-# TODO — AIS
+# TODO — DAIS
 
 **Updated:** 2026-07-31
 
@@ -26,7 +26,7 @@
 - [ ] Connect to googuly.online registry
 - [ ] LLM anomaly diagnosis test (3 simulated failures)
 - [ ] Trace Network: record + retrieve across sessions
-- [ ] Noepedia: publish ARGUS-OS1 findings as knowledge field
+- [ ] Proven: publish ARGUS-OS1 findings as knowledge field
 
 ## Phase 2: Production Hardening
 - [ ] Cryptographic passport signatures (Ed25519)
@@ -37,7 +37,7 @@
 - [ ] Matter/WoT compatibility layer
 
 ## Phase 3: Community
-- [ ] Open source release (Apache 2.0 + AGPL for Noepedia)
+- [ ] Open source release (Apache 2.0 + AGPL for Proven)
 - [ ] Documentation site
 - [ ] Contributor guide
 - [ ] Demo video

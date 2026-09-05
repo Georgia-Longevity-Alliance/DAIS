@@ -1,4 +1,4 @@
-# CONCEPT — AIS (Autonomous Intelligence Socket)
+# CONCEPT — DAIS (Autonomous Intelligence Socket)
 
 **Version:** 1.0  
 **Date:** 2026-07-31  
@@ -8,29 +8,29 @@
 
 ## 0. Executive Summary
 
-AIS is the reference implementation merging **AISocket** (embodied AI safety protocol) and **Noepedia** (hallucination-resistant knowledge system) into a single, production-grade platform.
+DAIS is the reference implementation merging **DAISocket** (embodied AI safety protocol) and **Proven** (hallucination-resistant knowledge system) into a single, production-grade platform.
 
 **Three pillars:**
-1. **AISocket Core** (Rust) — Passport, Body Law, Flight Recorder, Trace Network
-2. **Noepedia Core** (Rust) — Delta Protocol, Event Store, Validator, Consolidator
-3. **AIS Web** (Phoenix/Elixir) — Dashboard, Device Registry, Knowledge Browser, LiveView
+1. **DAISocket Core** (Rust) — Passport, Body Law, Flight Recorder, Trace Network
+2. **Proven Core** (Rust) — Delta Protocol, Event Store, Validator, Consolidator
+3. **DAIS Web** (Phoenix/Elixir) — Dashboard, Device Registry, Knowledge Browser, LiveView
 
 **Mission:** Give every autonomous body a passport, every intervention a trace, every knowledge claim a provenance — and make it all open-source, energy-honest, and safe.
 
 ---
 
-## 1. Why AIS Exists
+## 1. Why DAIS Exists
 
 ### 1.1 The Two Missing Pieces
 
 Current AI landscape has two structural gaps:
 
-| Gap | Problem | AIS Solution |
+| Gap | Problem | DAIS Solution |
 |-----|---------|--------------|
 | **Embodied safety** | LLMs can't safely control physical devices — safety rules in prompts are unreliable | Body Law in firmware, `forbidden_always` enforced at ALU cost |
 | **Knowledge hallucination** | LLM answers lack provenance — `PROPOSED` masked as `FACT`, conflicts disappear in fluent text | Structured knowledge field: claims → sources → evidence → status |
 
-AISocket + Noepedia were born as separate projects. AIS unifies them because they share the same architectural DNA: **addressable, verifiable, append-only structures with deterministic safety boundaries.**
+DAISocket + Proven were born as separate projects. DAIS unifies them because they share the same architectural DNA: **addressable, verifiable, append-only structures with deterministic safety boundaries.**
 
 ### 1.2 The Energy Argument
 
@@ -40,7 +40,7 @@ Microcontroller addition: ~1 picojoule
 Ratio: 10¹² : 1
 ```
 
-Using an LLM as a continuous controller is like running to the equator to take a single step. AIS enforces:
+Using an LLM as a continuous controller is like running to the equator to take a single step. DAIS enforces:
 - **Deterministic execution** (firmware, SQL, graph traversal) for routine operations
 - **LLM intervention** only for novelty, conflict, and open questions
 - **Trace preservation** so solved problems are never paid for twice
@@ -61,7 +61,7 @@ Using an LLM as a continuous controller is like running to the equator to take a
 ├─────────────────────────────────────────────┤
 │              RUST CORE (core/)               │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │ AISocket  │  │ Noepedia │  │  Shared  │   │
+│  │ DAISocket  │  │ Proven │  │  Shared  │   │
 │  │ Passport  │  │  Delta   │  │  Event   │   │
 │  │ Body Law  │  │Validator │  │  Store   │   │
 │  │ FlightRec │  │Consolid. │  │  Types   │   │
@@ -76,7 +76,7 @@ Using an LLM as a continuous controller is like running to the equator to take a
 ### 2.2 Data Flow
 
 ```
-DEVICE                    AIS CORE                   USER/LLM
+DEVICE                    DAIS CORE                   USER/LLM
   │                          │                          │
   ├─ heartbeat ─────────────→│                          │
   │                          ├─ registry update         │
@@ -94,7 +94,7 @@ DEVICE                    AIS CORE                   USER/LLM
   │                          ├─ acts (within mandate)   │
   │                          ├─ writes trace            │
   │                          │                          │
-  │                          ├─ knowledge → Noepedia ───→│
+  │                          ├─ knowledge → Proven ───→│
   │                          │                          │
 ```
 
@@ -102,7 +102,7 @@ DEVICE                    AIS CORE                   USER/LLM
 
 ## 3. Component Specifications
 
-### 3.1 AISocket Core (Rust)
+### 3.1 DAISocket Core (Rust)
 
 #### Passport (`core/src/passport.rs`)
 ```rust
@@ -153,7 +153,7 @@ struct InterventionTrace {
 }
 ```
 
-### 3.2 Noepedia Core (Rust)
+### 3.2 Proven Core (Rust)
 
 #### Delta Protocol (`core/src/delta.rs`)
 Legal operations: CREATE, UPDATE, RELATE, DEPRECATE, CONSOLIDATE.
@@ -169,14 +169,14 @@ Checks: schema conformance, referential integrity, status transitions, permissio
 ### 3.3 Python Backend (`py_backend/`)
 
 - **LLM Bridge:** Standard prompt + tool interface for any LLM (OpenAI, Anthropic, Gemini, local Ollama)
-- **HTTP Client:** Connect to googuly.online registry + Noepedia API
+- **HTTP Client:** Connect to googuly.online registry + Proven API
 - **Scientific:** NumPy/SciPy for flight recorder analysis, scikit-learn for anomaly detection
 
 ### 3.4 Phoenix Web (`web/`)
 
 - **Dashboard:** Device status, recent traces, active sessions
 - **Registry:** Device search, passport viewer, permission management
-- **Knowledge Browser:** Noepedia publication explorer, claim graph visualisation
+- **Knowledge Browser:** Proven publication explorer, claim graph visualisation
 - **LiveView:** Real-time flight recorder streaming
 
 ---
@@ -185,27 +185,27 @@ Checks: schema conformance, referential integrity, status transitions, permissio
 
 The first real-world deployment target is **ARGUS-OS1** (automated centriole tracking microscope).
 
-| AIS Component | ARGUS-OS1 Instantiation |
+| DAIS Component | ARGUS-OS1 Instantiation |
 |---------------|------------------------|
 | Passport | Microscope identity: 488/561/640nm lasers, Sangaboard stage, microfluidic |
 | Body Law | Laser safety, temp ≤37°C, phototoxicity ceiling (div rate >90%) |
 | Flight Recorder | Centriole tracking log: coordinates, intensities, division events |
 | LLM Bridge | Anomaly detection → Gemini Flash diagnosis → safe restart or pause |
 | Trace Network | Solved anomalies recorded → all ARGUS devices learn |
-| Knowledge Field | Published findings → Noepedia claims with provenance |
+| Knowledge Field | Published findings → Proven claims with provenance |
 
 ### V9 — Robot Hands + Shared Local LLM Brain (2026-08-17)
 
 V9 is an autonomy layer over every OS stage (OS1/OS2/OS3): robot hands operate through the glove ports instead of human hands (24/7 servicing), and an external LLM brain runs on the same local host that controls the micromanipulators and micro-robots inside the enclosure.
 
-| AIS Component | V9 Instantiation |
+| DAIS Component | V9 Instantiation |
 |---------------|------------------|
 | Passport | +15 capabilities: pick-and-place, pipette, wipe, UV, capillary, rake, charge, calibrate, transfer-in, transfer-out, door-interlock |
 | Body Law | force ≤5 N, speed ≤200 mm/s, no-touch zones around the objective during fs-laser |
 | Flight Recorder | every hand action: pose (x,y,z,theta), force, timestamp, camera frame |
 | LLM Bridge | arm error diagnosis → safe restart; escalation to human at confidence <0.7 |
 | Trace Network | servicing procedures (objective cleaning, capillary replacement) in the shared registry |
-| Knowledge Field | servicing procedures → Noepedia claims with verification |
+| Knowledge Field | servicing procedures → Proven claims with verification |
 
 Design: [ARGUS-OS1/docs/V9_PROTOTYPE.md](https://github.com/Georgia-Longevity-Alliance/ARGUS-OS1/blob/main/docs/V9_PROTOTYPE.md) | [ARGUS-OS1/docs/STERILIZATION_TRANSFER.md](https://github.com/Georgia-Longevity-Alliance/ARGUS-OS1/blob/main/docs/STERILIZATION_TRANSFER.md)
 
@@ -218,14 +218,14 @@ Design: [ARGUS-OS1/docs/V9_PROTOTYPE.md](https://github.com/Georgia-Longevity-Al
 3. ✅ Body Law prevents laser over-power in firmware
 4. ✅ LLM successfully diagnoses 3 simulated anomalies
 5. ✅ Trace recorded and retrievable by second device
-6. ✅ Noepedia publication created with ≥5 claims, each with source + evidence
+6. ✅ Proven publication created with ≥5 claims, each with source + evidence
 7. ✅ Phoenix dashboard shows live device status
 
 ---
 
 ## 6. References
 
-- AISocket: https://github.com/gakelytemp-creator/AISocket
-- Noepedia: https://github.com/gakelytemp-creator/Noepedia
+- DAISocket: https://github.com/gakelytemp-creator/DAISocket
+- Proven: https://github.com/gakelytemp-creator/Proven
 - ARGUS-OS1: ~/Desktop/Marketing/ARGUS-OS1/
 - MCP Spec: https://modelcontextprotocol.io/

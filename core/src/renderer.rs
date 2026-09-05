@@ -1,6 +1,6 @@
 //! Renderer — produces human-readable and machine-readable views.
 //!
-//! A Noepedia publication can be rendered as:
+//! A Proven publication can be rendered as:
 //! - An article (Markdown)
 //! - A summary (plain text)
 //! - A claim map (graph)

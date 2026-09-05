@@ -1,5 +1,5 @@
 """
-Noepedia API Client — Python interface to the Noepedia knowledge system.
+Proven API Client — Python interface to the Proven knowledge system.
 
 Operations:
 - Create publication
@@ -39,8 +39,8 @@ class SourceData:
     source_id: UUID = field(default_factory=uuid4)
 
 
-class NoepediaClient:
-    """Client for Noepedia knowledge system."""
+class ProvenClient:
+    """Client for Proven knowledge system."""
 
     def __init__(self, api_url: str = "http://localhost:4000/api"):
         self.api_url = api_url.rstrip("/")

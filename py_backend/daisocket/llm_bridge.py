@@ -1,8 +1,8 @@
 """
-LLM Bridge — standard interface for any LLM to interact with AISocket.
+LLM Bridge — standard interface for any LLM to interact with DAISocket.
 
 Provides:
-- Standard system prompt for AISocket context
+- Standard system prompt for DAISocket context
 - Tool definitions for passport reading, flight recorder access, trace recording
 - Provider adapters (OpenAI, Gemini, Anthropic, Ollama)
 """
@@ -11,7 +11,7 @@ import json
 from dataclasses import dataclass
 from typing import Any, Optional, Protocol
 
-AISOCKET_SYSTEM_PROMPT = """You are an AISocket-compatible diagnostic agent.
+DAISOCKET_SYSTEM_PROMPT = """You are an DAISocket-compatible diagnostic agent.
 
 You have been invited to help a device that has encountered a problem it cannot
 resolve deterministically.
@@ -131,9 +131,9 @@ class GeminiProvider:
 
 
 class LLMBridge:
-    """Bridge between AISocket and any LLM provider."""
+    """Bridge between DAISocket and any LLM provider."""
 
-    AISOCKET_TOOLS = [
+    DAISOCKET_TOOLS = [
         {
             "type": "function",
             "function": {
@@ -230,8 +230,8 @@ class LLMBridge:
         )
 
         messages = [
-            {"role": "system", "content": AISOCKET_SYSTEM_PROMPT},
+            {"role": "system", "content": DAISOCKET_SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
         ]
 
-        return self.provider.chat(messages, tools=self.AISOCKET_TOOLS)
+        return self.provider.chat(messages, tools=self.DAISOCKET_TOOLS)

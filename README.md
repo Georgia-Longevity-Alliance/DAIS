@@ -1,12 +1,12 @@
-# AIS — Autonomous Intelligence Socket
+# DAIS — Autonomous Intelligence Socket
 
 **Open-source protocol for safe embodied AI + hallucination-resistant knowledge.**
 
-AIS gives every autonomous device a **passport** — so any LLM can safely understand it, help it, and leave a trace that every other machine learns from.
+DAIS gives every autonomous device a **passport** — so any LLM can safely understand it, help it, and leave a trace that every other machine learns from.
 
 Built on two complementary protocols:
-- **AISocket** — Safe AI control of physical devices (Body Law, Flight Recorder, Trace Network)
-- **Noepedia** — Structured knowledge with provenance (claims → sources → evidence → status)
+- **DAISocket** — Safe AI control of physical devices (Body Law, Flight Recorder, Trace Network)
+- **Proven** — Structured knowledge with provenance (claims → sources → evidence → status)
 
 ## Quick Start
 
@@ -32,18 +32,18 @@ cd web && mix setup && mix phx.server
 ## License
 
 Core (Rust): Apache 2.0  
-Noepedia components: AGPL v3.0  
+Proven components: AGPL v3.0  
 Web: MIT
 
 ---
 
-*Born from AISocket + Noepedia. Built for ARGUS-OS1.*
+*Born from DAISocket + Proven. Built for ARGUS-OS1.*
 
 ## Parent project (ARGUS-OS1)
 
-AIS is a **subproject of [ARGUS-OS1](https://github.com/Georgia-Longevity-Alliance/ARGUS-OS1)** — the open microscopy platform for tracking centrioles in living embryos. AIS is mounted as `dais/` (git submodule) inside ARGUS-OS1 and provides its safe, deterministic AI layer (V9 shared local LLM brain).
+DAIS is a **subproject of [ARGUS-OS1](https://github.com/Georgia-Longevity-Alliance/ARGUS-OS1)** — the open microscopy platform for tracking centrioles in living embryos. DAIS is mounted as `dais/` (git submodule) inside ARGUS-OS1 and provides its safe, deterministic AI layer (V9 shared local LLM brain).
 
 ```bash
-# clone ARGUS-OS1 with AIS attached
+# clone ARGUS-OS1 with DAIS attached
  git clone --recurse-submodules git@github.com:Georgia-Longevity-Alliance/ARGUS-OS1.git
 ```

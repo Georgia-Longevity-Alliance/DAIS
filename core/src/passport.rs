@@ -17,7 +17,7 @@ use crate::types::*;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-/// The device passport — the core identity document in AISocket.
+/// The device passport — the core identity document in DAISocket.
 ///
 /// # Example (JSON)
 /// ```json

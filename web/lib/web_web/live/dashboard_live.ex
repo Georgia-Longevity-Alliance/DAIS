@@ -5,7 +5,7 @@ defmodule WebWeb.DashboardLive do
   def mount(_params, _session, socket) do
     socket =
       socket
-      |> assign(:page_title, "AIS Dashboard")
+      |> assign(:page_title, "DAIS Dashboard")
       |> assign(:devices, mock_devices())
       |> assign(:recent_traces, mock_traces())
 
@@ -16,7 +16,7 @@ defmodule WebWeb.DashboardLive do
   def render(assigns) do
     ~H"""
     <div class="px-4 py-6 sm:px-6 lg:px-8">
-      <h1 class="text-2xl font-semibold text-gray-900">AIS Dashboard</h1>
+      <h1 class="text-2xl font-semibold text-gray-900">DAIS Dashboard</h1>
       <p class="mt-1 text-sm text-gray-500">
         Autonomous Intelligence Socket — device overview
       </p>

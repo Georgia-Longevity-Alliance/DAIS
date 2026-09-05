@@ -1,6 +1,6 @@
-# _pi.md — AIS (Autonomous Intelligence Socket)
+# _pi.md — DAIS (Autonomous Intelligence Socket)
 
-**Project:** AIS — Autonomous Intelligence Socket
+**Project:** DAIS — Autonomous Intelligence Socket
 **Parent:** ~/Desktop/Marketing/
 **Created:** 2026-07-31
 
@@ -15,8 +15,8 @@
 
 ## Project Structure
 ```
-AIS/
-├── core/           # Rust — AISocket protocol core
+DAIS/
+├── core/           # Rust — DAISocket protocol core
 │   ├── Cargo.toml
 │   └── src/
 │       ├── passport.rs
@@ -32,11 +32,11 @@ AIS/
 │       └── lib.rs
 ├── py_backend/     # Python — AI/ML + HTTP integration
 │   ├── requirements.txt
-│   └── aisocket/
+│   └── daisocket/
 │       ├── __init__.py
 │       ├── client.py
 │       ├── llm_bridge.py
-│       └── noepedia_api.py
+│       └── proven_api.py
 ├── web/            # Elixir/Phoenix — Dashboard
 │   ├── mix.exs
 │   └── lib/
@@ -55,5 +55,5 @@ AIS/
 
 ## Autofix Command
 ```bash
-cd ~/Desktop/Marketing/AIS && python3 ~/Desktop/Services/scripts/autofix.sh .
+cd ~/Desktop/Marketing/DAIS && python3 ~/Desktop/Services/scripts/autofix.sh .
 ```

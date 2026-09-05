@@ -1,12 +1,12 @@
 [package]
-name = "ais-core"
+name = "dais-core"
 version = "0.1.0"
 edition = "2021"
-description = "AIS — Autonomous Intelligence Socket: protocol core for safe embodied AI"
+description = "DAIS — Autonomous Intelligence Socket: protocol core for safe embodied AI"
 license = "Apache-2.0"
 
 [lib]
-name = "ais_core"
+name = "dais_core"
 path = "src/lib.rs"
 
 [dependencies]

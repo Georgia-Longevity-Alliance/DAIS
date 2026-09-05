@@ -4,7 +4,7 @@ defmodule WebWeb.ApiController do
   def health(conn, _params) do
     json(conn, %{
       status: "ok",
-      service: "AIS — Autonomous Intelligence Socket",
+      service: "DAIS — Autonomous Intelligence Socket",
       version: "0.1.0",
       timestamp: DateTime.utc_now() |> DateTime.to_iso8601(),
     })

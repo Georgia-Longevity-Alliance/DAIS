@@ -1,7 +1,7 @@
-# MAP — AIS
+# MAP — DAIS
 
 ```
-AIS/                           # Root: core files only
+DAIS/                           # Root: core files only
 ├── _pi.md                     # Rules for pi
 ├── CONCEPT.md                 # Concept + architecture
 ├── TODO.md                    # Task list
@@ -21,7 +21,7 @@ AIS/                           # Root: core files only
 │       ├── body_law.rs        # 6-layer validator
 │       ├── flight_recorder.rs # Ring buffer
 │       ├── trace.rs           # Intervention traces
-│       ├── delta.rs           # Noepedia delta protocol
+│       ├── delta.rs           # Proven delta protocol
 │       ├── event_store.rs     # Append-only log
 │       ├── validator.rs       # Delta validator
 │       ├── consolidator.rs    # Knowledge consolidation
@@ -29,11 +29,11 @@ AIS/                           # Root: core files only
 │
 ├── py_backend/                # Python — AI/ML + HTTP
 │   ├── requirements.txt
-│   └── aisocket/
+│   └── daisocket/
 │       ├── __init__.py
 │       ├── client.py          # Registry HTTP client
-│       ├── llm_bridge.py      # LLM ↔ AISocket
-│       └── noepedia_api.py    # Noepedia client
+│       ├── llm_bridge.py      # LLM ↔ DAISocket
+│       └── proven_api.py    # Proven client
 │
 ├── web/                        # Elixir/Phoenix — Dashboard
 │   ├── mix.exs
@@ -55,5 +55,5 @@ AIS/                           # Root: core files only
 ├── integration/                # End-to-end tests
 ├── docs/                       # Documentation
 ├── scripts/                    # Utility scripts
-└── _archive/                   # Reference: AISocket_ref, Noepedia_ref
+└── _archive/                   # Reference: DAISocket_ref, Proven_ref
 ```

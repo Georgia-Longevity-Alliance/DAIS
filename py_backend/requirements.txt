@@ -1,7 +1,7 @@
-# AIS Python Backend
+# DAIS Python Backend
 # LLM Bridge, HTTP Client, and ML Integration
 
-aisocket>=0.1.0
+daisocket>=0.1.0
 requests>=2.31
 pydantic>=2
 httpx>=0.25

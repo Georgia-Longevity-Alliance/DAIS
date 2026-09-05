@@ -1,5 +1,5 @@
 """
-AISocket HTTP Client — connect to googuly.online registry.
+DAISocket HTTP Client — connect to googuly.online registry.
 
 Handles:
 - Device registration
@@ -18,7 +18,7 @@ import httpx
 
 @dataclass
 class DeviceInfo:
-    """A device registered in the AISocket network."""
+    """A device registered in the DAISocket network."""
     name: str
     ip: str
     port: int
@@ -27,15 +27,15 @@ class DeviceInfo:
     passport: Optional[dict] = None
 
 
-class AISocketClient:
-    """HTTP client for AISocket registry."""
+class DAISocketClient:
+    """HTTP client for DAISocket registry."""
 
-    def __init__(self, registry_url: str = "https://googuly.online/aisocket"):
+    def __init__(self, registry_url: str = "https://googuly.online/daisocket"):
         self.registry_url = registry_url.rstrip("/")
         self._client = httpx.Client(timeout=10.0)
 
     def register(self, device: DeviceInfo) -> dict:
-        """Register a device in the AISocket registry."""
+        """Register a device in the DAISocket registry."""
         response = self._client.post(
             f"{self.registry_url}/register.php",
             json={

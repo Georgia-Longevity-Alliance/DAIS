@@ -1,6 +1,6 @@
-//! Shared types for AIS protocol core.
+//! Shared types for DAIS protocol core.
 //!
-//! Every type in the AIS ecosystem derives from these primitives.
+//! Every type in the DAIS ecosystem derives from these primitives.
 //! Serialization via serde ensures JSON compatibility with
 //! Python backend, Phoenix web, and on-wire protocols.
 
@@ -8,7 +8,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-/// Unique identifier for every addressable entity in AIS.
+/// Unique identifier for every addressable entity in DAIS.
 pub type Id = Uuid;
 
 /// Semantic version following semver.org.
@@ -237,7 +237,7 @@ pub enum TraceOutcome {
     Unresolved,
 }
 
-// ── Noepedia types ──
+// ── Proven types ──
 
 /// Status of a knowledge claim.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -279,7 +279,7 @@ pub struct Delta {
     pub signature: Option<String>,
 }
 
-/// A knowledge claim — the fundamental unit of Noepedia.
+/// A knowledge claim — the fundamental unit of Proven.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Claim {
     pub claim_id: Id,
