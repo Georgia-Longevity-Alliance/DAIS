@@ -1,6 +1,5 @@
 """
-Proven API Client — Python interface to the Proven knowledge system.
-"""Noepedia API Client — Python interface to the Noepedia knowledge system.
+Proven API Client — Python interface to the Proven/Noepedia knowledge system.
 
 Operations:
 - Create publication

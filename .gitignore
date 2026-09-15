@@ -43,3 +43,7 @@ __pycache__/
 # SQLite WAL/SHM (transient)
 *.db-shm
 *.db-wal
+
+# Python bytecode
+**/__pycache__/
+*.pyc
