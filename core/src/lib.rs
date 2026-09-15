@@ -79,6 +79,7 @@ pub mod swarm;
 pub mod trace;
 pub mod types;
 pub mod validator;
+pub mod zpd;
 
 /// Prelude — commonly used types for convenience.
 pub mod prelude {
@@ -94,4 +95,5 @@ pub mod prelude {
     pub use crate::trace::TraceNetwork;
     pub use crate::types::*;
     pub use crate::validator::Validator;
+    pub use crate::zpd::*;
 }

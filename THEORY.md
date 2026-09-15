@@ -102,3 +102,22 @@ next body
 ```
 
 A trace is experience, not automatically knowledge. It becomes knowledge through comparison, replication, and consolidation under a RULE_CARD — never by being appended to an ever-larger prompt.
+
+### 11. Zone of Proximal Development (Vygotsky) — implemented in `core/src/zpd.rs`
+
+Vygotsky: higher functions form from the outside, through interaction. Learning happens in the **zone of proximal development (ZPD)** — between what the learner can do independently (*actual development*) and what it can do with a *more competent other*. Every ability passes three stages: **interpsychic** (other helps) → **extragsychic** (self-guided aloud) → **intrapsychic** (internalized, automatic).
+
+DAIS maps this onto bounded autonomy:
+- The **more competent other** is the LLM; it scaffolds *just at the boundary*, never doing what the body already knows.
+- **Three zones:** `ActualDevelopment` (green, deterministic, cached) / `ProximalDevelopment` (LLM scaffolds at the edge) / `Inaccessible` (human or OPEN).
+- **Scaffolding levels:** ObserveOnly → Hint → GuidedSteps → FullHelp → HumanRequired.
+- **Fading:** after each successful scaffolded resolution the help decays geometrically (1.0 → 0.5 → 0.25 …). When fading reaches ~0 the skill is **internalized** — moved to actual development.
+- **Internalization = Noepedia consolidation:** when the result is consolidated as a REPLICATED claim with sufficient coverage, the next occurrence is Green. This is the energy-honest asymptote `Cost(anomaly) → O(1)`.
+
+```text
+interpsychic  →  LLM scaffolds (red, ~1 J/token)
+                 trace recorded
+                 consolidated into Noepedia (REPLICATED)
+extragsychic   →  fading: hint instead of full help
+intrapsychic   →  internalized: green, deterministic, ~pJ
+```

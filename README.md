@@ -31,7 +31,7 @@ cd web && mix setup && mix phx.server
 
 | Layer | Language | Role |
 |-------|----------|------|
-| Core | Rust | Passport, Body Law, Flight Recorder, Event Store, Delta/Validator/Consolidator, **Noepedia grammar** (`noepedia.rs`) |
+| Core | Rust | Passport, Body Law, Flight Recorder, Event Store, Delta/Validator/Consolidator, **Noepedia grammar** (`noepedia.rs`), **ZPD scaffolding** (`zpd.rs`, Vygotsky) |
 | Backend | Python | LLM bridge, HTTP client, ML integration, Noepedia API client |
 | Web | Elixir/Phoenix | Dashboard, Device Registry, Knowledge Browser (claims/evidence/review) |
 
