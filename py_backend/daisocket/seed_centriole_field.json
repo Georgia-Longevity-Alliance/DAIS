@@ -1,0 +1,88 @@
+{
+  "publication": {
+    "title": "ARGUS-OS1 centriole biology knowledge field (MVP)",
+    "description": "MVP of the Noepedia field for the centriole-biology domain: pilots P0-P8 as CLAIM nodes with evidence, Go/No-Go rule cards, coverage. Source: ARGUS-OS1 CONCEPT.md.",
+    "license": "CC-BY 4.0"
+  },
+  "networks": [
+    {
+      "network_id": "net-protocol-validity",
+      "name": "protocol_validity",
+      "description": "Which pilot protocol is valid and under what conditions.",
+      "rule_card": {
+        "rule_id": "rule-protocol-validity",
+        "title": "Protocol validity rule",
+        "evaluates": "whether a pilot's Go/No-Go criteria are met",
+        "ranking_criterion": "all stated thresholds must be satisfied; any failure -> descriptive only",
+        "allowed_relations": ["supports", "contradicts", "valid_in_context"]
+      },
+      "objects": [
+        "claim-p2-phototoxicity", "claim-p6-sas1-latency", "claim-h1-pedigree-fate"
+      ]
+    },
+    {
+      "network_id": "net-lineage-fate",
+      "name": "lineage_centriole_fate",
+      "description": "Does Pedigree Score predict centriole retention/elimination?",
+      "rule_card": {
+        "rule_id": "rule-lineage-fate",
+        "title": "Lineage-fate rule",
+        "evaluates": "independence of Pedigree Score as a predictor of centriole fate",
+        "ranking_criterion": "sister-pair design (ICC eliminated); joint model BF>10; fixed N=100; no intermediate stopping",
+        "allowed_relations": ["supports", "contradicts", "is_instance_of"]
+      },
+      "objects": ["claim-h1-pedigree-fate", "claim-p5-sister-pairs"]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim-p2-phototoxicity",
+      "subject": "P2 phototoxicity ceiling",
+      "predicate": "requires",
+      "object": "division_rate > 90% of dark control at chosen interval",
+      "status": "PROPOSED",
+      "valid_in": "C. elegans embryo, 25C, 488/561/405nm",
+      "evidence": [
+        {"type": "supporting", "strength": 0.7, "description": "Go/No-Go: rate <90% -> 5-min interval or light-sheet (V8)"}
+      ],
+      "coverage": {"relevant_networks": 3, "evaluated": 1, "not_yet_evaluated": 2, "supporting": 1, "conflicting": 0, "status": "PROPOSED"}
+    },
+    {
+      "claim_id": "claim-p6-sas1-latency",
+      "subject": "P6 SAS-1 -> SAS-4 latency",
+      "predicate": "valid_iff",
+      "object": "mean latency <15min; variance <30% of mean; predicts SAS-4 loss in >80% of cells",
+      "status": "PROPOSED",
+      "valid_in": "somatic C. elegans; oogenesis comparison (Pierron 2023) pending",
+      "evidence": [
+        {"type": "supporting", "strength": 0.6, "description": "All 3 criteria required for valid marker; else descriptive only"}
+      ],
+      "coverage": {"relevant_networks": 3, "evaluated": 0, "not_yet_evaluated": 3, "supporting": 0, "conflicting": 0, "status": "OPEN"}
+    },
+    {
+      "claim_id": "claim-h1-pedigree-fate",
+      "subject": "H1 Pedigree Score predicts centriole fate",
+      "predicate": "independently_predicts",
+      "object": "centriole retention at 100-cell window (beyond cell type, cytoplasm, age)",
+      "status": "OPEN",
+      "valid_in": "C. elegans embryo 0->100 cells, ~3h at 25C",
+      "evidence": [
+        {"type": "supporting", "strength": 0.5, "description": "Erpf 2020 ABprpppap 80/20 asymmetry (n=5, small sample)"},
+        {"type": "inconclusive", "strength": 0.5, "description": "most lineages stochastic (57/43) — Pedigree Score must capture info beyond stochasticity"}
+      ],
+      "coverage": {"relevant_networks": 6, "evaluated": 2, "not_yet_evaluated": 4, "supporting": 1, "conflicting": 0, "status": "OPEN"}
+    },
+    {
+      "claim_id": "claim-p5-sister-pairs",
+      "subject": "P5 sister-pair sensitivity",
+      "predicate": "enables",
+      "object": "within-pair comparison if >=40 same-type pairs",
+      "status": "SUPPORTED",
+      "valid_in": "Sulston 1983 lineage map",
+      "evidence": [
+        {"type": "supporting", "strength": 0.8, "description": "~5 same-type pairs/embryo -> ~500 pairs across 100 embryos; power >80% for OR>=1.5"}
+      ],
+      "coverage": {"relevant_networks": 2, "evaluated": 2, "not_yet_evaluated": 0, "supporting": 2, "conflicting": 0, "status": "SUPPORTED"}
+    }
+  ]
+}
