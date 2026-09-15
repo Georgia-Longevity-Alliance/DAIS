@@ -1,7 +1,22 @@
 # MEMORY — DAIS
 
 **Created:** 2026-07-31  
-**Updated:** 2026-08-01
+**Updated:** 2026-09-15
+
+## 2026-09-15 — Noepedia grammar integrated (v3.0)
+
+### Decisions
+1. **Noepedia grammar as a Rust module** (`core/src/noepedia.rs`) — objects, networks, RULE_CARD, replication, coverage, context, placement, session/outcome as first-class types, exported in prelude. Aligns with the rewritten Gakely Noepedia README (1029 lines) and AISocket README.
+2. **Body Law fixed to 6 layers** (firmware, capability, emergency, offline, delegation, context) per the rewritten AISocket README; earlier docs said "7 layers".
+3. **Four pillars** — DAISocket Core, Proven Core, Noepedia Field, DAIS Web.
+4. **Python Noepedia client extended** — `define_network`, `revise_rule_card`, `submit_replication`, `record_coverage`, `add_placement`.
+
+### What was built
+- `core/src/noepedia.rs`: Network+RuleCard+RuleRevision, Relation/RelationKind, Replication, Coverage, KnowledgeContext, Observation/Test, Placement/PlacementArgument, Session/Outcome, KnowledgeStatus (OPEN/CONFLICT/VALID-IN-CONTEXT). 4 new unit tests; full suite 91 green.
+- README/CONCEPT/THEORY/STATE updated to v3.0.
+
+### Key insight
+DAIS already had the Proven half (claims→sources→evidence→status, delta/event-store/consolidator with OPEN/CONFLICT). The gap was Noepedia's *semiotic layer*: explicit networks with RULE_CARD, coverage (≠ confidence), and replication as a first-class operation. That is what turns traces into reusable, inspectable knowledge rather than an ever-larger prompt.
 
 ## 2026-08-01 — Full Implementation Day
 

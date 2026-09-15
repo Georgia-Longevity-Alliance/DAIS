@@ -25,6 +25,7 @@ DAIS/                           # Root: core files only
 │       ├── event_store.rs     # Append-only log
 │       ├── validator.rs       # Delta validator
 │       ├── consolidator.rs    # Knowledge consolidation
+│       ├── noepedia.rs        # Noepedia grammar (RULE_CARD, network, replication, coverage, context, placement)
 │       └── renderer.rs        # Article renderer
 │
 ├── py_backend/                # Python — AI/ML + HTTP

@@ -39,3 +39,7 @@ _archive/
 *.sqlite
 __pycache__/
 
+
+# SQLite WAL/SHM (transient)
+*.db-shm
+*.db-wal

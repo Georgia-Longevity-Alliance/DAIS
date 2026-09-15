@@ -66,3 +66,39 @@ DAIS counts joules. Every operation is classified:
 - **Red:** LLM inference, ~1 J/token (diagnosis, interview, synthesis)
 
 The system minimizes Red operations by caching traces (Green lookups replace Red diagnoses) and by using Yellow pre-filters (only invoke LLM when anomaly is genuinely novel).
+
+### 6. Noepedia Grammar (v3.0)
+
+Noepedia stores knowledge OUTSIDE any model's weights as a persistent, addressable, inspectable field. Implemented in `core/src/noepedia.rs`.
+
+**Three layers:**
+1. **Object field** — an object (object/doc/person/component/source) enters with minimal interpretation.
+2. **Semiotic/evaluative networks** — the same object participates in many independent projections: IS-PART-OF, IS-INSTANCE-OF, DIFFERS-FROM, SUPPORTS, CONTRADICTS, FUNCTIONS-AS, VALID-IN-CONTEXT, BELONGS-TO-PROTOTYPE, RANKED-BY-RELIABILITY.
+3. **Evaluation process** — why an object is placed there, why the relation is trusted, what would move it.
+
+**RULE_CARD:** every network has a declared rule (what it evaluates, how it ranks). The navigator reads the rule; it does not hold it in weights. Invariant: a network must stay faithful to its rule. Changing a rule is allowed; changing it silently is not — every change is an inspectable `RuleRevision` (old rule → problem → argument → new rule → re-evaluation of affected placements).
+
+### 7. Replication Is an Operation, Not Decoration
+
+A claim moves through states PROPOSED → SUPPORTED → REPLICATED ×1 … ×N → reusable knowledge. `Replication` records who/what repeated the result, under which conditions, and whether it supports/contradicts. Thresholds depend on domain and consequence. Popularity, authority, confidence, and eloquence are not substitutes for repetition.
+
+### 8. Coverage ≠ Confidence
+
+"The evaluated networks agree" is not the same as "the relevant networks have been sufficiently surveyed." `Coverage` records relevant vs evaluated vs not-yet-evaluated networks, and supporting vs neutral vs conflicting. A conclusion can look strong simply because only one relevant perspective has been consulted.
+
+### 9. Observation / Inference / Knowledge Must Not Collapse
+
+OBSERVATION ≠ HYPOTHESIS ≠ RESULT ≠ REPLICATION ≠ current KNOWLEDGE. OPEN and CONFLICT are legal knowledge states; the system must never silently convert PROPOSED→FACT, UNKNOWN→CONFIDENT ANSWER, or PARTIAL COVERAGE→COMPLETE UNDERSTANDING.
+
+### 10. The Trace → Knowledge Loop (AISocket + Noepedia)
+
+```text
+AISocket
+  observe / test / act → flight recorder + trace
+Noepedia/Proven
+  consolidate trace → claim with evidence + replication + coverage
+next body
+  starts where the previous one stopped (Green lookup, not Red LLM)
+```
+
+A trace is experience, not automatically knowledge. It becomes knowledge through comparison, replication, and consolidation under a RULE_CARD — never by being appended to an ever-larger prompt.
