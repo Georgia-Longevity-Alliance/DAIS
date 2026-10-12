@@ -446,19 +446,11 @@ pub enum TraceOutcome {
 // ── Proven types ──
 
 /// Status of a knowledge claim.
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "UPPERCASE")]
-pub enum ClaimStatus {
-    Proposed,
-    Supported,
-    Tested,
-    Replicated,
-    Contested,
-    Refuted,
-    Superseded,
-    Stale,
-    Open,
-}
+///
+/// Alias of the canonical `noepedia::KnowledgeStatus` K-ladder (Noepedia harvest,
+/// 2026-10-12): one ladder for Proven and the Noepedia field, instead of two
+/// divergent enums. Serde wire format is unchanged (UPPERCASE).
+pub use crate::noepedia::KnowledgeStatus as ClaimStatus;
 
 /// Delta operation for knowledge revision.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

@@ -125,7 +125,7 @@ impl FederatedSafetyServer {
 pub fn apply_dp_noise(value: f64, sensitivity: f64, epsilon: f64) -> f64 {
     use rand::Rng;
     let scale = sensitivity / epsilon;
-    let noise: f64 = rand::thread_rng().gen_range(-scale..scale);
+    let noise: f64 = rand::rng().random_range(-scale..scale);
     value + noise
 }
 

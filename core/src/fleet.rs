@@ -3,7 +3,7 @@
 //! Manages multiple DAISocket devices: registration, health monitoring,
 //! resource allocation, and cross-device trace correlation.
 
-use crate::types::{Id, Severity};
+use crate::types::Severity;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 

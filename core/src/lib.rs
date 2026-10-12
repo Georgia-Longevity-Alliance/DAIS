@@ -56,6 +56,7 @@
 
 pub mod anomaly;
 pub mod argus;
+pub mod authority;
 pub mod body_law;
 pub mod challenge;
 pub mod compliance;
@@ -83,6 +84,9 @@ pub mod zpd;
 
 /// Prelude — commonly used types for convenience.
 pub mod prelude {
+    pub use crate::anomaly::AnomalyDetector;
+    pub use crate::argus::ArgusRegistry;
+    pub use crate::authority::*;
     pub use crate::body_law::{BodyLaw, Command, DeviceContext, FirmwareLimits};
     pub use crate::challenge::{ChallengeRegistry, PilotEvaluation};
     pub use crate::consolidator::{ConsolidatedView, Consolidator};

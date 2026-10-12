@@ -52,4 +52,4 @@ Layer 6: Context       (time, state, environment)
 
 ## Status
 
-Active development (2026-09-15, v3.0). Rust core green (91 tests). Python backend ready. Web dashboard foundation. First physical instance: ARGUS-OS1 (dais/ submodule).
+Active development (2026-09-15, v3.0). Rust core green (104 tests). Python backend ready. Web dashboard foundation. First physical instance: ARGUS-OS1 (dais/ submodule).

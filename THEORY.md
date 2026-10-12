@@ -121,3 +121,37 @@ interpsychic  →  LLM scaffolds (red, ~1 J/token)
 extragsychic   →  fading: hint instead of full help
 intrapsychic   →  internalized: green, deterministic, ~pJ
 ```
+
+### 6. Author Column & Subjectivity Criterion (Noepedia Harvest — 2026-10-12)
+
+> Source: second wave of external review of the Noepedia philosophy layer. Master: `docs/NOEPEDIA_HARVEST_2026-10-12.md`.
+
+Safe autonomy has a safety-check part (Body Law) and a **self-direction** part. The author column
+makes self-direction measurable. Every decision record carries an author column: signature
+(provenance object), door (modality lane), time (F1 order). The column records the **writing event**
+(who issued the mandate), not the waking event.
+
+**Subjectivity criterion (v0.1):** subjectivity of an actor over window W =
+`1 − (foreign signatures in mandate/waking records over W / all)`. Threshold v0: `> ½` by count,
+weights after bench. The subject is the author of the *remainder* — the non-reactive part of its
+own activity. A high "own" count can be scheduler anxiety; what decides is how much of a body's
+waking is NOT its own.
+
+**Consequence (reactivity):** observer (read-only) and subject (dominant signature) are
+non-overlapping classes. The RBAC Observer role reads without writing the column — an observer is
+never a subject. The field's guarantee "nothing becomes quiet truth" rests on readers excluded from
+authorship: the field is honest because its guarantees live outside the field.
+
+### 7. №0 Axiom (the root, named axiom)
+
+The Body Law hierarchy is the statute. №0 is the root record — the only record outside a session.
+Named axiom (option B):
+
+> "Nothing derived becomes quiet truth. The root is declared and revised by sessions, with a quorum.
+> The content of №0 = the label of №0."
+
+DAIS mapping: layers 1–2 (Firmware, Capability — CANNOT be overridden) are the axiom's hard core;
+layers 3–6 are the revisable part, amended by sessions with a quorum. №0 is the only object that is
+what it says (content = label): the first self-consistent object, not a hypothesis. The author-column
+rule is itself a knot; its authors are recorded in column №0 — rule and axiom are one document from
+two sides.

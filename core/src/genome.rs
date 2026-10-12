@@ -207,7 +207,7 @@ mod tests {
 
     #[test]
     fn test_validate_loose_child_fails() {
-        let mut reg = GenomeRegistry::new();
+        let reg = GenomeRegistry::new();
         let bad_child = RobotClass {
             class_name: "BadRobot".into(), parent_class: Some("WheeledRobot".into()),
             description: "Tries to go faster than allowed".into(),

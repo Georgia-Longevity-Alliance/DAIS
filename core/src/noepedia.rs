@@ -33,6 +33,11 @@ use uuid::Uuid;
 pub type NoepediaId = Uuid;
 
 /// Knowledge state of an object. OPEN and CONFLICT are first-class.
+///
+/// This is the canonical K-ladder (Noepedia harvest, 2026-10-12): a verifiable
+/// ladder of evidence, not a float confidence. `types::ClaimStatus` is an alias
+/// of this enum so Proven and the Noepedia field share ONE ladder.
+/// Map: GRADE (PMID 18436948), Murad pyramid (PMID 27339128), CEBM, NASA TRL.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum KnowledgeStatus {
@@ -40,18 +45,76 @@ pub enum KnowledgeStatus {
     Proposed,
     /// Supported by at least one piece of evidence.
     Supported,
+    /// Tested by an explicit procedure (build the scene, not precedent).
+    Tested,
     /// Independently reproduced one or more times (see `Replication`).
     Replicated,
     /// Countered by evidence or test.
     Refuted,
     /// Supported positions are incompatible; both sides preserved.
     Contested,
-    /// Insufficient evidence to decide.
+    /// Insufficient evidence to decide. OPEN ≠ denial: it is an addressable
+    /// unknown with constraints + validation rule (see `OpenSpec`).
     Open,
     /// True only under specific conditions (hardware revision, context...).
     ValidInContext,
     /// Replaced by a newer formulation.
     Superseded,
+    /// No longer actively maintained (superseded by time or neglect).
+    Stale,
+}
+
+impl TryFrom<&str> for KnowledgeStatus {
+    type Error = String;
+
+    /// Parse a serialized status (UPPERCASE, e.g. "REPLICATED").
+    /// Accepts both "VALID-IN-CONTEXT" and "VALIDINCONTEXT".
+    fn try_from(s: &str) -> Result<Self, Self::Error> {
+        Ok(match s {
+            "PROPOSED" => Self::Proposed,
+            "SUPPORTED" => Self::Supported,
+            "TESTED" => Self::Tested,
+            "REPLICATED" => Self::Replicated,
+            "REFUTED" => Self::Refuted,
+            "CONTESTED" => Self::Contested,
+            "OPEN" => Self::Open,
+            "VALIDINCONTEXT" | "VALID-IN-CONTEXT" => Self::ValidInContext,
+            "SUPERSEDED" => Self::Superseded,
+            "STALE" => Self::Stale,
+            other => return Err(format!("unknown KnowledgeStatus: {other}")),
+        })
+    }
+}
+
+/// OPEN is a legal knowledge state: an addressable unknown with constraints and
+/// a validation rule — the rule that would close it. OPEN is never a denial.
+/// (Noepedia harvest, 2026-10-12: "OPEN = addressable unknown + constraints +
+/// validation rule".)
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct OpenSpec {
+    /// The address of the open question.
+    pub address: String,
+    /// Constraints that shape the unknown (what it cannot be).
+    pub constraints: Vec<String>,
+    /// What experiment/evidence/replication would close the open question.
+    pub validation_rule: Option<String>,
+    /// When the open question was raised.
+    pub raised_at: DateTime<Utc>,
+}
+
+impl OpenSpec {
+    pub fn new(
+        address: &str,
+        constraints: Vec<String>,
+        validation_rule: Option<String>,
+    ) -> Self {
+        Self {
+            address: address.to_string(),
+            constraints,
+            validation_rule,
+            raised_at: Utc::now(),
+        }
+    }
 }
 
 /// Conditions under which knowledge applies (VALID-IN-CONTEXT).
@@ -163,6 +226,40 @@ pub enum RelationKind {
     BelongsToPrototype,
     RankedByReliability,
     SimilarTo,
+    /// A formed unknown: the relation requires a participant in a particular
+    /// role even before its identity is known (orphan-receptor pattern).
+    /// See `RoleRequirement` for the constraints + validation rule that keep
+    /// this discovery-shaped, not apophenia.
+    RequiresRole,
+}
+
+/// A formed unknown (REQUIRED_ROLE): the field has already learned something
+/// — that a role must be filled — before it knows what fills it.
+/// (Noepedia harvest, 2026-10-12.)
+///
+/// Without a validation rule this degrades into apophenia (false projection of
+/// roles onto systems that have none); every role requirement must therefore
+/// carry constraints and the rule that would close it.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RoleRequirement {
+    /// The required role, e.g. "kinase", "ligand", "substrate", "regulator".
+    pub role: String,
+    /// Constraints shaping the unknown (what it cannot be).
+    pub constraints: Vec<String>,
+    /// What would identify and validate the missing participant.
+    pub validation_rule: Option<String>,
+    pub raised_at: DateTime<Utc>,
+}
+
+impl RoleRequirement {
+    pub fn new(role: &str, constraints: Vec<String>, validation_rule: Option<String>) -> Self {
+        Self {
+            role: role.to_string(),
+            constraints,
+            validation_rule,
+            raised_at: Utc::now(),
+        }
+    }
 }
 
 /// A rule-governed evaluative projection:
@@ -350,5 +447,35 @@ mod tests {
         };
         assert_eq!(r.outcome, ResultStatus::Supports);
         assert_eq!(r.conditions.label, "hardware revision B");
+    }
+
+    #[test]
+    fn test_requires_role_is_a_formed_unknown() {
+        // REQUIRED_ROLE: role known, identity unknown, with a validation rule.
+        let req = RoleRequirement::new(
+            "kinase",
+            vec!["serine/threonine-specific".into()],
+            Some("in vitro phosphorylation assay + KD rescue".into()),
+        );
+        assert_eq!(req.role, "kinase");
+        assert_eq!(req.constraints.len(), 1);
+        assert!(req.validation_rule.is_some());
+
+        // And it maps onto the relation-kind vocabulary.
+        let kind = RelationKind::RequiresRole;
+        assert_ne!(kind, RelationKind::SimilarTo);
+        assert!(matches!(kind, RelationKind::RequiresRole));
+    }
+
+    #[test]
+    fn test_open_spec_carries_validation_rule() {
+        let spec = OpenSpec::new(
+            "mechanism X missing participant",
+            vec!["no candidate in canonical pathway".into()],
+            Some("co-immunoprecipitation screen".into()),
+        );
+        assert!(spec.validation_rule.is_some());
+        assert!(!spec.address.is_empty());
+        assert_eq!(spec.constraints.len(), 1);
     }
 }

@@ -10,7 +10,6 @@
 //!  without a Body Law is like a pacemaker without a watchdog."
 
 use serde::{Deserialize, Serialize};
-use crate::fleet::SafetyIntegrityLevel;
 
 /// Neural device type
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -179,9 +178,9 @@ impl NeuralPrivacyGuard {
     /// Sanitize neural data before sharing
     pub fn sanitize(&self, data: &[f64], noise_scale: f64) -> Vec<f64> {
         use rand::Rng;
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         data.iter()
-            .map(|&x| x + rng.gen_range(-noise_scale..noise_scale) / self.epsilon)
+            .map(|&x| x + rng.random_range(-noise_scale..noise_scale) / self.epsilon)
             .collect()
     }
 

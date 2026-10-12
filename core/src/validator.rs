@@ -8,6 +8,7 @@
 
 use crate::delta::Delta;
 use crate::event_store::EventStore;
+use crate::noepedia::KnowledgeStatus;
 use crate::types::*;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -80,16 +81,39 @@ impl Validator {
         if let Some(target_id) = delta.target_id {
             if let Some(current_status) = self.get_object_status(target_id) {
                 if let Some(new_status) = delta.payload.get("status").and_then(|v| v.as_str()) {
-                    if !Self::is_valid_transition(&current_status, new_status) {
-                        errors.push(ValidationError {
-                            code: "INVALID_STATUS_TRANSITION".into(),
-                            message: format!(
-                                "Cannot transition from '{}' to '{}'",
-                                current_status, new_status
-                            ),
-                            field: Some("status".into()),
-                        });
+                    if let (Ok(from), Ok(to)) = (
+                        KnowledgeStatus::try_from(current_status.as_str()),
+                        KnowledgeStatus::try_from(new_status),
+                    ) {
+                        if !Self::is_valid_transition(&from, &to) {
+                            errors.push(ValidationError {
+                                code: "INVALID_STATUS_TRANSITION".into(),
+                                message: format!(
+                                    "Cannot transition from '{:?}' to '{:?}'",
+                                    from, to
+                                ),
+                                field: Some("status".into()),
+                            });
+                        }
                     }
+                }
+            }
+        }
+
+        // 3b. Two-witness rule (Noepedia harvest): REPLICATED requires ≥2
+        // independent sources/replications, not two claims from one pool.
+        if let Some(new_status) = delta.payload.get("status").and_then(|v| v.as_str()) {
+            if new_status == "REPLICATED" {
+                let n_sources = delta
+                    .payload
+                    .get("sources")
+                    .and_then(|v| v.as_array())
+                    .map_or(0, |a| a.len());
+                if n_sources < 2 {
+                    warnings.push(format!(
+                        "Transition to REPLICATED with only {} source(s) — two independent witnesses required",
+                        n_sources
+                    ));
                 }
             }
         }
@@ -128,28 +152,33 @@ impl Validator {
             .map(|s| s.to_string())
     }
 
-    /// Valid status transitions in Proven.
+    /// Valid status transitions on the canonical K-ladder.
     ///
     /// PROPOSED → SUPPORTED → TESTED → REPLICATED
-    ///          → CONTESTED
-    ///          → REFUTED
-    ///          → STALE
+    ///          → CONTESTED → REFUTED → STALE
     /// ANY → SUPERSEDED
-    /// ANY → OPEN (reset)
-    fn is_valid_transition(from: &str, to: &str) -> bool {
+    /// ANY → OPEN (reset) / VALID-IN-CONTEXT (contextual re-qualification)
+    fn is_valid_transition(from: &KnowledgeStatus, to: &KnowledgeStatus) -> bool {
+        use KnowledgeStatus::*;
         matches!(
             (from, to),
-            ("PROPOSED", "SUPPORTED")
-                | ("PROPOSED", "CONTESTED")
-                | ("PROPOSED", "REFUTED")
-                | ("PROPOSED", "STALE")
-                | ("SUPPORTED", "TESTED")
-                | ("SUPPORTED", "CONTESTED")
-                | ("TESTED", "REPLICATED")
-                | ("TESTED", "CONTESTED")
-                | ("TESTED", "REFUTED")
-                | (_, "SUPERSEDED")
-                | (_, "OPEN")
+            (Proposed, Supported)
+                | (Proposed, Contested)
+                | (Proposed, Refuted)
+                | (Proposed, Stale)
+                | (Supported, Tested)
+                | (Supported, Contested)
+                | (Supported, Refuted)
+                | (Supported, Stale)
+                | (Tested, Replicated)
+                | (Tested, Contested)
+                | (Tested, Refuted)
+                | (Replicated, Contested)
+                | (Replicated, Refuted)
+                | (Replicated, Stale)
+                | (_, Superseded)
+                | (_, Open)
+                | (_, ValidInContext)
         )
     }
 }

@@ -3,7 +3,7 @@
 //! Provides: (1) ARGUS-specific event types, (2) knowledge field publishing,
 //! (3) session management, (4) registry connection helpers.
 
-use crate::types::{EventType, FlightEvent, Id, Severity};
+use crate::types::{FlightEvent, Id};
 use serde::{Deserialize, Serialize};
 
 /// ARGUS-OS1 specific event context
@@ -55,18 +55,37 @@ pub struct ArgusKnowledgeClaim {
     pub subject: String,      // e.g., "C. elegans embryo at 4-cell stage"
     pub predicate: String,    // e.g., "exhibits_centriole_asymmetry"
     pub object: String,       // e.g., "mother_centriole_in_P1_lineage"
-    pub status: ClaimStatus,
+    pub status: ArgusEvidenceStatus,
     pub confidence: f64,
     pub source_session: String,
     pub evidence_type: EvidenceType,
 }
 
+/// ARGUS-OS1 evidence-capture status (local acquisition ladder).
+/// This is NOT a knowledge status: it records how a datum entered the pipeline.
+/// When published to Proven, map to `KnowledgeStatus` (see `to_knowledge_status`).
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub enum ClaimStatus {
+pub enum ArgusEvidenceStatus {
     Observed,
     Inferred,
     Hypothesized,
     Falsified,
+}
+
+impl ArgusEvidenceStatus {
+    /// Map an ARGUS evidence state onto the canonical K-ladder.
+    pub fn to_knowledge_status(&self) -> crate::noepedia::KnowledgeStatus {
+        use crate::noepedia::KnowledgeStatus;
+        match self {
+            // Observed by instrument → supported by evidence.
+            Self::Observed => KnowledgeStatus::Supported,
+            Self::Inferred => KnowledgeStatus::Supported,
+            // Hypothesized → proposed, awaiting test.
+            Self::Hypothesized => KnowledgeStatus::Proposed,
+            // Falsified by experiment → refuted.
+            Self::Falsified => KnowledgeStatus::Refuted,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -122,7 +141,7 @@ impl ArgusSession {
                 subject: "C. elegans embryo population".into(),
                 predicate: "underwent_cell_division".into(),
                 object: format!("{} divisions detected", self.divisions_detected),
-                status: ClaimStatus::Observed,
+                status: ArgusEvidenceStatus::Observed,
                 confidence: 0.98,
                 source_session: self.session_id.clone(),
                 evidence_type: EvidenceType::DivisionEvent,
@@ -136,7 +155,7 @@ impl ArgusSession {
                 subject: "ARGUS-OS1 acquisition".into(),
                 predicate: "experienced_anomalies".into(),
                 object: format!("{} anomalies during session", self.anomaly_count),
-                status: ClaimStatus::Observed,
+                status: ArgusEvidenceStatus::Observed,
                 confidence: 0.95,
                 source_session: self.session_id.clone(),
                 evidence_type: EvidenceType::TimelapseImage,
@@ -213,7 +232,7 @@ pub fn bootstrap_knowledge_claims() -> Vec<ArgusKnowledgeClaim> {
             subject: "C. elegans".into(),
             predicate: "has_no_somatic_centrioles".into(),
             object: "true".into(),
-            status: ClaimStatus::Observed,
+            status: ArgusEvidenceStatus::Observed,
             confidence: 0.99,
             source_session: "literature".into(),
             evidence_type: EvidenceType::ManualAnnotation,
@@ -223,7 +242,7 @@ pub fn bootstrap_knowledge_claims() -> Vec<ArgusKnowledgeClaim> {
             subject: "centriole".into(),
             predicate: "inherited_asymmetrically".into(),
             object: "in_stem_cell_divisions".into(),
-            status: ClaimStatus::Observed,
+            status: ArgusEvidenceStatus::Observed,
             confidence: 0.95,
             source_session: "literature".into(),
             evidence_type: EvidenceType::ManualAnnotation,
@@ -233,7 +252,7 @@ pub fn bootstrap_knowledge_claims() -> Vec<ArgusKnowledgeClaim> {
             subject: "ARGUS-OS1".into(),
             predicate: "can_track".into(),
             object: "centriole_inheritance_in_real_time".into(),
-            status: ClaimStatus::Observed,
+            status: ArgusEvidenceStatus::Observed,
             confidence: 0.90,
             source_session: "bootstrap".into(),
             evidence_type: EvidenceType::TimelapseImage,
@@ -243,7 +262,7 @@ pub fn bootstrap_knowledge_claims() -> Vec<ArgusKnowledgeClaim> {
             subject: "mother_centriole".into(),
             predicate: "accumulates_polyglutamylation".into(),
             object: "over_organismal_lifespan".into(),
-            status: ClaimStatus::Hypothesized,
+            status: ArgusEvidenceStatus::Hypothesized,
             confidence: 0.70,
             source_session: "CEDAR_hypothesis".into(),
             evidence_type: EvidenceType::ManualAnnotation,
@@ -253,7 +272,7 @@ pub fn bootstrap_knowledge_claims() -> Vec<ArgusKnowledgeClaim> {
             subject: "ARGUS-OS1".into(),
             predicate: "detects_anomalies".into(),
             object: "laser_spike_stage_slip_focus_drift".into(),
-            status: ClaimStatus::Observed,
+            status: ArgusEvidenceStatus::Observed,
             confidence: 0.88,
             source_session: "bootstrap".into(),
             evidence_type: EvidenceType::ManualAnnotation,

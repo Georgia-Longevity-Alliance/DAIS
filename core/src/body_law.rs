@@ -1,17 +1,23 @@
-//! Body Law — the 7-layer command validator.
+//! Body Law — command validator.
 //!
-//! Every command sent to a device passes through these layers IN ORDER.
+//! Every command sent to a device passes through the layers IN ORDER.
 //! If ANY layer rejects, the command is discarded BEFORE reaching an actuator.
 //!
-//! Layers:
-//! 0. HARDWARE SAFETY — physical STOP, deadman switch, key-lock
-//! 1. FIRMWARE — hardware-enforced constraints (torque, temp, laser power)
-//! 2. CAPABILITY — is this action in the passport?
-//! 3. EMERGENCY — rescue agent override (limited scope, still subject to layers 0-1)
-//! 4. OFFLINE — what's allowed when connectivity is lost
-//! 5. DELEGATION — who authorized whom, chain of trust
-//! 6. CONTEXT — time, environment, state preconditions
-//! 7. RBAC — role-based access control (Owner, Operator, Observer, Parent, EmergencyRescue)
+//! The model (aligned with the Body Law documentation, 2026-10-12):
+//! **6 canonical layers** — Firmware, Capability, Emergency, Offline, Delegation,
+//! Context — plus **2 boundary gates**: layer 0 (Hardware Safety, before) and
+//! layer 7 (RBAC, after). The deeper the layer (closer to hardware), the less
+//! overridable it is.
+//!
+//! Gates / layers in execution order:
+//! 0. HARDWARE SAFETY — physical STOP, deadman switch, key-lock  (boundary gate)
+//! 1. FIRMWARE — hardware-enforced constraints (torque, temp, laser power)  [canonical]
+//! 2. CAPABILITY — is this action in the passport?  [canonical]
+//! 3. EMERGENCY — rescue agent override (limited scope, still subject to layers 0-1)  [canonical]
+//! 4. OFFLINE — what's allowed when connectivity is lost  [canonical]
+//! 5. DELEGATION — who authorized whom, chain of trust  [canonical]
+//! 6. CONTEXT — time, environment, state preconditions  [canonical]
+//! 7. RBAC — role-based access control (Owner, Operator, Observer, Parent, EmergencyRescue)  (boundary gate)
 //!
 //! # Invariant
 //!

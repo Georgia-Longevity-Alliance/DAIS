@@ -40,12 +40,12 @@ The first real-world integration target validates the core hypothesis: that a co
 | Rust: validator | 3 | Create, update existing, invalid transition |
 | Rust: renderer | 3 | Article, LLM context, API JSON |
 | Rust: doc-tests | 1 | Module doc example |
-| **Rust total** | **25** | |
+| **Rust total** | **98** (v1.0 snapshot was 25; now 102 with authority module) | |
 | Elixir: interview | 3 | Full flow, simple device, snake_case |
 | Elixir: controllers | 1 | Page controller |
 | Elixir: Phoenix scaffold | 4 | Default Phoenix tests |
 | **Elixir total** | **8** | |
-| **Grand total** | **33** | |
+| **Grand total** | **104** (lib) + 1 doc-test | |
 
 ### 4. Performance characteristics
 
@@ -59,3 +59,17 @@ The first real-world integration target validates the core hypothesis: that a co
 | SQLite passport insert | <20 ms | Including index update |
 | API: register passport | <200 ms | End-to-end with validation |
 | API: list passports | <50 ms | Indexed query |
+
+## §. Noepedia Harvest — 2026-10-12 (epistemic standard)
+
+> Master: `docs/NOEPEDIA_HARVEST_2026-10-12.md` · Scientific confirmation: GRADE PMID 18436948; Murad New Evidence Pyramid PMID 27339128; Ioannidis PMID 16060722; Conant–Ashby DOI 10.1080/00207727008920220; Siebert MHC DOI 10.1007/s43681-022-00167-3; HART arXiv 2603.05828; REASONS arXiv 2405.02228; AgentHallu arXiv 2601.06818; Devitt ACD arXiv 2303.06813; requisite variety arXiv 1409.7475/2206.04896.
+
+| Principle (Noepedia harvest) | DAIS evidence / target | Verified support |
+|------------------------------|------------------------|------------------|
+| Knowledge as status ladder, not float confidence | `KnowledgeStatus` (Proposed→Supported→Replicated/Refuted/Contested/Open/Superseded) | GRADE (PMID 18436948), Murad (PMID 27339128), TRL |
+| OPEN ≠ negation; CONFLICT is legal | `KnowledgeStatus::Open` + ConflictRecord first-class | Known-unknowns (PMID 28584653); abduction survey (arXiv 2604.08016) |
+| Replication = independent witness | `Replication` operation in noepedia.rs | Cross-modal confirmation; caution: cross-lingual transfer can import bias (arXiv 2305.12709) |
+| Provenance = hallucination antidote | Proven chain (claims→sources→evidence→status) + traces | HART (2603.05828), REASONS (2405.02228), AgentHallu (2601.06818) |
+| Tested by construction, not precedent | RuleCard invariant (network faithful to its rule) | Conant–Ashby (10.1080/00207727008920220), Ioannidis (16060722) |
+| Subject = dominant signature in author column | **NEW**: author column + subjectivity criterion (§6 THEORY) | MHC Siebert (10.1007/s43681-022-00167-3); anti-rubber-stamp (2603.01202) |
+| №0 = axiom, named axiom | Body Law layers 1–2 hard core; layers 3–6 revisable | Devitt ACD (2303.06813) |

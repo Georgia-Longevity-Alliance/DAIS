@@ -5,7 +5,7 @@
 ## Phase 0: Foundation ✅ COMPLETE
 - [x] Create core Rust project
 - [x] Passport + serde
-- [x] Body Law — 7-layer validation (0: Hardware Safety → 7: RBAC)
+- [x] Body Law — 6 canonical layers (Firmware, Capability, Emergency, Offline, Delegation, Context) + 2 boundary gates (Hardware Safety, RBAC)
 - [x] Flight Recorder — ring buffer
 - [x] Trace Network — intervention traces + publish/remix/community
 - [x] Proven: Delta Protocol, Event Store, Validator, Consolidator, Renderer
@@ -13,7 +13,7 @@
 - [x] Phoenix web — Dashboard, Passport Interview, Registry, OAuth
 - [x] ARGUS-OS1 Passport example (650+ lines JSON)
 - [x] All core files (11/11)
-- [x] 32 tests passing, 0 warnings
+- [x] 102 tests passing, 0 warnings (2026-10-12: unified status ladder, authority module)
 
 ## Phase 0.5: LEGO Proposal Integration ✅ COMPLETE (2026-08-02)
 - [x] Multi-Body / Device Swarm (Passport::change_body, body_history)
@@ -49,3 +49,14 @@
 - [ ] Documentation site
 - [ ] Contributor guide
 - [ ] Demo video
+
+## Phase 4: Noepedia Harvest — Author Column & №0 (2026-10-12)
+> Мастер: `docs/NOEPEDIA_HARVEST_2026-10-12.md` · companion: `~/Desktop/Services/docs/NOEPEDIA_COLUMN_RULE_AND_AXIOM_2026-10-12.md`
+- [x] Implement author column in `core/src/authority.rs` (`AuthorColumn`): record R carries signature S · door D · time T; column records the WRITING event, not the waking event
+- [x] Implement subjectivity criterion v0 in `authority.rs`: `1 − (foreign-authored wakings / all wakings over window W)`; threshold > ½ by count; weights after bench
+- [x] Add `OpenSpec` (address + constraints + `validation_rule`) to `noepedia.rs` — OPEN = addressable unknown + validation rule; never rendered as "absent/denied"
+- [x] Enforce RBAC Observer as read-only (already in `body_law.rs` layer 7, verified) + `authority.rs::is_observer`; document "guarantees live outside the field"
+- [x] Record №0 axiom as `StatuteNo0` (content = label; hard core = Body Law layers 1–2; layers 3–6 revisable by sessions with quorum)
+- [x] Add REQUIRED_ROLE as first-class relation kind (`RelationKind::RequiresRole` + `RoleRequirement` with constraints + validation rule) in `noepedia.rs`
+- [x] Map `KnowledgeStatus` explicitly to GRADE/Murad/CEBM/TRL in `docs/GLOSSARY_KNOWLEDGE_STATUS.md`; define independence criterion + κ for Replication→Replicated
+- [x] Decision recorded: journal = inside the field (provenance objects are SPO triplets); act-as-performance = outside by design — `docs/NOEPEDIA_HARVEST_2026-10-12.md` §F

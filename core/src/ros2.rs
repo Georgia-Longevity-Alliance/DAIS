@@ -189,18 +189,25 @@ impl Ros2Bridge {
         }
     }
 
-    /// Simulate Body Law validation (placeholder for real integration)
+    /// Simulate Body Law validation (placeholder for real integration).
+    /// Forwards to the real Body Law when the topic is registered; rejects
+    /// unknown topics and topic mismatches.
     fn simulate_body_law(&self, command: &Ros2Command, topic: Option<&SafeTopic>) -> bool {
-        if let Some(t) = topic {
-            // Check max rate
-            if t.max_rate_hz > 0.0 {
-                // In real impl: check rate limiter
-            }
-            // All commands pass simulation (real impl calls actual Body Law)
-            return true;
+        let t = match topic {
+            Some(t) => t,
+            None => return false, // Unknown topic → reject
+        };
+        // The command's topic must match the registered safe topic.
+        if command.topic != t.topic_name {
+            return false;
         }
-        // Unknown topic → reject
-        false
+        if t.max_rate_hz > 0.0 {
+            // In real impl: check rate limiter against the command timestamp.
+            // Placeholder: rate limit not yet enforced.
+            let _ = &command.timestamp;
+        }
+        // All commands pass simulation (real impl calls the actual Body Law).
+        true
     }
 
     /// Emergency stop — shut down all ROS2 activity
