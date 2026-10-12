@@ -65,12 +65,14 @@ amended by sessions with a quorum. Name the root axiom; declare its revision pro
 
 ---
 
-## D. Corollary 1 — reactivity (subject = author of the remainder)
+## D. Corollary 1 — reactivity, two-axis (Gakely's animal counterexample, 2026-10-12)
 
-Subjectivity is not the share of one's own, but the non-share of the foreign: `1 − (foreign share)`.
-A high "own" share can be scheduler anxiety (a body that issues a hundred alarms). What decides is
-how much of a body's waking/mandate execution is NOT its own. The subject is the author of the
-remainder — the non-reactive part. Weights (per event type, per actor) come after bench.
+Subjectivity is TWO axes, not one: `1 − foreign` measures FREEDOM (non-domination); the share of
+own measures AUTHORSHIP (whether the actor writes at all); quality of control is a third, orthogonal
+axis. The animal: the jungle signs nothing → freedom 1, authorship 0 → not a subject (our paradigm
+non-subject). The agenda-slave: neither. The anxious planner: an author but a poor one (quality
+axis). Both numbers enter rule v0.1; `authority.rs` exposes `freedom`, `authorship`,
+`control_quality` (bench), and `is_subject` = free AND author.
 
 ---
 

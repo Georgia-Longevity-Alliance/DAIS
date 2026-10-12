@@ -6,8 +6,12 @@
 //!   (provenance object), door (modality lane), time (F1 order).
 //! - The column records the WRITING event (who placed the knot / issued the
 //!   mandate), not the waking event.
-//! - Subjectivity of an actor over window W = 1 − (foreign-authored wakings / all
-//!   wakings over W). Threshold v0: > ½ by count; weights after bench.
+//! - Subjectivity is TWO-axis (rule v0.1, after Gakely's animal counterexample,
+//!   2026-10-12): FREEDOM = 1 − foreign-authored wakings/all (non-domination),
+//!   AUTHORSHIP = own-authored wakings/all (whether the actor writes at all),
+//!   plus a third orthogonal axis, quality of control (bench). A subject is
+//!   free AND an author. An animal is free (nobody signs the jungle) but
+//!   authorship 0 → not a subject.
 //! - №0 is the root record (the only record outside a session): an axiom, named
 //!   axiom. Content = label (self-consistent).
 //! - Corollary: a read-only observer never appears as a Writing signature →
@@ -115,28 +119,69 @@ impl AuthorColumn {
         !self.has_authored(actor)
     }
 
-    /// Subjectivity of `actor` over `window` = 1 − (wakings on knots authored
-    /// by others / all wakings in the window). Zero when there is no waking.
-    pub fn subjectivity(&self, actor: Id, window: Window) -> f64 {
+    /// Split of wakings over `window` → (own-authored, foreign-authored, total).
+    /// A waking whose knot has NO author (e.g. an animal's environmental
+    /// alarms — nobody signed the jungle) is counted in `total` but neither as
+    /// own nor as foreign. This is what keeps a low-signed universe from
+    /// inflating authorship.
+    fn waking_split(&self, actor: Id, window: Window) -> (f64, f64, f64) {
         let wakes: Vec<&AuthorRecord> = self
             .records
             .iter()
             .filter(|r| r.kind == AuthorEventKind::Waking && r.time >= window.start && r.time <= window.end)
             .collect();
         if wakes.is_empty() {
-            return 0.0;
+            return (0.0, 0.0, 0.0);
         }
-        // A waking counts as foreign when the knot's author is not `actor`.
+        let own = wakes
+            .iter()
+            .filter(|r| self.knot_author(r.knot_id) == Some(actor))
+            .count();
         let foreign = wakes
             .iter()
-            .filter(|r| self.knot_author(r.knot_id).map_or(true, |a| a != actor))
+            .filter(|r| self.knot_author(r.knot_id).map_or(false, |a| a != actor))
             .count();
-        1.0 - (foreign as f64 / wakes.len() as f64)
+        (own as f64, foreign as f64, wakes.len() as f64)
     }
 
-    /// v0 criterion: is `actor` the subject of the window? Default threshold > ½.
+    /// FREEDOM axis (rule v0.1, two-axis): 1 − (foreign-authored wakings / all
+    /// wakings). Measures non-domination — not being subject to other subjects.
+    /// Animal counterexample (Gakely, 2026-10-12): the jungle signs nothing →
+    /// freedom 1.0, yet the animal is our paradigm non-subject — because its
+    /// AUTHORSHIP is 0 (it writes nothing). Hence freedom alone ≠ subject.
+    pub fn freedom(&self, actor: Id, window: Window) -> f64 {
+        let (_, foreign, total) = self.waking_split(actor, window);
+        if total == 0.0 {
+            0.0
+        } else {
+            1.0 - foreign / total
+        }
+    }
+
+    /// AUTHORSHIP axis: share of wakings whose knots the actor itself authored
+    /// (own / all wakings). Measures whether the actor writes at all.
+    /// The anxious planner is an author (own is high) but a bad one — that is
+    /// the third, orthogonal axis (quality of control).
+    pub fn authorship(&self, actor: Id, window: Window) -> f64 {
+        let (own, _, total) = self.waking_split(actor, window);
+        if total == 0.0 {
+            0.0
+        } else {
+            own / total
+        }
+    }
+
+    /// Third axis placeholder: quality of control (outcome-weighted success of
+    /// the actor's own mandates). Not yet measured — goes to bench.
+    pub fn control_quality(&self, _actor: Id, _window: Window) -> Option<f64> {
+        None // bench: outcome-weighted success of own mandates
+    }
+
+    /// Subject test (v0, two axes): a subject is BOTH free AND an author.
+    /// Animal: freedom 1 but authorship 0 → not a subject.
+    /// Agenda-slave: both low → not a subject.
     pub fn is_subject(&self, actor: Id, window: Window, threshold: f64) -> bool {
-        self.subjectivity(actor, window) > threshold
+        self.freedom(actor, window) > threshold && self.authorship(actor, window) > threshold
     }
 }
 
@@ -212,11 +257,31 @@ mod tests {
         col.record_waking(kc, vano, "sensor");
 
         let w = wide_window();
-        let s = col.subjectivity(vano, w);
-        // 2 of 3 knots are Vano's → subjectivity = 1 − 1/3 = 2/3.
-        assert!((s - 2.0 / 3.0).abs() < 1e-9);
+        // 2 of 3 knots are Vano's → freedom = 1 − 1/3 = 2/3; authorship = 2/3.
+        assert!((col.freedom(vano, w) - 2.0 / 3.0).abs() < 1e-9);
+        assert!((col.authorship(vano, w) - 2.0 / 3.0).abs() < 1e-9);
         assert!(col.is_subject(vano, w, 0.5));
+        // Niko never woke in the window → neither free-witnessed nor author.
         assert!(!col.is_subject(niko, w, 0.5));
+    }
+
+    #[test]
+    fn test_animal_is_free_but_not_author() {
+        // Gakely's counterexample (2026-10-12): the jungle does not sign.
+        // An animal wakes on alarms whose knots have NO author → freedom is
+        // maximal (nobody dominates it) but authorship is 0 (it writes nothing).
+        let animal = Uuid::new_v4();
+        let mut col = AuthorColumn::new();
+        let alarm1 = Uuid::new_v4();
+        let alarm2 = Uuid::new_v4();
+        // No record_writing for these knots — nobody signed the jungle.
+        col.record_waking(alarm1, animal, "sensor");
+        col.record_waking(alarm2, animal, "sensor");
+
+        let w = wide_window();
+        assert!((col.freedom(animal, w) - 1.0).abs() < 1e-9); // free
+        assert_eq!(col.authorship(animal, w), 0.0); // but not an author
+        assert!(!col.is_subject(animal, w, 0.5)); // not a subject
     }
 
     #[test]
@@ -226,7 +291,8 @@ mod tests {
         let knot = Uuid::new_v4();
         // Many writings but zero wakings → no evidence of subjecthood.
         col.record_writing(knot, actor, "llm");
-        assert_eq!(col.subjectivity(actor, wide_window()), 0.0);
+        assert_eq!(col.freedom(actor, wide_window()), 0.0);
+        assert_eq!(col.authorship(actor, wide_window()), 0.0);
     }
 
     #[test]

@@ -131,11 +131,13 @@ makes self-direction measurable. Every decision record carries an author column:
 (provenance object), door (modality lane), time (F1 order). The column records the **writing event**
 (who issued the mandate), not the waking event.
 
-**Subjectivity criterion (v0.1):** subjectivity of an actor over window W =
-`1 − (foreign signatures in mandate/waking records over W / all)`. Threshold v0: `> ½` by count,
-weights after bench. The subject is the author of the *remainder* — the non-reactive part of its
-own activity. A high "own" count can be scheduler anxiety; what decides is how much of a body's
-waking is NOT its own.
+**Subjectivity criterion (v0.1, TWO-axis — after Gakely's animal counterexample, 2026-10-12):**
+- **Freedom** = 1 − (foreign-authored wakings / all over W) — non-domination.
+- **Authorship** = (own-authored wakings / all over W) — whether the actor writes at all.
+- **Quality of control** — third, orthogonal axis (outcome-weighted success of own mandates; bench).
+- Subject test: free AND author (both > ½ by count; weights after bench). The animal is free
+  (nobody signs the jungle → foreign = 0 → freedom 1) but authorship 0 → not a subject. The
+  agenda-slave is neither; the anxious planner is an author but a poor one (quality axis).
 
 **Consequence (reactivity):** observer (read-only) and subject (dominant signature) are
 non-overlapping classes. The RBAC Observer role reads without writing the column — an observer is
