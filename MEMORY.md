@@ -3,6 +3,44 @@
 **Created:** 2026-07-31  
 **Updated:** 2026-09-15
 
+## 2026-10-16 — Demon Core Harvest IMPLEMENTED (P0–P2; 104 → 122 tests)
+
+### Decisions
+1. **P0–P2 of the Demon Core roadmap implemented in Rust core + Python.** All new behavior is
+   additive; the canonical `KnowledgeStatus` ladder and wire format are unchanged.
+
+### What was built (Rust core)
+- **Non-destructive status (DCT11–12):** `HistoryStatus` + `StatusAssertion` (epoch-scoped) in
+  `noepedia.rs`; `event_store.rs::replay` now APPENDS a status assertion instead of overwriting
+  (`current_epistemic_status` = last assertion; `status` kept for compatibility; `history_status`
+  = committed-fact dimension). Relate now populates the relations projection.
+- **STOP/NEED (DEMON §7–8):** `RegimeState` (GO/ASK/BLOCK/NEED), `NeedClass` (12-class taxonomy),
+  `StopCard`; `Session` carries `regime` + `stop_cards`; `OutcomeKind::Blocked/Need`.
+- **Transaction membrane (DCT08–09):** `validator.rs::membrane_check` — a delta cannot use rules
+  it introduces to authorize itself (SELF_REFERENCE_BAN; rule-set from committed N-1 snapshot).
+- **Dependency policy (DCT05–07):** `DependencyPolicy` (ROLE=POLICY) + `dependency_policy_check`
+  + `find_applicable_policy` — upstream transition with dependents and no policy → lawful BLOCK
+  (MISSING_DEPENDENCY_POLICY / NEED / MISSING_RULE).
+- **Composition semantics (DCT19–20):** `JustificationComposition` (ALTERNATIVE/JOINT),
+  `CompositionPolicy`, `evaluate_composition` → `CompositionVerdict`.
+- **Archive/Compact (TRACE CONTINUITY):** `event_store.rs::archive`/`compact`/`check_trace_continuity`
+  — addresses preserved via `compacted_into` + summary `compacted_ids`.
+- **Ed25519 journal signing (TRACE CONTINUITY, tamper-evident):** `JournalGuard` signs the canonical
+  log digest; `EventStore::sign_log`/`verify_log`; compaction/archiving are re-signable events, silent
+  rewrites fail verification.
+
+### What was built (Python)
+- `llm_bridge.py`: `classify_regime(text)` → GO/ASK/BLOCK/NEED + `StopCard`/`RegimeVerdict`;
+  AMBIGUOUS_MATCH handled as NEED (can ask a disambiguating question).
+- `proven_api.py`: `submit_status_assertion`, `add_dependency_policy`, `register_composition_policy`,
+  `record_stop_card`.
+
+### Key insight
+A status transition is now **an addressable event, not a field overwrite** — this is the single
+change that makes DAIS's append-only log actually trace-continuous. The membrane + dependency-policy
+checks turn "the LLM proposed a status change" into a lawfully bounded operation: no self-serving
+rules, no undefined downstream consequences.
+
 ## 2026-10-16 — Demon Core Harvest (wave 3: DCT01–20) — analysis only, code P0 not yet done
 
 ### Decisions

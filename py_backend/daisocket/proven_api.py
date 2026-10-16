@@ -264,5 +264,91 @@ class NoepediaClient:
         res.raise_for_status()
         return res.json()
 
+    # ── Demon core (Harvest 2026-10-16, DCT01–DCT20) ───────────────────
+    def submit_status_assertion(
+        self,
+        publication_id: UUID,
+        record_id: UUID,
+        status: str,
+        *,
+        scope: list[str] | None = None,
+        epoch: int = 0,
+        author_id: UUID | None = None,
+    ) -> dict:
+        """Non-destructive MARK: create a NEW status assertion; prior
+        assertions remain as historical trace (DCT11–DCT12)."""
+        res = self._client.post(
+            f"{self.api_url}/publications/{publication_id}/status-assertions",
+            json={
+                "record_id": str(record_id),
+                "status": status,
+                "scope": scope or [],
+                "epoch": epoch,
+                "author_id": str(author_id) if author_id else None,
+            },
+        )
+        res.raise_for_status()
+        return res.json()
+
+    def add_dependency_policy(
+        self,
+        publication_id: UUID,
+        name: str,
+        upstream_transition: str,
+        downstream_consequence: str,
+        rule_ref: UUID,
+        *,
+        scope: list[str] | None = None,
+    ) -> dict:
+        """Dependency policy lives in the network (ROLE=POLICY), not the
+        demon core (DCT05–DCT07). Missing applicable policy → NEED/MISSING_RULE."""
+        res = self._client.post(
+            f"{self.api_url}/publications/{publication_id}/dependency-policies",
+            json={
+                "name": name,
+                "upstream_transition": upstream_transition,
+                "downstream_consequence": downstream_consequence,
+                "rule_ref": str(rule_ref),
+                "role": "POLICY",
+                "scope": scope or [],
+            },
+        )
+        res.raise_for_status()
+        return res.json()
+
+    def register_composition_policy(
+        self,
+        publication_id: UUID,
+        result_id: UUID,
+        composition: str,  # "ALTERNATIVE" | "JOINT"
+        justification_ids: list[UUID],
+        *,
+        scope: list[str] | None = None,
+    ) -> dict:
+        """Multiple justifications ≠ redundancy; composition semantics is
+        explicit (DCT19–DCT20): ALTERNATIVE = any one sufficient path,
+        JOINT = all required together."""
+        res = self._client.post(
+            f"{self.api_url}/publications/{publication_id}/composition-policies",
+            json={
+                "result_id": str(result_id),
+                "composition": composition,
+                "justification_ids": [str(j) for j in justification_ids],
+                "scope": scope or [],
+            },
+        )
+        res.raise_for_status()
+        return res.json()
+
+    def record_stop_card(self, publication_id: UUID, card: dict) -> dict:
+        """Record a STOP CARD as a first-class session artifact — stopping
+        at the right place is success, not failure (DEMON §8)."""
+        res = self._client.post(
+            f"{self.api_url}/publications/{publication_id}/stop-cards",
+            json=card,
+        )
+        res.raise_for_status()
+        return res.json()
+
     def close(self):
         self._client.close()

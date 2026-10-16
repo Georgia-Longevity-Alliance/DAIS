@@ -86,6 +86,257 @@ impl TryFrom<&str> for KnowledgeStatus {
     }
 }
 
+/// History-status of a committed record (Demon Core Harvest, DCT11–DCT12).
+///
+/// The committed fact is stable: it may be compacted, archived or superseded
+/// but never made historically unaddressable or provenance-untraceable.
+/// This is the `HISTORY_STATUS` dimension, orthogonal to `CURRENT_EPISTEMIC_STATUS`.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum HistoryStatus {
+    /// The transition was committed and remains the live record.
+    Committed,
+    /// Archived — still addressable, no longer in the hot path.
+    Archived,
+    /// Compacted — merged into a summary entry, addresses preserved.
+    Compacted,
+    /// Superseded — replaced by a newer record; the past is not erased.
+    Superseded,
+}
+
+/// One addressable status assertion (non-destructive MARK, DCT11–DCT12).
+///
+/// MARK creates a NEW assertion and keeps the prior assertions as historical
+/// trace; a status transition is never an overwrite. The projection exposes
+/// `current_epistemic_status` = the last applicable assertion, while
+/// `history_status` tracks the committed fact independently.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StatusAssertion {
+    pub assertion_id: NoepediaId,
+    pub record_id: NoepediaId,
+    pub status: KnowledgeStatus,
+    /// Scope of applicability (SCOPE/TIME qualifiers, DCT13–DCT14).
+    pub scope: Vec<String>,
+    /// Monotonic epoch: each new assertion increments it; the previous one
+    /// stays in the assertion log.
+    pub epoch: u64,
+    pub asserted_by: NoepediaId,
+    pub asserted_at: DateTime<Utc>,
+    pub history_status: HistoryStatus,
+}
+
+impl StatusAssertion {
+    /// Create the first assertion for a record (epoch 1).
+    pub fn initial(record_id: NoepediaId, status: KnowledgeStatus, asserted_by: NoepediaId) -> Self {
+        Self {
+            assertion_id: Uuid::new_v4(),
+            record_id,
+            status,
+            scope: Vec::new(),
+            epoch: 1,
+            asserted_by,
+            asserted_at: Utc::now(),
+            history_status: HistoryStatus::Committed,
+        }
+    }
+}
+
+/// Four states of the demon's working regime (DEMON_CORE_SPEC §7).
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum RegimeState {
+    /// Enough structure to continue lawfully.
+    Go,
+    /// An external fact is missing, but a precise permitted query is possible.
+    Ask,
+    /// An acting rule/closure forbids this path.
+    Block,
+    /// The network's own working structure is missing; a correct query cannot
+    /// yet be formed.
+    Need,
+}
+
+/// Classification of what is missing when the demon cannot proceed
+/// (DEMON_CORE_SPEC §8; open taxonomy — not a closed ontology).
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum NeedClass {
+    MissingFact,
+    MissingRule,
+    MissingAddress,
+    MissingRelation,
+    MissingPattern,
+    MissingScope,
+    MissingProvenance,
+    MissingOperation,
+    AmbiguousMatch,
+    Conflict,
+    ClosureUnknown,
+    CreditUnresolved,
+}
+
+/// A STOP CARD — a stuck branch returns this instead of fabricating a
+/// plausible continuation (DEMON_CORE_SPEC §8). Stopping at the right place
+/// is a successful behavior, not a failure.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StopCard {
+    pub stop_id: NoepediaId,
+    /// Where the run got stuck (session/scene/step).
+    pub where_: String,
+    /// What the demon wanted to achieve.
+    pub wanted: String,
+    /// What was available at the stop point.
+    pub available: String,
+    /// What was missing.
+    pub missing: String,
+    pub stop_class: NeedClass,
+    /// Whether a precise, permitted external query exists (ASK vs NEED).
+    pub can_ask_outside: bool,
+    /// The precise permitted query, if any.
+    pub query: Option<String>,
+    pub provenance: Vec<NoepediaId>,
+    pub scope: Vec<String>,
+}
+
+impl StopCard {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        where_: &str,
+        wanted: &str,
+        available: &str,
+        missing: &str,
+        stop_class: NeedClass,
+        can_ask_outside: bool,
+        query: Option<String>,
+        provenance: Vec<NoepediaId>,
+        scope: Vec<String>,
+    ) -> Self {
+        Self {
+            stop_id: Uuid::new_v4(),
+            where_: where_.into(),
+            wanted: wanted.into(),
+            available: available.into(),
+            missing: missing.into(),
+            stop_class,
+            can_ask_outside,
+            query,
+            provenance,
+            scope,
+        }
+    }
+}
+
+/// How multiple justifications compose (DCT19–DCT20).
+///
+/// > Multiple justifications ≠ redundancy. `same result ≠ same provenance`.
+/// >
+/// > The composition semantics lives in the network as an addressable policy;
+/// > if missing, evaluation stops with `NEED / MISSING_RULE`.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum JustificationComposition {
+    /// Any one complete supported justification suffices (e.g., independent
+    /// replications).
+    Alternative,
+    /// All listed justifications are required together.
+    Joint,
+}
+
+/// Addressable composition policy for a result's justifications (DCT20).
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CompositionPolicy {
+    pub policy_id: NoepediaId,
+    /// The result/record this policy governs.
+    pub result_id: NoepediaId,
+    pub composition: JustificationComposition,
+    pub justification_ids: Vec<NoepediaId>,
+    pub scope: Vec<String>,
+}
+
+/// Outcome of evaluating a result's survival under a composition policy.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum CompositionVerdict {
+    /// The result remains currently supported.
+    Supported,
+    /// The result does not remain supported.
+    NotSupported,
+    /// No composition policy applies — lawful STOP (NEED / MISSING_RULE).
+    PolicyMissing,
+}
+
+/// Evaluate whether a result survives a challenge given its composition policy
+/// (DCT19–DCT20). `justification_supported[i]` is the current epistemic state
+/// of `policy.justification_ids[i]`.
+///
+/// - ALTERNATIVE: any one currently supported complete justification suffices.
+/// - JOINT: all listed justifications are required together.
+pub fn evaluate_composition(
+    policy: &CompositionPolicy,
+    justification_supported: &[bool],
+) -> CompositionVerdict {
+    if justification_supported.len() != policy.justification_ids.len() {
+        return CompositionVerdict::PolicyMissing;
+    }
+    match policy.composition {
+        JustificationComposition::Alternative => {
+            if justification_supported.iter().any(|&b| b) {
+                CompositionVerdict::Supported
+            } else {
+                CompositionVerdict::NotSupported
+            }
+        }
+        JustificationComposition::Joint => {
+            if justification_supported.iter().all(|&b| b) {
+                CompositionVerdict::Supported
+            } else {
+                CompositionVerdict::NotSupported
+            }
+        }
+    }
+}
+
+/// An addressable dependency policy: how an upstream status transition
+/// propagates downstream (DCT05–DCT07, DEMON_CORE_SPEC §13–14).
+///
+/// Status propagation is NOT a demon-core primitive. The downstream
+/// consequence is determined by a policy rule that lives in the network and
+/// REFERS_TO the dependency edge with ROLE=POLICY. If no applicable policy
+/// exists, the demon returns `NEED / MISSING_RULE`.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DependencyPolicy {
+    pub policy_id: NoepediaId,
+    pub name: String,
+    /// Upstream transition this policy applies to, e.g. "PREMISE -> CONFLICTED".
+    pub upstream_transition: String,
+    /// The downstream consequence status.
+    pub downstream_consequence: KnowledgeStatus,
+    pub scope: Vec<String>,
+    /// REFERS_TO target — the dependency edge / rule this policy qualifies.
+    pub rule_ref: NoepediaId,
+    /// ROLE = "POLICY".
+    pub role: String,
+}
+
+impl DependencyPolicy {
+    pub fn new(
+        name: &str,
+        upstream_transition: &str,
+        downstream_consequence: KnowledgeStatus,
+        rule_ref: NoepediaId,
+    ) -> Self {
+        Self {
+            policy_id: Uuid::new_v4(),
+            name: name.into(),
+            upstream_transition: upstream_transition.into(),
+            downstream_consequence,
+            scope: Vec::new(),
+            rule_ref,
+            role: "POLICY".into(),
+        }
+    }
+}
+
 /// OPEN is a legal knowledge state: an addressable unknown with constraints and
 /// a validation rule — the rule that would close it. OPEN is never a denial.
 /// (Noepedia harvest, 2026-10-12: "OPEN = addressable unknown + constraints +
@@ -331,6 +582,10 @@ pub struct Session {
     pub objective: String,
     pub traces: Vec<NoepediaId>,
     pub outcome: Option<Outcome>,
+    /// Demon regime at the end of the session (GO / ASK / BLOCK / NEED).
+    pub regime: Option<RegimeState>,
+    /// STOP CARDS for every stuck branch (Demon Core Harvest, §7–8).
+    pub stop_cards: Vec<StopCard>,
 }
 
 /// Real-world feedback from a session or experiment.
@@ -352,6 +607,11 @@ pub enum OutcomeKind {
     ReusableKnowledge,
     EscalatedToHuman,
     EscalatedToLLM,
+    /// The run stopped because a rule/closure forbids this path (BLOCK).
+    Blocked,
+    /// The run stopped because the network's working structure is missing
+    /// (NEED) — a correct query cannot yet be formed.
+    Need,
 }
 
 /// Convenience constructors for the most common Noepedia objects.
@@ -477,5 +737,188 @@ mod tests {
         assert!(spec.validation_rule.is_some());
         assert!(!spec.address.is_empty());
         assert_eq!(spec.constraints.len(), 1);
+    }
+
+    #[test]
+    fn test_status_assertion_is_epoch_scoped_and_non_destructive() {
+        // P0 / DCT11–DCT12: MARK creates a NEW assertion, keeps the old one.
+        let record = Uuid::new_v4();
+        let author = Uuid::new_v4();
+        let a1 = StatusAssertion::initial(record, KnowledgeStatus::Proposed, author);
+        assert_eq!(a1.epoch, 1);
+        assert_eq!(a1.history_status, HistoryStatus::Committed);
+
+        let a2 = StatusAssertion {
+            assertion_id: Uuid::new_v4(),
+            record_id: record,
+            status: KnowledgeStatus::Supported,
+            scope: vec!["hardware revision B".into()],
+            epoch: a1.epoch + 1,
+            asserted_by: author,
+            asserted_at: chrono::Utc::now(),
+            history_status: HistoryStatus::Committed,
+        };
+        // Both assertions coexist: the old one is a historical trace, not erased.
+        assert_eq!(a2.epoch, 2);
+        assert_eq!(a1.record_id, a2.record_id);
+        assert_ne!(a1.status, a2.status);
+    }
+
+    #[test]
+    fn test_stop_card_carries_need_classification() {
+        // P0 / DEMON §7–8: a stuck branch returns a STOP CARD.
+        let card = StopCard::new(
+            "DCT20 / one convergent justification challenged",
+            "determine whether EV1 remains currently supported",
+            "JP1 challenged; JP2 supported; both recorded as JUSTIFICATION",
+            "justification-composition policy",
+            NeedClass::MissingRule,
+            false,
+            None,
+            vec![Uuid::new_v4()],
+            vec!["local".into()],
+        );
+        assert_eq!(card.stop_class, NeedClass::MissingRule);
+        assert!(!card.can_ask_outside); // NEED, not ASK
+        assert!(card.query.is_none());
+        assert!(!card.missing.is_empty());
+
+        let ask = StopCard::new(
+            "sensor read",
+            "outside temperature",
+            "no observation in field",
+            "external fact",
+            NeedClass::MissingFact,
+            true,
+            Some("query temperature sensor #3".into()),
+            vec![],
+            vec![],
+        );
+        assert!(ask.can_ask_outside); // ASK: precise permitted query exists
+        assert!(ask.query.is_some());
+    }
+
+    #[test]
+    fn test_dependency_policy_has_role_policy() {
+        // P1 / DCT05–DCT07: downstream consequence lives in an addressable
+        // policy with ROLE = POLICY, not in the demon core.
+        let edge = Uuid::new_v4();
+        let p = DependencyPolicy::new(
+            "premise_conflict_propagates",
+            "PREMISE -> CONFLICTED",
+            KnowledgeStatus::Contested,
+            edge,
+        );
+        assert_eq!(p.role, "POLICY");
+        assert_eq!(p.rule_ref, edge);
+        assert_eq!(p.downstream_consequence, KnowledgeStatus::Contested);
+        assert!(!p.upstream_transition.is_empty());
+    }
+
+    #[test]
+    fn test_composition_policy_alternative_vs_joint() {
+        // P2 / DCT19–DCT20: multiple justifications ≠ redundancy; composition
+        // semantics is explicit and addressable.
+        let result = Uuid::new_v4();
+        let jp1 = Uuid::new_v4();
+        let jp2 = Uuid::new_v4();
+        let alt = CompositionPolicy {
+            policy_id: Uuid::new_v4(),
+            result_id: result,
+            composition: JustificationComposition::Alternative,
+            justification_ids: vec![jp1, jp2],
+            scope: vec![],
+        };
+        assert!(matches!(alt.composition, JustificationComposition::Alternative));
+        assert_eq!(alt.justification_ids.len(), 2);
+
+        let joint = JustificationComposition::Joint;
+        assert_ne!(alt.composition, joint);
+    }
+
+    #[test]
+    fn test_evaluate_composition_alternative_vs_joint() {
+        // DCT20: one path challenged. Under ALTERNATIVE the result survives;
+        // under JOINT it does not.
+        let result = Uuid::new_v4();
+        let jp1 = Uuid::new_v4();
+        let jp2 = Uuid::new_v4();
+
+        let alt = CompositionPolicy {
+            policy_id: Uuid::new_v4(),
+            result_id: result,
+            composition: JustificationComposition::Alternative,
+            justification_ids: vec![jp1, jp2],
+            scope: vec![],
+        };
+        // jp1 challenged (false), jp2 supported (true)
+        assert_eq!(
+            evaluate_composition(&alt, &[false, true]),
+            CompositionVerdict::Supported
+        );
+        assert_eq!(
+            evaluate_composition(&alt, &[false, false]),
+            CompositionVerdict::NotSupported
+        );
+
+        let joint = CompositionPolicy {
+            policy_id: Uuid::new_v4(),
+            result_id: result,
+            composition: JustificationComposition::Joint,
+            justification_ids: vec![jp1, jp2],
+            scope: vec![],
+        };
+        // same graph shape, different composition policy → different verdict
+        assert_eq!(
+            evaluate_composition(&joint, &[false, true]),
+            CompositionVerdict::NotSupported
+        );
+        assert_eq!(
+            evaluate_composition(&joint, &[true, true]),
+            CompositionVerdict::Supported
+        );
+        // mismatched length → policy missing (lawful NEED)
+        assert_eq!(
+            evaluate_composition(&alt, &[true]),
+            CompositionVerdict::PolicyMissing
+        );
+    }
+
+    #[test]
+    fn test_session_carries_regime_and_stop_cards() {
+        // P0: session outcome includes regime + stop cards as first-class.
+        let session = Session {
+            session_id: Uuid::new_v4(),
+            agent_id: Uuid::new_v4(),
+            started: chrono::Utc::now(),
+            ended: None,
+            objective: "rebuild scene S".into(),
+            traces: vec![],
+            outcome: Some(Outcome {
+                outcome_id: Uuid::new_v4(),
+                session_id: Uuid::new_v4(),
+                kind: OutcomeKind::Need,
+                description: "missing dependency policy".into(),
+                evidence_id: None,
+            }),
+            regime: Some(RegimeState::Need),
+            stop_cards: vec![StopCard::new(
+                "scene S",
+                "propagate downstream status",
+                "upstream CONFLICTED",
+                "applicable dependency-policy rule",
+                NeedClass::MissingRule,
+                false,
+                None,
+                vec![],
+                vec![],
+            )],
+        };
+        assert_eq!(session.regime, Some(RegimeState::Need));
+        assert_eq!(session.stop_cards.len(), 1);
+        assert_eq!(
+            session.stop_cards[0].stop_class,
+            NeedClass::MissingRule
+        );
     }
 }

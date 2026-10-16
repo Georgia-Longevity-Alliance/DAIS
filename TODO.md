@@ -63,11 +63,13 @@
 
 ## Phase 5: Demon Core Harvest — 2026-10-16
 > Мастер: `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md` (DCT01–20 / DEMON_CORE_SPEC)
-- [ ] **P0** Split `HistoryStatus` / `CurrentEpistemicStatus` in knowledge object; status transition = new assertion + `epoch`, never in-place mutation (validator/consolidator) — TRACE CONTINUITY (DCT10–12)
-- [ ] **P0** `StopCard` + `NeedClass` in `SessionOutcome` (noepedia.rs) + LLM bridge maps GO/ASK/BLOCK/NEED (DEMON §7–8)
-- [ ] **P1** Self-reference ban in validator: delta N checked against rule-set from committed state N-1 (transaction membrane, DCT08–09)
-- [ ] **P1** `DependencyPolicy` as addressable object (REFERS_TO + ROLE=POLICY); missing applicable policy → NeedClass::MISSING_RULE (DCT05–07)
-- [ ] **P2** Justification-composition policy (ALTERNATIVE vs JOINT) for multi-witness REPLICATED (DCT19–20)
-- [ ] **P2** `Archive`/`Compact` in event_store with address-preservation guarantee (TRACE CONTINUITY)
-- [ ] **P2** Ed25519 journal signing (hard condition for real TRACE CONTINUITY, not optional)
-- [ ] **P3** Generic qualifier framework (SCOPE/TIME) only if a repeating NEED appears on ARGUS-OS1 (Occam, DCT15–16)
+- [x] **P0** Split `HistoryStatus` / `CurrentEpistemicStatus` in knowledge object; status transition = new assertion + `epoch`, never in-place mutation (validator/consolidator) — TRACE CONTINUITY (DCT10–12) — `event_store.rs::replay` non-destructive; `StatusAssertion`/`HistoryStatus` in `noepedia.rs`
+- [x] **P0** `StopCard` + `NeedClass` in `SessionOutcome` (noepedia.rs) + LLM bridge maps GO/ASK/BLOCK/NEED — `llm_bridge.py::classify_regime` + `RegimeVerdict`/`StopCard` (DEMON §7–8)
+- [x] **P1** Self-reference ban in validator: delta N checked against rule-set from committed state N-1 (transaction membrane, DCT08–09) — `validator.rs::membrane_check` (SELF_REFERENCE_BAN)
+- [x] **P1** `DependencyPolicy` as addressable object (REFERS_TO + ROLE=POLICY); missing applicable policy → `MISSING_DEPENDENCY_POLICY` BLOCK / NeedClass::MISSING_RULE — `validator.rs::dependency_policy_check` + `find_applicable_policy` (DCT05–07)
+- [x] **P2** Justification-composition policy (ALTERNATIVE vs JOINT) for multi-witness REPLICATED — `noepedia.rs::CompositionPolicy`/`evaluate_composition`/`CompositionVerdict` (DCT19–20)
+- [x] **P2** `Archive`/`Compact` in event_store with address-preservation guarantee — `event_store.rs::archive`/`compact`/`check_trace_continuity` (TRACE CONTINUITY)
+- [x] **P2** Ed25519 journal signing (hard condition for real TRACE CONTINUITY, not optional) — `event_store.rs::JournalGuard` (sign/verify over canonical log digest; tamper-evident)
+- [x] Python: `proven_api.py` — `submit_status_assertion`, `add_dependency_policy`, `register_composition_policy`, `record_stop_card`; `llm_bridge.py` — regime classifier
+- [ ] **P3** Generic qualifier framework (SCOPE/TIME) — CONDITIONAL (Occam): only if a repeating NEED appears on ARGUS-OS1 (DCT15–16); not implemented preemptively
+- [ ] Phoenix web: expose status assertions / stop cards / dependency policies endpoints

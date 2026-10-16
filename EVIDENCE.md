@@ -45,7 +45,7 @@ The first real-world integration target validates the core hypothesis: that a co
 | Elixir: controllers | 1 | Page controller |
 | Elixir: Phoenix scaffold | 4 | Default Phoenix tests |
 | **Elixir total** | **8** | |
-| **Grand total** | **104** (lib) + 1 doc-test | |
+| **Grand total** | **122** (lib) + 1 doc-test | +18 Demon Core Harvest tests (status assertions, membrane, dependency policy, composition, journal signature, archive/compact, STOP CARD) |
 
 ### 4. Performance characteristics
 

@@ -573,4 +573,10 @@ pub struct EventLogEntry {
     pub operation: DeltaOperation,
     pub payload: serde_json::Value,
     pub signature: Option<String>,
+    /// Archived — still addressable and replayable, just not in the hot path.
+    pub archived: bool,
+    /// Compacted — merged into a summary entry; addresses preserved.
+    pub compacted: bool,
+    /// If compacted, the summary event that absorbed this entry's address.
+    pub compacted_into: Option<Id>,
 }

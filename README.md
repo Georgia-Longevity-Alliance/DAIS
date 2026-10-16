@@ -57,7 +57,7 @@ cd web && mix setup && mix phx.server
 
 ## Status
 
-- ✅ Rust core (v0.1): passport, body law, flight recorder, trace network, delta/event-store/validator/consolidator, **noepedia grammar** — 104 tests green.
+- ✅ Rust core (v0.1): passport, body law, flight recorder, trace network, delta/event-store/validator/consolidator, **noepedia grammar** — 122 tests green.
 - ✅ Python backend: `llm_bridge`, `client`, `passport_interview`, `noepedia_api` (networks, rule cards, replication, coverage, placement).
 - 🟡 Phoenix web: dashboard, registry, knowledge browser (foundation).
 - 🟢 **First physical instance: ARGUS-OS1** (autonomous centriole-tracking microscope, mounted as `dais/` submodule).

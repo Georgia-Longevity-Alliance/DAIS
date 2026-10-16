@@ -294,15 +294,20 @@ AMBIGUOUS_MATCH, CONFLICT, CLOSURE_UNKNOWN, CREDIT_UNRESOLVED. **Останов�
 
 ---
 
-## 9. Дорожная карта интеграции в DAIS (рекомендация по приоритету)
+## 9. Дорожная карта интеграции в DAIS (статус на 2026-10-16)
 
-1. **P0 (код, малый объём, высокая ценность):** разделить `HistoryStatus` / `CurrentEpistemicStatus`
-   в объекте знания; перейти от in-place mutation к **new-assertion + epoch** (Н12/Н1). Это меняет
-   validator/consolidator и снимает главный риск «тихого стирания статуса».
-2. **P0:** STOP CARD + `NeedClass` в `SessionOutcome` (Н7) + маппинг LLM-моста GO/ASK/BLOCK/NEED.
-3. **P1:** self-reference ban в validator (мембрана, Н11a) — проверка delta N против rule-set N-1.
-4. **P1:** dependency-policy как адресуемый объект (Н9) + rule-level conflict (Н10).
-5. **P2:** ALTERNATIVE/JOINT composition-политика (Н14); compaction/archive с гарантией адресности (Н11b).
-6. **P2:** Ed25519-подпись журнала (не опция, а условие реального TRACE CONTINUITY).
-7. **P3:** qualifier framework (SCOPE/TIME generic) (Н12c/d), если появится повторяющаяся NEED на
-   ARGUS-OS1 (Occam).
+1. ✅ **P0 (код):** разделить `HistoryStatus` / `CurrentEpistemicStatus`; переход от in-place mutation
+   к **new-assertion + epoch** (Н12/Н1) — `replay()` неразрушающий, `StatusAssertion`/`HistoryStatus`.
+2. ✅ **P0:** STOP CARD + `NeedClass` в `Session`/`Outcome` (Н7) + маппинг LLM-моста GO/ASK/BLOCK/NEED
+   (`llm_bridge.py::classify_regime`).
+3. ✅ **P1:** self-reference ban в validator (мембрана, Н11a) — `membrane_check` (SELF_REFERENCE_BAN).
+4. ✅ **P1:** dependency-policy как адресуемый объект (Н9) + rule-level conflict (Н10) —
+   `dependency_policy_check` + `find_applicable_policy` (MISSING_DEPENDENCY_POLICY / NEED).
+5. ✅ **P2:** ALTERNATIVE/JOINT composition-политика (Н14) — `CompositionPolicy`/`evaluate_composition`.
+6. ✅ **P2:** `Archive`/`Compact` с гарантией адресности (Н11b) — `archive`/`compact`/`check_trace_continuity`.
+7. ✅ **P2:** Ed25519 подпись журнала — `JournalGuard` (tamper-evident TRACE CONTINUITY).
+8. ⏸️ **P3:** qualifier framework (SCOPE/TIME generic) (Н12c/d) — **условно (Occam)**: только при
+   повторяющейся NEED на ARGUS-OS1; превентивно не реализован.
+9. ⏳ Phoenix web: endpoints для status assertions / stop cards / dependency policies — не реализованы.
+
+Тесты: **104 → 122** (lib) + 1 doc-test, 0 warnings.
