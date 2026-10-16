@@ -118,6 +118,49 @@ BaseRobot → WheeledRobot → DeliveryRobot → MyCustomBot
 ```
 С каждым уровнем добавляются capabilities и forbidden_always.
 
+## 6. НОВЫЕ ПОДОБНЫЕ ИДЕИ (обзор 2026-10-16, волна 3 Noepedia)
+
+> Мастер: `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md`. Это аналоги/параллели, найденные
+> в научных базах при проверке демон-ядра. Класс: прямое подтверждение / аналогия / смежное.
+
+### Knowledge / Provenance (прямые аналоги)
+| Идея | Где | Класс | Связь с DAIS |
+|------|-----|-------|--------------|
+| **PROV-AGENT** — unified provenance для агентных AI-систем | eScience 2025, 10.1109/escience65000.2025.00093 | прямое | Proven chain — аналог PROV-AGENT для устройств; можно взять их схему взаимодействий |
+| **Responsible Agentic AI Requires Explicit Provenance** | SSRN 10.2139/ssrn.6518458 | прямое | Подтверждает «provenance — предпосылка ответственности» |
+| **RDF-star + Named Graphs** — триплеты с метаданными | 10.1007/978-3-031-21422-6_18 | прямое | Модель «метаданные о триплетах» для status assertions поверх SPO |
+| **Event-sourced agent systems** — «The Log is the Agent», ESAA-Security | arXiv 2025/26 | прямое | Event store DAIS — ровно этот паттерн; берём их auditable-схемы |
+
+### Abstention / stopping (прямые аналоги для STOP/NEED)
+| Идея | Где | Класс | Связь с DAIS |
+|------|-----|-------|--------------|
+| **Learning to Say "I Don't Know"** — abstention для LLM | TechRxiv 10.36227/techrxiv.175682660.02761872/v1 | прямое | Обоснование STOP CARD как результата, а не ошибки |
+| **Selective "Selective Prediction"** — калибровка abstention | ACL 2024, 10.18653/v1/2024.findings-acl.767 | прямое | Трейдофф over/under-abstention — слабое место нашей карты остановки |
+| **Hallucination Is Inevitable for LLMs with the OWA** | 10.20944/preprints202510.0689.v1 | принцип | NOT_FOUND ≠ absent — якорь для ASK vs NEED |
+| **Self-Trust and Epistemic Humility** | 10.1093/oso/9780190864873.003.0014 | аналогия | Эпистемическое смирение агента = NEED-режим |
+
+### Logs / immutability (для TRACE CONTINUITY)
+| Идея | Где | Класс | Связь с DAIS |
+|------|-----|-------|--------------|
+| **SoK: Authenticated Prefix Relations** — append-only логи | arXiv | прямое | Основа для «нельзя сделать историю безадресной» |
+| **Certificate Transparency** | 10.1145/2668152.2668154 | прямое | Дисциплина неизменяемого лога в продакшене |
+| **2P-BFT-Log** — append-only в adversarial среде | arXiv | смежное | Для федеративных реестров (Phase 2) |
+
+### Reasoning / rules (для мембраны и политик)
+| Идея | Где | Класс | Связь с DAIS |
+|------|-----|-------|--------------|
+| **Dung abstract argumentation** — конфликты и семантики | arXiv | прямое | Rule-level conflict → addressable CONFLICT |
+| **Datalog stratified negation** — правила по слоям | IJCAI 2018, 10.24963/ijcai.2018/259 | аналогия | Политики-в-сети, fixpoint по слоям |
+| **Multi-context systems** | 10.1016/j.datak.2022.102044 | аналогия | Scoped-статусы VALID-IN-CONTEXT |
+| **Term rewriting: termination ≠ confluence** | 10.1016/S0747-7171(87)80010-X; arXiv 1203.5121 | прямое | Завершимость ≠ Confluence — та же пара понятий |
+| **AGM belief revision** — прошлое убеждение ≠ текущее | arXiv | прямое | HISTORY_STATUS ≠ EPISTEMIC_STATUS |
+| **Justification logic / minimal proofs** | arXiv; 10.2139/ssrn.7366621 | аналогия | ALTERNATIVE vs JOINT composition |
+
+### Authorization (для мембраны)
+| Идея | Где | Класс | Связь с DAIS |
+|------|-----|-------|--------------|
+| **Reflective authorization / policy layers** | 10.1007/0-387-23483-7_20; 10.1109/csac.2003.1254336 | принцип | «Delta не санкционирует саму себя» — TCB-дисциплина |
+
 ### "Safety Marketplace"
 Как Proven marketplace, но для safety-правил:
 - "Laser safety protocol for microscopy" — 50 credits

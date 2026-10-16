@@ -3,6 +3,41 @@
 **Created:** 2026-07-31  
 **Updated:** 2026-09-15
 
+## 2026-10-16 — Demon Core Harvest (wave 3: DCT01–20) — analysis only, code P0 not yet done
+
+### Decisions
+1. **Third Noepedia wave (DCT01–DCT20 / DEMON_CORE_SPEC, 2026-10-16) analyzed & harvested into DAIS** —
+   master `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md`. The wave-2 harvest (author column, №0,
+   OpenSpec) covered *epistemics*; wave 3 covers *executive discipline*: how the engine stops, does not
+   invent, does not erase history, and cannot self-legitimize.
+2. **TOP-3 for DAIS** (priority order): (1) TRACE CONTINUITY + HISTORY/EPISTEMIC status separation +
+   non-destructive MARK; (2) STOP/NEED regime + STOP CARD as first-class session outcome and LLM-lane
+   protocol; (3) transaction membrane (self-reference ban: delta N vs rule-set N-1) + dependency-policy
+   in the network + rule-level conflict containment.
+3. **Scientific confirmation performed** (Crossref/PubMed/arXiv 2026-10-16): abstention/selective
+   prediction, OWA, authenticated append-only logs, Dung argumentation, term-rewriting termination≠confluence,
+   AGM belief revision, PROV-AGENT — anchors recorded in EVIDENCE.md + master doc §4.
+4. **Weak spots recorded honestly** (master §5): abstention calibration trade-off, STOP-taxonomy
+   inflation, membrane snapshot cost, Ed25519 needed for real TRACE CONTINUITY (moved from optional to
+   hard condition), NETWORK RULES vs EXECUTOR INVARIANTS boundary still OPEN. Transfer to deterministic
+   Rust on real ARGUS-OS1 traces NOT yet verified.
+5. **Occam applies to DAIS too**: do not port all 12 findings; port only what closes a real gap on
+   ARGUS-OS1. P0 = status separation + STOP CARD; P1 = membrane + dependency-policy.
+
+### What was written
+- `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md` (new master: 15 findings, top-3, confirmation table,
+  weak spots, meta-analysis, roadmap P0–P3)
+- `THEORY.md` §8–11 (trace continuity, STOP/NEED, membrane, termination≠confluence/composition)
+- `EVIDENCE.md` §Demon Core Harvest (confirmation table + weak spots)
+- `TODO.md` Phase 5 (P0–P3 tasks)
+- `docs/SIMILAR_IDEAS.md` (new similar-ideas additions)
+- `docs/GLOSSARY_KNOWLEDGE_STATUS.md` (history/epistemic split + composition semantics)
+
+### Key insight
+DAIS already had 80% of the append-only foundation (event store + delta + validator). The real gap is
+**in-place status mutation** — it silently violates TRACE CONTINUITY. Separating
+`HistoryStatus`/`CurrentEpistemicStatus` + epoch is the single highest-value code change.
+
 ## 2026-09-15 — Noepedia grammar integrated (v3.0)
 
 ### Decisions

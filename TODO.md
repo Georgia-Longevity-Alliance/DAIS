@@ -60,3 +60,14 @@
 - [x] Add REQUIRED_ROLE as first-class relation kind (`RelationKind::RequiresRole` + `RoleRequirement` with constraints + validation rule) in `noepedia.rs`
 - [x] Map `KnowledgeStatus` explicitly to GRADE/Murad/CEBM/TRL in `docs/GLOSSARY_KNOWLEDGE_STATUS.md`; define independence criterion + κ for Replication→Replicated
 - [x] Decision recorded: journal = inside the field (provenance objects are SPO triplets); act-as-performance = outside by design — `docs/NOEPEDIA_HARVEST_2026-10-12.md` §F
+
+## Phase 5: Demon Core Harvest — 2026-10-16
+> Мастер: `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md` (DCT01–20 / DEMON_CORE_SPEC)
+- [ ] **P0** Split `HistoryStatus` / `CurrentEpistemicStatus` in knowledge object; status transition = new assertion + `epoch`, never in-place mutation (validator/consolidator) — TRACE CONTINUITY (DCT10–12)
+- [ ] **P0** `StopCard` + `NeedClass` in `SessionOutcome` (noepedia.rs) + LLM bridge maps GO/ASK/BLOCK/NEED (DEMON §7–8)
+- [ ] **P1** Self-reference ban in validator: delta N checked against rule-set from committed state N-1 (transaction membrane, DCT08–09)
+- [ ] **P1** `DependencyPolicy` as addressable object (REFERS_TO + ROLE=POLICY); missing applicable policy → NeedClass::MISSING_RULE (DCT05–07)
+- [ ] **P2** Justification-composition policy (ALTERNATIVE vs JOINT) for multi-witness REPLICATED (DCT19–20)
+- [ ] **P2** `Archive`/`Compact` in event_store with address-preservation guarantee (TRACE CONTINUITY)
+- [ ] **P2** Ed25519 journal signing (hard condition for real TRACE CONTINUITY, not optional)
+- [ ] **P3** Generic qualifier framework (SCOPE/TIME) only if a repeating NEED appears on ARGUS-OS1 (Occam, DCT15–16)

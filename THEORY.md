@@ -157,3 +157,78 @@ layers 3–6 are the revisable part, amended by sessions with a quorum. №0 is 
 what it says (content = label): the first self-consistent object, not a hypothesis. The author-column
 rule is itself a knot; its authors are recorded in column №0 — rule and axiom are one document from
 two sides.
+
+### 8. Trace Continuity & History ≠ Epistemic Status (Demon Core Harvest — 2026-10-16)
+
+> Source: Noepedia DCT10–DCT12. Master: `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md`.
+
+A committed transition may be **compacted, archived, superseded or corrected, but may not be made
+historically unaddressable or provenance-untraceable**. Error correction is allowed; rewriting the past
+as if it never happened is not.
+
+`HISTORY_STATUS` (what was committed) and `CURRENT_EPISTEMIC_STATUS` (what is trusted now) are
+distinct. Past commit fact is preserved; present trust is revisable.
+
+**MARK is non-destructive:** it creates a *new* addressable status assertion, makes it current in the
+relevant scope/time, and keeps prior assertions as historical trace. A status transition is therefore
+never an overwrite.
+
+**DAIS mapping:** event store + delta protocol already give the append-only base; the gap is that the
+validator mutates status in-place after replay. Target: `HistoryStatus`/`CurrentEpistemicStatus`
+separation + `epoch` per status assertion; `Archive`/`Compact` with an address-preservation guarantee.
+
+### 9. STOP / NEED Regime (Demon Core Harvest — 2026-10-16)
+
+> Source: Noepedia DEMON_CORE_SPEC §7–8. Master: `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md`.
+
+The demon goes as far as it lawfully can, then stops — and stopping at the right place is **success**,
+not failure. Four states:
+
+```text
+GO     — enough structure to continue
+ASK    — missing an external fact, but a precise permitted query is possible
+BLOCK  — an acting rule/closure forbids this path
+NEED   — the network's own working structure is missing; a correct query cannot yet be formed
+```
+
+Each stuck branch returns a **STOP CARD** (STOP_ID/WHERE/WANTED/AVAILABLE/MISSING/STOP_CLASS/
+CAN_ASK_OUTSIDE/QUERY/PROVENANCE/SCOPE) and a NEED class from an open taxonomy
+(MISSING_FACT/RULE/ADDRESS/RELATION/PATTERN/SCOPE/PROVENANCE/OPERATION, AMBIGUOUS_MATCH, CONFLICT,
+CLOSURE_UNKNOWN, CREDIT_UNRESOLVED).
+
+**DAIS mapping:** STOP CARD becomes a first-class session outcome and the LLM-lane protocol — the
+bridge returns a structured stop card instead of a plausible continuation. `ASK ≠ NEED`: asking is
+only allowed by a precise permitted query; NEED requires adding structure, not an answer.
+
+### 10. Transaction Membrane & Policies in the Network (Demon Core Harvest — 2026-10-16)
+
+> Source: Noepedia DCT08–DCT09, DEMON_CORE_SPEC §14–16.
+
+1. Every mutation passes PROPOSE → CHECK → COMMIT.
+2. **A delta cannot use rules introduced or changed by itself to authorize that same delta.** The
+effective rule-set for checking delta N comes from committed state N-1 (snapshot isolation of rules).
+3. Downstream consequences of an upstream status transition are determined by an **addressable
+dependency-policy rule in the network**, not by a demon-core primitive. No applicable policy → NEED.
+4. Rule-level conflict (two applicable policies demanding incompatible outcomes) → ordinary addressable
+CONFLICT/OPEN; downstream transition blocks; the demon does not choose. Applicability conflict is
+resolved **before** semantic/status conflict.
+
+**DAIS mapping:** RuleRevision is already inspectable; the missing piece is the **self-reference ban**
+(LLM may initiate rule revisions, so a self-serving delta must not legitimize itself) and
+`DependencyPolicy` as an addressable object with REFERS_TO + ROLE=POLICY.
+
+### 11. Termination ≠ Confluence; Composition Semantics (Demon Core Harvest — 2026-10-16)
+
+> Source: Noepedia DCT17–DCT20. Master: `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md`.
+
+- **Termination ≠ Confluence.** A justification graph must be finite/inspectable (cycle → BLOCK);
+divergent terminating lawful paths are kept with both justification paths and surface as an addressable
+CONFLICT/BLOCK, never a fabricated result.
+- **Same result ≠ same provenance.** Convergent justifications accumulate provenance, not truth-value.
+- **Multiple justifications ≠ redundancy.** Whether a result survives a challenge depends on an explicit
+justification-composition policy: **ALTERNATIVE SUPPORT** (any one sufficient path) vs **JOINT SUPPORT**
+(all required components). The policy lives in the network; missing → NEED.
+
+**DAIS mapping:** validator must not collapse convergent justifications into one chain; composition
+semantics for multi-witness `REPLICATED` states (e.g., ALTERNATIVE for independent replications, JOINT
+where multiple constraints are required) should be an addressable policy.
