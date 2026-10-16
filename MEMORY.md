@@ -45,6 +45,15 @@
   policy carries ROLE=POLICY, composition policy JOINT stores justification ids.
 - Web tests 8 → 13 (5 demon-core API tests).
 
+### First run (no hardware)
+- `core/tests/demon_first_run.rs` — end-to-end walk of the whole demon pipeline on ARGUS-OS1
+  flavoured data (mirrors `seed_centriole_field.json`): trace→claim→SUPPORTED (epochs 1→2, history
+  kept), membrane rejects self-serving rule, challenged premise + dependent without policy → lawful
+  BLOCK + STOP CARD (NEED/MISSING_RULE), policy found → transition passes, composition ALTERNATIVE
+  survives a challenged path, Ed25519 signature covers the exact log (tamper-evident) and compaction
+  preserves addresses.
+- Rust tests: 122 (lib) + 1 (integration first run) + 1 doc; web tests: 13. Total 124 Rust + 13 web.
+
 ### Key insight
 A status transition is now **an addressable event, not a field overwrite** — this is the single
 change that makes DAIS's append-only log actually trace-continuous. The membrane + dependency-policy

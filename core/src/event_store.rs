@@ -222,6 +222,11 @@ impl EventStore {
         self.entries.is_empty()
     }
 
+    /// Read-only view of the entry log (audit/render).
+    pub fn entries(&self) -> &[EventLogEntry] {
+        &self.entries
+    }
+
     /// Replay all entries and build the current projection.
     /// This is the core of CQRS: event log → current state.
     ///

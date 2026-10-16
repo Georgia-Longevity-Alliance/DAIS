@@ -311,5 +311,10 @@ AMBIGUOUS_MATCH, CONFLICT, CLOSURE_UNKNOWN, CREDIT_UNRESOLVED. **Останов�
 9. ✅ Phoenix web: endpoints для status assertions / stop cards / dependency policies /
    composition policies — реализованы (`api_controller.ex`, `Web.Knowledge.*`, миграция
    `20261016000000_add_demon_core_tables`; 5 тестов; проверено end-to-end).
+10. ✅ **Первый сквозной прогон** демон-ядра на ARGUS-OS1-данных (без железа):
+    `core/tests/demon_first_run.rs` — trace→claim→SUPPORTED (неразрушающе, эпохи 1→2),
+    мембрана отклоняет self-serving rule, challenged premise + dependent без политики →
+    законный BLOCK + STOP CARD (NEED/MISSING_RULE), политика найдена → проход, composition
+    ALTERNATIVE выживает, Ed25519-подпись лога + tamper-evidence + компактирование.
 
-Тесты: **104 → 122** (lib) + 1 doc-test + **13** (web), 0 warnings.
+Тесты: **104 → 124** (122 lib + 1 integration + 1 doc) + **13** (web), 0 warnings.

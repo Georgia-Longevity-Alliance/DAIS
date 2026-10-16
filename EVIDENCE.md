@@ -46,7 +46,7 @@ The first real-world integration target validates the core hypothesis: that a co
 | Elixir: Phoenix scaffold | 4 | Default Phoenix tests |
 | Elixir: demon core API | 5 | status assertions (non-destructive, epochs), STOP CARD, dependency policy, composition policy |
 | **Elixir total** | **13** | |
-| **Grand total** | **122** (lib) + 1 doc-test + 13 (web) | +18 Demon Core Harvest tests (status assertions, membrane, dependency policy, composition, journal signature, archive/compact, STOP CARD) |
+| **Grand total** | **122** (lib) + 1 doc-test + 13 (web) + 1 integration (first run) | +18 Demon Core Harvest tests (status assertions, membrane, dependency policy, composition, journal signature, archive/compact, STOP CARD) + `tests/demon_first_run.rs` ARGUS-OS1 end-to-end walk |
 
 ### 4. Performance characteristics
 

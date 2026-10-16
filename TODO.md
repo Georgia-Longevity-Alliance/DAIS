@@ -73,3 +73,4 @@
 - [x] Python: `proven_api.py` — `submit_status_assertion`, `add_dependency_policy`, `register_composition_policy`, `record_stop_card`; `llm_bridge.py` — regime classifier
 - [ ] **P3** Generic qualifier framework (SCOPE/TIME) — CONDITIONAL (Occam): only if a repeating NEED appears on ARGUS-OS1 (DCT15–16); not implemented preemptively
 - [x] Phoenix web: expose status assertions / stop cards / dependency policies / composition policies endpoints (`api_controller.ex` + `Web.Knowledge.{StatusAssertion, StopCard, DependencyPolicy, CompositionPolicy}` + migration `20261016000000_add_demon_core_tables` + 5 API tests)
+- [x] First run (no hardware): `core/tests/demon_first_run.rs` — end-to-end demon pipeline on ARGUS-OS1 data (trace→SUPPORTED epochs, membrane, dependency policy BLOCK→pass, STOP CARD, composition, journal signature, compaction)
