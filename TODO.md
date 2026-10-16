@@ -72,4 +72,4 @@
 - [x] **P2** Ed25519 journal signing (hard condition for real TRACE CONTINUITY, not optional) — `event_store.rs::JournalGuard` (sign/verify over canonical log digest; tamper-evident)
 - [x] Python: `proven_api.py` — `submit_status_assertion`, `add_dependency_policy`, `register_composition_policy`, `record_stop_card`; `llm_bridge.py` — regime classifier
 - [ ] **P3** Generic qualifier framework (SCOPE/TIME) — CONDITIONAL (Occam): only if a repeating NEED appears on ARGUS-OS1 (DCT15–16); not implemented preemptively
-- [ ] Phoenix web: expose status assertions / stop cards / dependency policies endpoints
+- [x] Phoenix web: expose status assertions / stop cards / dependency policies / composition policies endpoints (`api_controller.ex` + `Web.Knowledge.{StatusAssertion, StopCard, DependencyPolicy, CompositionPolicy}` + migration `20261016000000_add_demon_core_tables` + 5 API tests)

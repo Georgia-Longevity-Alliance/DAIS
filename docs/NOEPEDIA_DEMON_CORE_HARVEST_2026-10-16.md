@@ -308,6 +308,8 @@ AMBIGUOUS_MATCH, CONFLICT, CLOSURE_UNKNOWN, CREDIT_UNRESOLVED. **Останов�
 7. ✅ **P2:** Ed25519 подпись журнала — `JournalGuard` (tamper-evident TRACE CONTINUITY).
 8. ⏸️ **P3:** qualifier framework (SCOPE/TIME generic) (Н12c/d) — **условно (Occam)**: только при
    повторяющейся NEED на ARGUS-OS1; превентивно не реализован.
-9. ⏳ Phoenix web: endpoints для status assertions / stop cards / dependency policies — не реализованы.
+9. ✅ Phoenix web: endpoints для status assertions / stop cards / dependency policies /
+   composition policies — реализованы (`api_controller.ex`, `Web.Knowledge.*`, миграция
+   `20261016000000_add_demon_core_tables`; 5 тестов; проверено end-to-end).
 
-Тесты: **104 → 122** (lib) + 1 doc-test, 0 warnings.
+Тесты: **104 → 122** (lib) + 1 doc-test + **13** (web), 0 warnings.

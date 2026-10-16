@@ -44,8 +44,9 @@ The first real-world integration target validates the core hypothesis: that a co
 | Elixir: interview | 3 | Full flow, simple device, snake_case |
 | Elixir: controllers | 1 | Page controller |
 | Elixir: Phoenix scaffold | 4 | Default Phoenix tests |
-| **Elixir total** | **8** | |
-| **Grand total** | **122** (lib) + 1 doc-test | +18 Demon Core Harvest tests (status assertions, membrane, dependency policy, composition, journal signature, archive/compact, STOP CARD) |
+| Elixir: demon core API | 5 | status assertions (non-destructive, epochs), STOP CARD, dependency policy, composition policy |
+| **Elixir total** | **13** | |
+| **Grand total** | **122** (lib) + 1 doc-test + 13 (web) | +18 Demon Core Harvest tests (status assertions, membrane, dependency policy, composition, journal signature, archive/compact, STOP CARD) |
 
 ### 4. Performance characteristics
 

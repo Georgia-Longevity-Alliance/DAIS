@@ -35,6 +35,16 @@
 - `proven_api.py`: `submit_status_assertion`, `add_dependency_policy`, `register_composition_policy`,
   `record_stop_card`.
 
+### What was built (Phoenix web)
+- Migration `20261016000000_add_demon_core_tables` + `Web.Knowledge.{StatusAssertion, StopCard,
+  DependencyPolicy, CompositionPolicy}` schemas.
+- API endpoints: POST/GET `/api/knowledge/status-assertions`, GET
+  `/api/knowledge/records/:id/status-assertions`, POST/GET `/api/knowledge/stop-cards`, POST/GET
+  `/api/knowledge/dependency-policies`, POST `/api/knowledge/composition-policies`.
+- Verified end-to-end: status transitions append epochs (1→2), STOP CARD records NEED, dependency
+  policy carries ROLE=POLICY, composition policy JOINT stores justification ids.
+- Web tests 8 → 13 (5 demon-core API tests).
+
 ### Key insight
 A status transition is now **an addressable event, not a field overwrite** — this is the single
 change that makes DAIS's append-only log actually trace-continuous. The membrane + dependency-policy
