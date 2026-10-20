@@ -50,6 +50,33 @@ Layer 6: Context       (time, state, environment)
 
 *Aligned with the rewritten AISocket README (6 layers). Previous docs said "7 layers" — corrected 2026-09-15.*
 
+## Closed-loop laser cell-disruption capability (2026-10-20)
+
+> Added from the Nikon GA+JOBS benchmark analysis (Kaneshiro et al. 2022, Quant Plant Biol 3:e30, DOI 10.1017/qpb.2022.24) — fully automated in-situ elimination of non-target cells on an inverted microscope. Master: `../docs/NIKON_AUTOMATED_LASER_SORTING_ANALYSIS_2026-10-20.md`.
+
+### Canonical Passport capability: `targeted_cell_disruption_automated`
+
+Builds on the existing OS1 V6 `ablation_laser` + `ablate_daughter_cells` (manual/scripted) by making the disruption **closed-loop and fully automated**:
+
+| Field | Value |
+|-------|-------|
+| name | `targeted_cell_disruption_automated` |
+| description | Automated closed-loop laser disruption of a defined set of non-target cells in situ: segment → classify → pre-ablation viability gate → keep-out masking → targeted irradiation → in-loop verification → per-cell QC. Preserves positional/lineage info (in-situ, not sorting). |
+| risk | high |
+| parameters | `target_class` (segment/class labels), `keep_out_radius_um` (mask, e.g. 60), `power_mw`, `duration_ms`, `verify_window_min`, `verify_markers` (e.g. H2B fragmentation, Centrin1 loss), `max_retries` (1; each retry +10% dose, capped by Body Law) |
+| body-law constraints | phototoxicity ceiling (dose cap per Body Law L1/L2), no-fire on protected cells, no-touch zones during laser |
+| verification | per-cell success + wrong-cell-kill → Flight Recorder; ablation pass/fail is a Flight-Recorder log entry |
+
+### Loop primitives (first-class V9-BRAIN building blocks)
+
+V9-BRAIN should expose **reusable loop primitives** (JOBS-like, from the analyzed Nikon workflow) so the same loop runs ablation (OS3), in-situ isolation (OS4), and routine acquisition (OS1):
+
+```
+acquire(tile) -> analyze(seg+class) -> gate(viability) -> mask(keep-out) -> act(laser/move) -> verify(pass/fail) -> qc(log)
+```
+
+Each primitive is: deterministic, schema-typed, logged to Flight Recorder, bounded by Body Law. The LLM assembles primitives; it never implements their internals (deterministic lane).
+
 ## Status
 
 Active development (2026-09-15, v3.0). Rust core green (104 tests). Python backend ready. Web dashboard foundation. First physical instance: ARGUS-OS1 (dais/ submodule).
