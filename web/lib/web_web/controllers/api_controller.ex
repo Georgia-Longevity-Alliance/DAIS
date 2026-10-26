@@ -142,7 +142,7 @@ defmodule WebWeb.ApiController do
     json(conn, claim_json(claim))
   end
 
-  # ── Demon core API (Demon Core Harvest 2026-10-16, DCT01–DCT20) ──
+  # ── Auditor core API (Auditor Core Harvest 2026-10-16, ACT01–ACT20) ──
 
   # Non-destructive status assertions: POST a new assertion (epoch auto-
   # incremented); prior assertions remain — a status transition is never an
@@ -184,7 +184,7 @@ defmodule WebWeb.ApiController do
   end
 
   # STOP CARDS: a stuck branch returns this instead of fabricating a
-  # continuation (DEMON §8). Stopping at the right place is success.
+  # continuation (AUDITOR §8). Stopping at the right place is success.
   def create_stop_card(conn, params) do
     case Repo.insert(StopCard.changeset(%StopCard{}, %{
       session_id: params["session_id"],
@@ -209,7 +209,7 @@ defmodule WebWeb.ApiController do
     json(conn, %{stop_cards: Enum.map(cards, &stop_card_json/1), count: length(cards)})
   end
 
-  # Dependency policies live in the network (ROLE=POLICY), not the demon core
+  # Dependency policies live in the network (ROLE=POLICY), not the auditor core
   # (DCT05–DCT07). Missing applicable policy → NEED / MISSING_RULE.
   def create_dependency_policy(conn, params) do
     case Repo.insert(DependencyPolicy.changeset(%DependencyPolicy{}, %{

@@ -1,11 +1,11 @@
-defmodule Web.Repo.Migrations.AddDemonCoreTables do
+defmodule Web.Repo.Migrations.AddAuditorCoreTables do
   use Ecto.Migration
 
   def change do
-    # Non-destructive status assertions (Demon Core Harvest, DCT11–DCT12):
+    # Non-destructive status assertions (Auditor Core Harvest, ACT11–ACT12):
     # every status transition is a NEW addressable assertion with an epoch;
     # the prior assertions remain as historical trace (never an overwrite).
-    create table(:noepedia_status_assertions) do
+    create table(:aletheia_status_assertions) do
       add :record_id, :binary_id
       add :status, :string
       add :epoch, :integer, default: 1
@@ -16,11 +16,11 @@ defmodule Web.Repo.Migrations.AddDemonCoreTables do
       timestamps()
     end
 
-    create index(:noepedia_status_assertions, [:record_id])
+    create index(:aletheia_status_assertions, [:record_id])
 
-    # STOP CARDS (DEMON_CORE_SPEC §8): a stuck branch returns this instead of
+    # STOP CARDS (AUDITOR_CORE_SPEC §8): a stuck branch returns this instead of
     # fabricating a continuation. Stopping at the right place is success.
-    create table(:noepedia_stop_cards) do
+    create table(:aletheia_stop_cards) do
       add :session_id, :binary_id
       add :where_str, :string
       add :wanted, :text
@@ -34,9 +34,9 @@ defmodule Web.Repo.Migrations.AddDemonCoreTables do
       timestamps()
     end
 
-    # Dependency policies live in the network (ROLE = POLICY), not the demon
-    # core (DCT05–DCT07). Missing applicable policy → NEED / MISSING_RULE.
-    create table(:noepedia_dependency_policies) do
+    # Dependency policies live in the network (ROLE = POLICY), not the auditor core
+    # core (ACT05–ACT07). Missing applicable policy → NEED / MISSING_RULE.
+    create table(:aletheia_dependency_policies) do
       add :name, :string
       add :upstream_transition, :string
       add :downstream_consequence, :string
@@ -47,9 +47,9 @@ defmodule Web.Repo.Migrations.AddDemonCoreTables do
       timestamps()
     end
 
-    # Justification-composition semantics (DCT19–DCT20): multiple
+    # Justification-composition semantics (ACT19–ACT20): multiple
     # justifications ≠ redundancy; ALTERNATIVE vs JOINT is explicit.
-    create table(:noepedia_composition_policies) do
+    create table(:aletheia_composition_policies) do
       add :result_id, :binary_id
       add :composition, :string
       add :justification_ids, :map, default: %{}

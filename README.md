@@ -65,4 +65,4 @@ cd web && mix setup && mix phx.server
 ## License
 
 Core (Rust): Apache 2.0 · Proven/Aletheia components: AGPL v3.0 · Web: MIT
-*Born from DAISocket + Proven. Built for ARGUS-OS1. Aligned with the AISocket + Aletheia architecture (Gakely).*
+*Born from DAISocket + Proven. Built for ARGUS-OS1. Aligned with the AISocket + Aletheia architecture (Aletheia team).*

@@ -1,13 +1,13 @@
-# Noepedia — DEMON CORE Harvest (2026-10-16)
+# Aletheia — DEMON CORE Harvest (2026-10-16)
 
 **Волна 3: DCT01–DCT20 / DEMON_CORE_SPEC** — невежественный демон, addressable-инвариант,
 commit gate, STOP/NEED, transaction membrane, TRACE CONTINUITY, история vs эпистемический статус,
 квалификаторы применимости, завершимость ≠ конfluence, composition-семантика обоснований.
 
-**Источник:** репозиторий `github.com/gakelytemp-creator/Noepedia` (трейл 50 коммитов;
+**Источник:** репозиторий `Aletheia doctrine core spec` (трейл 50 коммитов;
 `current/DEMON_CORE_SPEC.md`; `current/experiments/DEMON_DCT01..20.md`).
-Предшественники: `docs/NOEPEDIA_HARVEST_2026-10-12.md` (волна 2: author column, №0),
-`THEORY.md`, `~/Desktop/Services/docs/NOEPEDIA_KNOWLEDGE_CREDIT_2026-10-16.md`.
+Предшественники: `docs/ALETHEIA_EPISTEMIC_HARVEST_2026-10-12.md` (волна 2: author column, №0),
+`THEORY.md`, `~/Desktop/Services/docs/ALETHEIA_DOCTRINE_2026-10-16.md`.
 
 **Статус:** анализ + научная сверка для DAIS. Внешние якоря — DOI/PMID/arXiv (проверены
 Crossref/PubMed/arXiv 2026-10-16). Слабые места помечены честно. «Не проверено» — сказано прямо.
@@ -16,7 +16,7 @@ Crossref/PubMed/arXiv 2026-10-16). Слабые места помечены че
 
 ## 0. Резюме (executive)
 
-Третья волна Noepedia-исследований довела **невежественного демона** (инфраструктурного оператора
+Третья волна Aletheia-исследований довела **невежественного демона** (инфраструктурного оператора
 знаниевой сети, который не понимает предмет) до рабочей спецификации: 9 примитивов, commit gate,
 режим STOP/NEED с картой остановки, addressable-инвариант «всё есть record и может быть целью
 relation», знания-в-сети (правила, политики, статусы — адресуемые объекты, а не код).
@@ -97,7 +97,7 @@ ontology invention, silent status collapse и т.д.), затем — миним
     selection policy — DCT12 OPEN).
 
 **Как встроить (код):**
-- `noepedia.rs`: у `KnowledgeStatus` объекта добавить `HistoryStatus` (COMMITTED/COMPACTED/ARCHIVED/
+- `aletheia.rs`: у `KnowledgeStatus` объекта добавить `HistoryStatus` (COMMITTED/COMPACTED/ARCHIVED/
   SUPERSEDED) рядом с `CurrentEpistemicStatus`; переходы через `validator.rs` не мутируют прошлое,
   а порождают новую статус-assertion с `epoch++`.
 - `event_store.rs`: добавить операцию `Archive`/`Compact` с проверкой «не теряем адрес».
@@ -122,7 +122,7 @@ AMBIGUOUS_MATCH, CONFLICT, CLOSURE_UNKNOWN, CREDIT_UNRESOLVED. **Останов�
   точным дозволенным запросом; NEED требует добавить структуру, а не ответ).
 
 **Как встроить (код):**
-- `noepedia.rs`: `SessionOutcome` дополнить `StopCard { stop_id, where_, wanted, available,
+- `aletheia.rs`: `SessionOutcome` дополнить `StopCard { stop_id, where_, wanted, available,
   missing, stop_class, can_ask_outside, query, provenance, scope }` + enum `NeedClass`.
 - `py_backend/llm_bridge.py`: маппить ответ LLM в GO/ASK/BLOCK/NEED; при NEED — генерировать
   STOP CARD вместо «правдоподобного продолжения».
@@ -153,7 +153,7 @@ AMBIGUOUS_MATCH, CONFLICT, CLOSURE_UNKNOWN, CREDIT_UNRESOLVED. **Останов�
 **Как встроить (код):**
 - `validator.rs`: проверять delta N против rule-set из committed N-1 (снимок правил до применения delta);
   запрещать `CREATE/RULE` внутри delta, который использует ту же delta для авторизации.
-- `noepedia.rs`: `DependencyPolicy` как адресуемый объект (предшественник → последствие/условие),
+- `aletheia.rs`: `DependencyPolicy` как адресуемый объект (предшественник → последствие/условие),
   REFERS_TO + ROLE=POLICY; при отсутствии applicable-политики возвращать `NeedClass::MISSING_RULE`.
 
 ---
@@ -162,7 +162,7 @@ AMBIGUOUS_MATCH, CONFLICT, CLOSURE_UNKNOWN, CREDIT_UNRESOLVED. **Останов�
 
 Проверено через Crossref / PubMed E-utilities / arXiv API 2026-10-16. Для каждой находки — якорь,
 подтверждающий ПРИНЦИП (не конкретную реализацию). Уровень: **аналогия/принцип подтверждён,
-конкретика Noepedia — рабочая гипотеза**.
+конкретика Aletheia — рабочая гипотеза**.
 
 | Находка | Внешний принцип | Якорь | Класс |
 |---------|-----------------|-------|-------|
@@ -230,7 +230,7 @@ AMBIGUOUS_MATCH, CONFLICT, CLOSURE_UNKNOWN, CREDIT_UNRESOLVED. **Останов�
 
 **Сквозное слабое место:** все находки получены на **искусственных сценариях с LLM-демоном**;
 переносимость на детерминированный Rust-код с реальными трассами ARGUS-OS1 **не проверена**.
-Внешние якоря подтверждают принципы, но не конкретную реализацию Noepedia.
+Внешние якоря подтверждают принципы, но не конкретную реализацию Aletheia.
 
 ---
 
@@ -245,7 +245,7 @@ AMBIGUOUS_MATCH, CONFLICT, CLOSURE_UNKNOWN, CREDIT_UNRESOLVED. **Останов�
 ### 6.2 Что подтверждено слабее (одна-две аналогии, нужен доп. поиск)
 - REFERS_TO + ROLE как generic-механизм (multi-context — аналогия, не прямое соответствие).
 - Политики-в-сети против инвариантов-в-ядре (Datalog-stratification — сильная, но не идентичная аналогия).
-- Knowledge credit как «временное право с долгом» (conditional/hypothetical reasoning — близко, но термин уникален для Noepedia).
+- Knowledge credit как «временное право с долгом» (conditional/hypothetical reasoning — близко, но термин уникален для Aletheia).
 
 ### 6.3 Сквозные паттерны (что на самом деле нового для мира)
 1. **«Статус — это адресуемое утверждение, а не поле»** (Н12): согласуется с AGM belief revision,
@@ -262,7 +262,7 @@ AMBIGUOUS_MATCH, CONFLICT, CLOSURE_UNKNOWN, CREDIT_UNRESOLVED. **Останов�
   не заметить, что in-place мутация статуса нарушает TRACE CONTINUITY принцип.
 - **Усложнение**: если встроить все 12 находок сразу — раздувание. Правило Occam (Н15) должно
   применяться и к DAIS: встраивать только то, что закрывает реальный gap на ARGUS-OS1.
-- **Философский балласт**: часть терминологии Noepedia (SKREGET, KAIRAOS, K-лестница) не должна
+- **Философский балласт**: часть терминологии Aletheia (SKREGET, KAIRAOS, K-лестница) не должна
   попадать в код без операционального определения.
 
 ---
@@ -270,7 +270,7 @@ AMBIGUOUS_MATCH, CONFLICT, CLOSURE_UNKNOWN, CREDIT_UNRESOLVED. **Останов�
 ## 7. Связь с другими проектами (кратко)
 
 - **Services/conscience** — волна 3 является код-версией принципа KNOWLEDGE_CREDIT из
-  `NOEPEDIA_KNOWLEDGE_CREDIT_2026-10-16.md`: «четыре стены + потолок» → commit gate + credit.
+  `ALETHEIA_DOCTRINE_2026-10-16.md`: «четыре стены + потолок» → commit gate + credit.
   Полезно: демон-ядро как формализация «сократического демона» skill-а `conscience`.
 - **LC (MCARA/CEDAR)** — TRACE CONTINUITY и HISTORY/EPISTEMIC-разделение применимы к
   pipeline-аудите обработки изображений (какой коммит каким правилом решён, не затирать историю
@@ -281,7 +281,7 @@ AMBIGUOUS_MATCH, CONFLICT, CLOSURE_UNKNOWN, CREDIT_UNRESOLVED. **Останов�
 
 ---
 
-## 8. Открытые вопросы (унаследованные от Noepedia, актуальные для DAIS)
+## 8. Открытые вопросы (унаследованные от Aletheia, актуальные для DAIS)
 
 1. **Граница NETWORK RULES vs EXECUTOR INVARIANTS** (DCT08): какие минимальные инварианты не могут
    быть отменены сетью? (В DAIS: Body Law слои 1–2 = hard core, но вопрос «кто переписывает

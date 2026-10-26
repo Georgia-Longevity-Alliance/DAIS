@@ -47,7 +47,7 @@ defmodule WebWeb.Router do
     post "/knowledge/claims", ApiController, :create_claim
     get "/knowledge/claims/:id", ApiController, :get_claim
 
-    # Demon core API (Demon Core Harvest 2026-10-16)
+    # Auditor core API (Auditor Core Harvest 2026-10-16)
     get "/knowledge/records/:id/status-assertions", ApiController, :list_status_assertions
     post "/knowledge/status-assertions", ApiController, :create_status_assertion
     get "/knowledge/stop-cards", ApiController, :list_stop_cards

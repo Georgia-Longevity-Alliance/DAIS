@@ -25,7 +25,7 @@ DAIS/                           # Root: core files only
 │       ├── event_store.rs     # Append-only log
 │       ├── validator.rs       # Delta validator
 │       ├── consolidator.rs    # Knowledge consolidation
-│       ├── noepedia.rs        # Noepedia grammar (RULE_CARD, network, replication, coverage, context, placement)
+│       ├── aletheia.rs        # Aletheia grammar (RULE_CARD, network, replication, coverage, context, placement)
 │       └── renderer.rs        # Article renderer
 │
 ├── py_backend/                # Python — AI/ML + HTTP
@@ -34,7 +34,7 @@ DAIS/                           # Root: core files only
 │       ├── core/src/main.rs
 │       ├── core/src/main.rs          # Registry HTTP client
 │       ├── llm_bridge.py      # LLM ↔ DAISocket
-│       └── noepedia_api.py    # Proven client
+│       └── aletheia_api.py    # Proven client
 │
 ├── web/                        # Elixir/Phoenix — Dashboard
 │   ├── mix.exs

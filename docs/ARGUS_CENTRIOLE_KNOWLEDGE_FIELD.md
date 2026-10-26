@@ -1,13 +1,13 @@
-# ARGUS Centriole Knowledge Field — MVP (Noepedia)
+# ARGUS Centriole Knowledge Field — MVP (Aletheia)
 
 **Date:** 2026-09-15
 **Status:** Seed (loadable) + reference
-**Files:** `py_backend/daisocket/seed_centriole_field.json` · `core/src/noepedia.rs` · `core/src/zpd.rs`
-**Sources:** ARGUS-OS1 `CONCEPT.md` (pilots P0–P8, H1), Noepedia grammar.
+**Files:** `py_backend/daisocket/seed_centriole_field.json` · `core/src/aletheia.rs` · `core/src/zpd.rs`
+**Sources:** ARGUS-OS1 `CONCEPT.md` (pilots P0–P8, H1), Aletheia grammar.
 
 ## 1. What this is
 
-The first domain MVP of the Noepedia field, aligned with ARGUS. Pilots P0–P8 are represented as CLAIM nodes with an evidence layer, a Go/No-Go RULE_CARD per protocol, and COVERAGE (relevant vs evaluated networks). This turns scattered experiment logs into **inspectable reusable knowledge**: the upper layer (claim) for fast use, the lower layer (evidence/context) for inspection.
+The first domain MVP of the Aletheia field, aligned with ARGUS. Pilots P0–P8 are represented as CLAIM nodes with an evidence layer, a Go/No-Go RULE_CARD per protocol, and COVERAGE (relevant vs evaluated networks). This turns scattered experiment logs into **inspectable reusable knowledge**: the upper layer (claim) for fast use, the lower layer (evidence/context) for inspection.
 
 ## 2. Pilots as CLAIM nodes (from `seed_centriole_field.json`)
 
@@ -35,7 +35,7 @@ Coverage records how many relevant networks have been *evaluated* vs merely *ide
 
 ## 4. COVERAGE table for the review «Asymmetric Divisions and Adult Stem Cells»
 
-Direct application of the Noepedia coverage discipline to the manuscript meta-analysis:
+Direct application of the Aletheia coverage discipline to the manuscript meta-analysis:
 
 | Evaluative network | relevant systems | evaluated | supporting (direct) | conflicting | not yet | status |
 |--------------------|:---:|:---:|:---:|:---:|:---:|:---:|

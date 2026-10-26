@@ -67,9 +67,9 @@ DAIS counts joules. Every operation is classified:
 
 The system minimizes Red operations by caching traces (Green lookups replace Red diagnoses) and by using Yellow pre-filters (only invoke LLM when anomaly is genuinely novel).
 
-### 6. Noepedia Grammar (v3.0)
+### 6. Aletheia Grammar (v3.0)
 
-Noepedia stores knowledge OUTSIDE any model's weights as a persistent, addressable, inspectable field. Implemented in `core/src/noepedia.rs`.
+Aletheia stores knowledge OUTSIDE any model's weights as a persistent, addressable, inspectable field. Implemented in `core/src/aletheia.rs`.
 
 **Three layers:**
 1. **Object field** — an object (object/doc/person/component/source) enters with minimal interpretation.
@@ -90,12 +90,12 @@ A claim moves through states PROPOSED → SUPPORTED → REPLICATED ×1 … ×N �
 
 OBSERVATION ≠ HYPOTHESIS ≠ RESULT ≠ REPLICATION ≠ current KNOWLEDGE. OPEN and CONFLICT are legal knowledge states; the system must never silently convert PROPOSED→FACT, UNKNOWN→CONFIDENT ANSWER, or PARTIAL COVERAGE→COMPLETE UNDERSTANDING.
 
-### 10. The Trace → Knowledge Loop (AISocket + Noepedia)
+### 10. The Trace → Knowledge Loop (AISocket + Aletheia)
 
 ```text
 AISocket
   observe / test / act → flight recorder + trace
-Noepedia/Proven
+Aletheia/Proven
   consolidate trace → claim with evidence + replication + coverage
 next body
   starts where the previous one stopped (Green lookup, not Red LLM)
@@ -112,26 +112,26 @@ DAIS maps this onto bounded autonomy:
 - **Three zones:** `ActualDevelopment` (green, deterministic, cached) / `ProximalDevelopment` (LLM scaffolds at the edge) / `Inaccessible` (human or OPEN).
 - **Scaffolding levels:** ObserveOnly → Hint → GuidedSteps → FullHelp → HumanRequired.
 - **Fading:** after each successful scaffolded resolution the help decays geometrically (1.0 → 0.5 → 0.25 …). When fading reaches ~0 the skill is **internalized** — moved to actual development.
-- **Internalization = Noepedia consolidation:** when the result is consolidated as a REPLICATED claim with sufficient coverage, the next occurrence is Green. This is the energy-honest asymptote `Cost(anomaly) → O(1)`.
+- **Internalization = Aletheia consolidation:** when the result is consolidated as a REPLICATED claim with sufficient coverage, the next occurrence is Green. This is the energy-honest asymptote `Cost(anomaly) → O(1)`.
 
 ```text
 interpsychic  →  LLM scaffolds (red, ~1 J/token)
                  trace recorded
-                 consolidated into Noepedia (REPLICATED)
+                 consolidated into Aletheia (REPLICATED)
 extragsychic   →  fading: hint instead of full help
 intrapsychic   →  internalized: green, deterministic, ~pJ
 ```
 
-### 6. Author Column & Subjectivity Criterion (Noepedia Harvest — 2026-10-12)
+### 6. Author Column & Subjectivity Criterion (Aletheia Harvest — 2026-10-12)
 
-> Source: second wave of external review of the Noepedia philosophy layer. Master: `docs/NOEPEDIA_HARVEST_2026-10-12.md`.
+> Source: second wave of external review of the Aletheia philosophy layer. Master: `docs/ALETHEIA_EPISTEMIC_HARVEST_2026-10-12.md`.
 
 Safe autonomy has a safety-check part (Body Law) and a **self-direction** part. The author column
 makes self-direction measurable. Every decision record carries an author column: signature
 (provenance object), door (modality lane), time (F1 order). The column records the **writing event**
 (who issued the mandate), not the waking event.
 
-**Subjectivity criterion (v0.1, TWO-axis — after Gakely's animal counterexample, 2026-10-12):**
+**Subjectivity criterion (v0.1, TWO-axis — after the animal counterexample, 2026-10-12):**
 - **Freedom** = 1 − (foreign-authored wakings / all over W) — non-domination.
 - **Authorship** = (own-authored wakings / all over W) — whether the actor writes at all.
 - **Quality of control** — third, orthogonal axis (outcome-weighted success of own mandates; bench).
@@ -160,7 +160,7 @@ two sides.
 
 ### 8. Trace Continuity & History ≠ Epistemic Status (Demon Core Harvest — 2026-10-16)
 
-> Source: Noepedia DCT10–DCT12. Master: `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md`.
+> Source: Aletheia DCT10–DCT12. Master: `docs/ALETHEIA_AUDITOR_CORE_HARVEST_2026-10-16.md`.
 
 A committed transition may be **compacted, archived, superseded or corrected, but may not be made
 historically unaddressable or provenance-untraceable**. Error correction is allowed; rewriting the past
@@ -179,7 +179,7 @@ separation + `epoch` per status assertion; `Archive`/`Compact` with an address-p
 
 ### 9. STOP / NEED Regime (Demon Core Harvest — 2026-10-16)
 
-> Source: Noepedia DEMON_CORE_SPEC §7–8. Master: `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md`.
+> Source: Aletheia DEMON_CORE_SPEC §7–8. Master: `docs/ALETHEIA_AUDITOR_CORE_HARVEST_2026-10-16.md`.
 
 The demon goes as far as it lawfully can, then stops — and stopping at the right place is **success**,
 not failure. Four states:
@@ -202,7 +202,7 @@ only allowed by a precise permitted query; NEED requires adding structure, not a
 
 ### 10. Transaction Membrane & Policies in the Network (Demon Core Harvest — 2026-10-16)
 
-> Source: Noepedia DCT08–DCT09, DEMON_CORE_SPEC §14–16.
+> Source: Aletheia DCT08–DCT09, DEMON_CORE_SPEC §14–16.
 
 1. Every mutation passes PROPOSE → CHECK → COMMIT.
 2. **A delta cannot use rules introduced or changed by itself to authorize that same delta.** The
@@ -219,7 +219,7 @@ resolved **before** semantic/status conflict.
 
 ### 11. Termination ≠ Confluence; Composition Semantics (Demon Core Harvest — 2026-10-16)
 
-> Source: Noepedia DCT17–DCT20. Master: `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md`.
+> Source: Aletheia DCT17–DCT20. Master: `docs/ALETHEIA_AUDITOR_CORE_HARVEST_2026-10-16.md`.
 
 - **Termination ≠ Confluence.** A justification graph must be finite/inspectable (cycle → BLOCK);
 divergent terminating lawful paths are kept with both justification paths and surface as an addressable

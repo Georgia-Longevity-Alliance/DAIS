@@ -44,9 +44,9 @@ The first real-world integration target validates the core hypothesis: that a co
 | Elixir: interview | 3 | Full flow, simple device, snake_case |
 | Elixir: controllers | 1 | Page controller |
 | Elixir: Phoenix scaffold | 4 | Default Phoenix tests |
-| Elixir: demon core API | 5 | status assertions (non-destructive, epochs), STOP CARD, dependency policy, composition policy |
+| Elixir: auditor core API | 5 | status assertions (non-destructive, epochs), STOP CARD, dependency policy, composition policy |
 | **Elixir total** | **13** | |
-| **Grand total** | **122** (lib) + 1 doc-test + 13 (web) + 1 integration (first run) | +18 Demon Core Harvest tests (status assertions, membrane, dependency policy, composition, journal signature, archive/compact, STOP CARD) + `tests/demon_first_run.rs` ARGUS-OS1 end-to-end walk |
+| **Grand total** | **122** (lib) + 1 doc-test + 13 (web) + 1 integration (first run) | +18 Auditor Core Harvest tests (status assertions, membrane, dependency policy, composition, journal signature, archive/compact, STOP CARD) + `tests/auditor_first_run.rs` ARGUS-OS1 end-to-end walk |
 
 ### 4. Performance characteristics
 
@@ -61,28 +61,28 @@ The first real-world integration target validates the core hypothesis: that a co
 | API: register passport | <200 ms | End-to-end with validation |
 | API: list passports | <50 ms | Indexed query |
 
-## §. Noepedia Harvest — 2026-10-12 (epistemic standard)
+## §. Aletheia Harvest — 2026-10-12 (epistemic standard)
 
-> Master: `docs/NOEPEDIA_HARVEST_2026-10-12.md` · Scientific confirmation: GRADE PMID 18436948; Murad New Evidence Pyramid PMID 27339128; Ioannidis PMID 16060722; Conant–Ashby DOI 10.1080/00207727008920220; Siebert MHC DOI 10.1007/s43681-022-00167-3; HART arXiv 2603.05828; REASONS arXiv 2405.02228; AgentHallu arXiv 2601.06818; Devitt ACD arXiv 2303.06813; requisite variety arXiv 1409.7475/2206.04896.
+> Master: `docs/ALETHEIA_EPISTEMIC_HARVEST_2026-10-12.md` · Scientific confirmation: GRADE PMID 18436948; Murad New Evidence Pyramid PMID 27339128; Ioannidis PMID 16060722; Conant–Ashby DOI 10.1080/00207727008920220; Siebert MHC DOI 10.1007/s43681-022-00167-3; HART arXiv 2603.05828; REASONS arXiv 2405.02228; AgentHallu arXiv 2601.06818; Devitt ACD arXiv 2303.06813; requisite variety arXiv 1409.7475/2206.04896.
 
-| Principle (Noepedia harvest) | DAIS evidence / target | Verified support |
+| Principle (Aletheia harvest) | DAIS evidence / target | Verified support |
 |------------------------------|------------------------|------------------|
 | Knowledge as status ladder, not float confidence | `KnowledgeStatus` (Proposed→Supported→Replicated/Refuted/Contested/Open/Superseded) | GRADE (PMID 18436948), Murad (PMID 27339128), TRL |
 | OPEN ≠ negation; CONFLICT is legal | `KnowledgeStatus::Open` + ConflictRecord first-class | Known-unknowns (PMID 28584653); abduction survey (arXiv 2604.08016) |
-| Replication = independent witness | `Replication` operation in noepedia.rs | Cross-modal confirmation; caution: cross-lingual transfer can import bias (arXiv 2305.12709) |
+| Replication = independent witness | `Replication` operation in aletheia.rs | Cross-modal confirmation; caution: cross-lingual transfer can import bias (arXiv 2305.12709) |
 | Provenance = hallucination antidote | Proven chain (claims→sources→evidence→status) + traces | HART (2603.05828), REASONS (2405.02228), AgentHallu (2601.06818) |
 | Tested by construction, not precedent | RuleCard invariant (network faithful to its rule) | Conant–Ashby (10.1080/00207727008920220), Ioannidis (16060722) |
 | Subject = dominant signature in author column | **NEW**: author column + subjectivity criterion (§6 THEORY) | MHC Siebert (10.1007/s43681-022-00167-3); anti-rubber-stamp (2603.01202) |
 | №0 = axiom, named axiom | Body Law layers 1–2 hard core; layers 3–6 revisable | Devitt ACD (2303.06813) |
 
-## §. Noepedia Demon Core Harvest — 2026-10-16 (executive discipline)
+## §. Aletheia Auditor Core Harvest — 2026-10-16 (executive discipline)
 
-> Master: `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md`. Source: Noepedia DCT01–DCT20 /
-> DEMON_CORE_SPEC (github.com/gakelytemp-creator/Noepedia). External anchors verified via
-> Crossref / PubMed / arXiv 2026-10-16. Level: **principles confirmed externally; Noepedia's concrete
+> Master: `docs/ALETHEIA_AUDITOR_CORE_HARVEST_2026-10-16.md`. Source: Aletheia ACT01–ACT20 /
+> AUDITOR_CORE_SPEC (Aletheia doctrine core spec). External anchors verified via
+> Crossref / PubMed / arXiv 2026-10-16. Level: **principles confirmed externally; Aletheia's concrete
 > implementation is a working hypothesis, not a theorem.**
 
-| Principle (demon core) | DAIS evidence / target | Verified external support |
+| Principle (auditor core) | DAIS evidence / target | Verified external support |
 |------------------------|------------------------|---------------------------|
 | TRACE CONTINUITY: committed transition may be compacted/superseded but never made historically unaddressable | event store + delta protocol; target: `Archive`/`Compact` with address preservation | Authenticated append-only logs: SoK Authenticated Prefix Relations (arXiv); 2P-BFT-Log (arXiv); Transparency Logs via Append-Only Auth. Dictionaries, 10.1145/3319535.3345652; Certificate Transparency, 10.1145/2668152.2668154 |
 | HISTORY_STATUS ≠ EPISTEMIC_STATUS; non-destructive MARK (new assertion + epoch, old kept) | target: `HistoryStatus`/`CurrentEpistemicStatus` separation; validator emits new status assertion instead of in-place mutation | AGM belief revision: AGM Belief Revision, Semantically (arXiv); modal-logic translation of AGM axioms (arXiv); event-sourced agent audits: ESAA-Security (arXiv); The Log is the Agent (arXiv) |
@@ -93,7 +93,7 @@ The first real-world integration target validates the core hypothesis: that a co
 | Dependency policy lives in the network; rule-level conflict → addressable CONFLICT, no fabricated result | target: `DependencyPolicy` as addressable object; rule-level conflict containment | Dung abstract argumentation (arXiv: On the Semantics of AAF; Semi-Abstract Value-Based AF); multi-context reasoning (10.1016/j.datak.2022.102044) |
 | Termination ≠ Confluence; cycle → BLOCK, no fabricated outcome | target: finite justification graphs in consolidator | Term rewriting theory: Simplifying Conditional TRS (10.1016/S0747-7171(87)80010-X); Fair Conditional TRS (10.1007/978-3-662-09691-8_11); confluence non-terminating (arXiv 1203.5121) |
 | Same result ≠ same provenance; multiple justifications ≠ redundancy (ALTERNATIVE vs JOINT composition policy) | target: composition policy for multi-witness REPLICATED | Justification logic (arXiv: strong finite model property); Alternative Pathways to Proof (10.1093/he/9780198979340.003.0014); Minimal Sufficient Projections of Proof Certificates (10.2139/ssrn.7366621) |
-| Addressable triplets & patterns; everything is a record that can be a target | RDF-based noepedia grammar (noepedia.rs) | Named graphs / RDF-star: Easy and Complex (10.1007/978-3-031-21422-6_18); RDF named graphs (10.59350/n84f2-8q140) |
+| Addressable triplets & patterns; everything is a record that can be a target | RDF-based aletheia grammar (aletheia.rs) | Named graphs / RDF-star: Easy and Complex (10.1007/978-3-031-21422-6_18); RDF named graphs (10.59350/n84f2-8q140) |
 | Provenance as agentic prerequisite (cross-cutting) | Proven chain + traces (existing) | PROV-AGENT (10.1109/escience65000.2025.00093); Responsible Agentic AI Requires Explicit Provenance (SSRN 10.2139/ssrn.6518458); PROV-O agent simulation (10.1145/2457317.2457377) |
 
 **Weak spots (recorded in master doc §5):** abstention calibration trade-off (over-/under-abstention);

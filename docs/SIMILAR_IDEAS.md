@@ -21,7 +21,7 @@
 ### Knowledge Verification / Anti-Hallucination
 | Проект | Суть | Отличие от DAIS |
 |--------|------|----------------|
-| **Proven** (Gakely) | Provenance-aware knowledge | Часть AIS, интегрирована |
+| **Proven** (Aletheia team) | Provenance-aware knowledge | Часть AIS, интегрирована |
 | **KERI** (Key Event Receipt Infrastructure) | Verifiable data chains | Нет S-P-O knowledge model |
 | **Content Authenticity Initiative** (Adobe) | C2PA provenance standard | Медиа, не научное знание |
 | **OpenAlex** | Открытый граф научных знаний | Нет verification layer |
@@ -118,9 +118,9 @@ BaseRobot → WheeledRobot → DeliveryRobot → MyCustomBot
 ```
 С каждым уровнем добавляются capabilities и forbidden_always.
 
-## 6. НОВЫЕ ПОДОБНЫЕ ИДЕИ (обзор 2026-10-16, волна 3 Noepedia)
+## 6. НОВЫЕ ПОДОБНЫЕ ИДЕИ (обзор 2026-10-16, волна 3 Aletheia)
 
-> Мастер: `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md`. Это аналоги/параллели, найденные
+> Мастер: `docs/ALETHEIA_AUDITOR_CORE_HARVEST_2026-10-16.md`. Это аналоги/параллели, найденные
 > в научных базах при проверке демон-ядра. Класс: прямое подтверждение / аналогия / смежное.
 
 ### Knowledge / Provenance (прямые аналоги)

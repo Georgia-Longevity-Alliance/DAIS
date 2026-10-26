@@ -10,7 +10,7 @@ defmodule Web.Knowledge.StatusAssertion do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "noepedia_status_assertions" do
+  schema "aletheia_status_assertions" do
     field :record_id, :string
     field :status, :string
     field :epoch, :integer, default: 1

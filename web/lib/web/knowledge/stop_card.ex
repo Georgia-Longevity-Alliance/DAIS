@@ -1,6 +1,6 @@
 defmodule Web.Knowledge.StopCard do
   @moduledoc """
-  A STOP CARD (DEMON_CORE_SPEC §8): a stuck branch returns this instead of
+  A STOP CARD (AUDITOR_CORE_SPEC §8): a stuck branch returns this instead of
   fabricating a plausible continuation. Stopping at the right place is a
   successful behavior, not a failure. `can_ask_outside` distinguishes ASK
   (precise permitted query exists) from NEED (structure missing).
@@ -12,7 +12,7 @@ defmodule Web.Knowledge.StopCard do
                    MISSING_PATTERN MISSING_SCOPE MISSING_PROVENANCE MISSING_OPERATION
                    AMBIGUOUS_MATCH CONFLICT CLOSURE_UNKNOWN CREDIT_UNRESOLVED)
 
-  schema "noepedia_stop_cards" do
+  schema "aletheia_stop_cards" do
     field :session_id, :string
     field :where_str, :string
     field :wanted, :string

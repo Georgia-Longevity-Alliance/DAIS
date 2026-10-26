@@ -1,10 +1,10 @@
-# NOEPEDIA HARVEST — DAIS application (2026-10-12)
+# ALETHEIA EPISTEMIC STANDARD — DAIS application (2026-10-12)
 
-**Source:** Correspondence Jaba↔Gakely (2026-10-12), Noepedia repo (gakelytemp-creator/Noepedia),
-second wave of external review. **Master analysis:** `~/Desktop/Services/docs/NOEPEDIA_HARVEST_2026-10-12.md`.
-**Companion (ready to send):** `~/Desktop/Services/docs/NOEPEDIA_COLUMN_RULE_AND_AXIOM_2026-10-12.md`.
+**Source:** Correspondence (2026-10-12), Aletheia doctrine core spec,
+second wave of external review. **Master analysis:** `~/Desktop/Services/docs/ALETHEIA_EPISTEMIC_HARVEST_2026-10-12.md`.
+**Companion (ready to send):** `~/Desktop/Services/docs/ALETHEIA_AUTHORSHIP_LEDGER_2026-10-12.md`.
 
-**Why this belongs in DAIS:** DAIS implements the AISocket + Noepedia architecture as working code.
+**Why this belongs in DAIS:** DAIS implements the AISocket + Aletheia architecture as working code.
 The review produced two deliverables DAIS should carry as first-class theory + code:
 **(1) the author-column transition rule (v0.1)** — who is actually in control of an autonomous body;
 **(2) the №0 axiom (option B)** plus two corollaries (reactivity, read-only observer).
@@ -17,12 +17,12 @@ The review produced two deliverables DAIS should carry as first-class theory + c
 |---|-----------|----------------------------------|--------|
 | 1 | **Hallucination = provenance/attribution failure** (record that lost its label and was taken as sensory) | Proven (claims→sources→evidence→status); Flight Recorder traces; invariant "a trace is evidence of what happened, not automatically truth" | Enforce: any LLM output entering the field carries provenance; a record without a label is a **defect**, not "no data". Attribution in agent steps is hard — do not trust "the model will figure it out" |
 | 2 | **K-ladder (verifiable steps) instead of float confidence** | `KnowledgeStatus` = Proposed/Supported/Replicated/Refuted/Contested/Open/Superseded — **already a K-ladder** | Map explicitly to GRADE (PMID 18436948), Murad pyramid (PMID 27339128), Oxford CEBM, NASA TRL; document the mapping in the glossary |
-| 3 | **Two independent witnesses / replication** | Noepedia `Replication` ("an operation, not decoration") | Require ≥2 independent replications/sources for Supported→Replicated; define *independence* criterion + inter-rater κ; cross-modal, not same-pool (cross-lingual control can import bias — arXiv 2305.12709) |
+| 3 | **Two independent witnesses / replication** | Aletheia `Replication` ("an operation, not decoration") | Require ≥2 independent replications/sources for Supported→Replicated; define *independence* criterion + inter-rater κ; cross-modal, not same-pool (cross-lingual control can import bias — arXiv 2305.12709) |
 | 4 | **OPEN ≠ negation** | `KnowledgeStatus::Open`; CONFLICT is first-class | Ensure Open is never rendered as "absent/denied". Open = addressable unknown + **constraints + validation rule** (add a `validation_rule` field to Open records) |
-| 5 | **Formed unknown / REQUIRED_ROLE** (relation requires a participant; identity unknown) | Noepedia relation/placement grammar | Add REQUIRED_ROLE as a first-class relation kind (role known, identity unknown) with constraints; without a validation rule it becomes apophenia (false role projection) |
+| 5 | **Formed unknown / REQUIRED_ROLE** (relation requires a participant; identity unknown) | Aletheia relation/placement grammar | Add REQUIRED_ROLE as a first-class relation kind (role known, identity unknown) with constraints; without a validation rule it becomes apophenia (false role projection) |
 | 6 | **Knowledge tested by construction, not precedent** | Invariant "a network must remain faithful to the rule by which it evaluates its objects" | Validation = build the scene (replicate/test), not "someone wrote it". Every good regulator must be a model (Conant–Ashby, DOI 10.1080/00207727008920220); precedent is systematically unreliable (Ioannidis, PMID 16060722) |
 | 7 | **Inventory = exorcism** (no address → cannot be rewritten) | Addressable objects are core; observability | Audit = full inventory first (addresses), then fixes; you can only regulate what you can distinguish (Ashby requisite variety — arXiv 1409.7475, 2206.04896) |
-| 8 | **Author column / Meaningful Human Control** (subject = dominant signature in own decision vector; AGI threshold = right to write, not model power) | **NEW — to implement** (see §B) | Add author column to Proven/Noepedia; who writes the decision vector = who controls (Siebert MHC, DOI 10.1007/s43681-022-00167-3; Devitt ACD, arXiv 2303.06813; anti-rubber-stamp, arXiv 2603.01202) |
+| 8 | **Author column / Meaningful Human Control** (subject = dominant signature in own decision vector; AGI threshold = right to write, not model power) | **NEW — to implement** (see §B) | Add author column to Proven/Aletheia; who writes the decision vector = who controls (Siebert MHC, DOI 10.1007/s43681-022-00167-3; Devitt ACD, arXiv 2303.06813; anti-rubber-stamp, arXiv 2603.01202) |
 
 ---
 
@@ -65,7 +65,7 @@ amended by sessions with a quorum. Name the root axiom; declare its revision pro
 
 ---
 
-## D. Corollary 1 — reactivity, two-axis (Gakely's animal counterexample, 2026-10-12)
+## D. Corollary 1 — reactivity, two-axis (the animal counterexample, 2026-10-12)
 
 Subjectivity is TWO axes, not one: `1 − foreign` measures FREEDOM (non-domination); the share of
 own measures AUTHORSHIP (whether the actor writes at all); quality of control is a third, orthogonal
@@ -90,13 +90,13 @@ authorship — the guarantee lives outside the field. This is not a bug; name it
 
 ## F. Open (OPEN) — where the journal lives
 
-Provenance objects are field objects (SPO triplets; Noepedia README lines 127, 153, 701; line 484:
+Provenance objects are field objects (SPO triplets; Aletheia README lines 127, 153, 701; line 484:
 *provenance of confidence should not remain a decorative label outside the working network*), while
-the exchange phrasing said "journal outside". In DAIS this resolves cleanly: `noepedia.rs` already
+the exchange phrasing said "journal outside". In DAIS this resolves cleanly: `aletheia.rs` already
 treats provenance records as first-class objects → **the journal is inside** → the "two floors"
 (content vs act-of-recording) collapse for the labels; what stays outside is the act-as-performance
 (irreducible, by design — like the story's smile). **DECISION (2026-10-12):** journal = inside the field; act-as-performance = outside by design.
-Provenance records are first-class SPO objects (`noepedia.rs`); the two floors (content vs
+Provenance records are first-class SPO objects (`aletheia.rs`); the two floors (content vs
 act-of-recording) collapse for labels; the irreducible residue (act-as-performance) is the
 same residue already scoped out as the story's smile (OPEN-BY-DESIGN). No further README change
 needed — the architecture already states it (lines 127/153/484/701).

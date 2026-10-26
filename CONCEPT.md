@@ -5,12 +5,12 @@
 
 ## 0. Executive Summary
 
-DAIS is a production-grade platform for safe, verifiable, and energy-honest autonomous intelligence. It implements the AISocket + Noepedia architecture (Gakely) as working code.
+DAIS is a production-grade platform for safe, verifiable, and energy-honest autonomous intelligence. It implements the AISocket + Aletheia architecture (Aletheia team) as working code.
 
 **Four pillars:**
 1. **DAISocket Core** (Rust) — Passport, Body Law (6 layers), Flight Recorder, Trace Network
 2. **Proven Core** (Rust) — Knowledge provenance: claims → sources → evidence → status (delta protocol, event store)
-3. **Noepedia Field** (Rust + Python + Web) — Persistent knowledge grammar: objects + rule-governed networks + RULE_CARD + history + replication + coverage
+3. **Aletheia Field** (Rust + Python + Web) — Persistent knowledge grammar: objects + rule-governed networks + RULE_CARD + history + replication + coverage
 4. **DAIS Web** (Phoenix/Elixir) — Dashboard, Device Registry, Knowledge Browser
 
 **Mission:** Give every autonomous body a passport, every intervention a trace, every knowledge claim a provenance — open-source, deterministic, safe.
@@ -30,10 +30,10 @@ Current autonomous/AI systems are probabilistic black boxes: unsafe for safety-c
 Four pillars:
 1. **DAISocket Core** (Rust) — Passport, Body Law (6 layers), Flight Recorder, Trace Network;
 2. **Proven Core** (Rust) — knowledge provenance chain claims → sources → evidence → status;
-3. **Noepedia Field** (Rust/Python/Web) — objects + rule-governed networks + RULE_CARD + replication + coverage + context (VALID-IN-CONTEXT), so traces consolidate into reusable knowledge with an inspectable argument for *where* an object belongs in meaning;
+3. **Aletheia Field** (Rust/Python/Web) — objects + rule-governed networks + RULE_CARD + replication + coverage + context (VALID-IN-CONTEXT), so traces consolidate into reusable knowledge with an inspectable argument for *where* an object belongs in meaning;
 4. **DAIS Web** (Phoenix/Elixir) — dashboard, device registry, knowledge browser.
 
-LLM is confined to clearly-marked non-deterministic lanes. The loop: AISocket observes/tests/acts → flight recorder + traces → Proven/Noepedia consolidation → reusable knowledge → next body starts where the previous one stopped.
+LLM is confined to clearly-marked non-deterministic lanes. The loop: AISocket observes/tests/acts → flight recorder + traces → Proven/Aletheia consolidation → reusable knowledge → next body starts where the previous one stopped.
 
 ## Body Law (6 layers)
 

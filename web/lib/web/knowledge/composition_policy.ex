@@ -11,7 +11,7 @@ defmodule Web.Knowledge.CompositionPolicy do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "noepedia_composition_policies" do
+  schema "aletheia_composition_policies" do
     field :result_id, :string
     field :composition, :string
     field :justification_ids, :map, default: %{}

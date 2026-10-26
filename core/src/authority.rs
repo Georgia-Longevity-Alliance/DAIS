@@ -6,7 +6,7 @@
 //!   (provenance object), door (modality lane), time (F1 order).
 //! - The column records the WRITING event (who placed the knot / issued the
 //!   mandate), not the waking event.
-//! - Subjectivity is TWO-axis (rule v0.1, after Gakely's animal counterexample,
+//! - Subjectivity is TWO-axis (rule v0.1, after the animal counterexample,
 //!   2026-10-12): FREEDOM = 1 − foreign-authored wakings/all (non-domination),
 //!   AUTHORSHIP = own-authored wakings/all (whether the actor writes at all),
 //!   plus a third orthogonal axis, quality of control (bench). A subject is
@@ -146,7 +146,7 @@ impl AuthorColumn {
 
     /// FREEDOM axis (rule v0.1, two-axis): 1 − (foreign-authored wakings / all
     /// wakings). Measures non-domination — not being subject to other subjects.
-    /// Animal counterexample (Gakely, 2026-10-12): the jungle signs nothing →
+    /// Animal counterexample (2026-10-12): the jungle signs nothing →
     /// freedom 1.0, yet the animal is our paradigm non-subject — because its
     /// AUTHORSHIP is 0 (it writes nothing). Hence freedom alone ≠ subject.
     pub fn freedom(&self, actor: Id, window: Window) -> f64 {
@@ -267,7 +267,7 @@ mod tests {
 
     #[test]
     fn test_animal_is_free_but_not_author() {
-        // Gakely's counterexample (2026-10-12): the jungle does not sign.
+        // The animal counterexample (2026-10-12): the jungle does not sign.
         // An animal wakes on alarms whose knots have NO author → freedom is
         // maximal (nobody dominates it) but authorship is 0 (it writes nothing).
         let animal = Uuid::new_v4();

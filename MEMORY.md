@@ -3,25 +3,25 @@
 **Created:** 2026-07-31  
 **Updated:** 2026-09-15
 
-## 2026-10-16 — Demon Core Harvest IMPLEMENTED (P0–P2; 104 → 122 tests)
+## 2026-10-16 — Auditor Core Harvest IMPLEMENTED (P0–P2; 104 → 122 tests)
 
 ### Decisions
-1. **P0–P2 of the Demon Core roadmap implemented in Rust core + Python.** All new behavior is
+1. **P0–P2 of the Auditor Core roadmap implemented in Rust core + Python.** All new behavior is
    additive; the canonical `KnowledgeStatus` ladder and wire format are unchanged.
 
 ### What was built (Rust core)
-- **Non-destructive status (DCT11–12):** `HistoryStatus` + `StatusAssertion` (epoch-scoped) in
-  `noepedia.rs`; `event_store.rs::replay` now APPENDS a status assertion instead of overwriting
+- **Non-destructive status (ACT11–12):** `HistoryStatus` + `StatusAssertion` (epoch-scoped) in
+  `aletheia.rs`; `event_store.rs::replay` now APPENDS a status assertion instead of overwriting
   (`current_epistemic_status` = last assertion; `status` kept for compatibility; `history_status`
   = committed-fact dimension). Relate now populates the relations projection.
-- **STOP/NEED (DEMON §7–8):** `RegimeState` (GO/ASK/BLOCK/NEED), `NeedClass` (12-class taxonomy),
+- **STOP/NEED (AUDITOR §7–8):** `RegimeState` (GO/ASK/BLOCK/NEED), `NeedClass` (12-class taxonomy),
   `StopCard`; `Session` carries `regime` + `stop_cards`; `OutcomeKind::Blocked/Need`.
-- **Transaction membrane (DCT08–09):** `validator.rs::membrane_check` — a delta cannot use rules
+- **Transaction membrane (ACT08–09):** `validator.rs::membrane_check` — a delta cannot use rules
   it introduces to authorize itself (SELF_REFERENCE_BAN; rule-set from committed N-1 snapshot).
-- **Dependency policy (DCT05–07):** `DependencyPolicy` (ROLE=POLICY) + `dependency_policy_check`
+- **Dependency policy (ACT05–07):** `DependencyPolicy` (ROLE=POLICY) + `dependency_policy_check`
   + `find_applicable_policy` — upstream transition with dependents and no policy → lawful BLOCK
   (MISSING_DEPENDENCY_POLICY / NEED / MISSING_RULE).
-- **Composition semantics (DCT19–20):** `JustificationComposition` (ALTERNATIVE/JOINT),
+- **Composition semantics (ACT19–20):** `JustificationComposition` (ALTERNATIVE/JOINT),
   `CompositionPolicy`, `evaluate_composition` → `CompositionVerdict`.
 - **Archive/Compact (TRACE CONTINUITY):** `event_store.rs::archive`/`compact`/`check_trace_continuity`
   — addresses preserved via `compacted_into` + summary `compacted_ids`.
@@ -36,17 +36,17 @@
   `record_stop_card`.
 
 ### What was built (Phoenix web)
-- Migration `20261016000000_add_demon_core_tables` + `Web.Knowledge.{StatusAssertion, StopCard,
+- Migration `20261016000000_add_auditor_core_tables` + `Web.Knowledge.{StatusAssertion, StopCard,
   DependencyPolicy, CompositionPolicy}` schemas.
 - API endpoints: POST/GET `/api/knowledge/status-assertions`, GET
   `/api/knowledge/records/:id/status-assertions`, POST/GET `/api/knowledge/stop-cards`, POST/GET
   `/api/knowledge/dependency-policies`, POST `/api/knowledge/composition-policies`.
 - Verified end-to-end: status transitions append epochs (1→2), STOP CARD records NEED, dependency
   policy carries ROLE=POLICY, composition policy JOINT stores justification ids.
-- Web tests 8 → 13 (5 demon-core API tests).
+- Web tests 8 → 13 (5 auditor-core API tests).
 
 ### First run (no hardware)
-- `core/tests/demon_first_run.rs` — end-to-end walk of the whole demon pipeline on ARGUS-OS1
+- `core/tests/auditor_first_run.rs` — end-to-end walk of the whole auditor pipeline on ARGUS-OS1
   flavoured data (mirrors `seed_centriole_field.json`): trace→claim→SUPPORTED (epochs 1→2, history
   kept), membrane rejects self-serving rule, challenged premise + dependent without policy → lawful
   BLOCK + STOP CARD (NEED/MISSING_RULE), policy found → transition passes, composition ALTERNATIVE
@@ -60,11 +60,11 @@ change that makes DAIS's append-only log actually trace-continuous. The membrane
 checks turn "the LLM proposed a status change" into a lawfully bounded operation: no self-serving
 rules, no undefined downstream consequences.
 
-## 2026-10-16 — Demon Core Harvest (wave 3: DCT01–20) — analysis only, code P0 not yet done
+## 2026-10-16 — Auditor Core Harvest (wave 3: ACT01–20) — analysis only, code P0 not yet done
 
 ### Decisions
-1. **Third Noepedia wave (DCT01–DCT20 / DEMON_CORE_SPEC, 2026-10-16) analyzed & harvested into DAIS** —
-   master `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md`. The wave-2 harvest (author column, №0,
+1. **Third Aletheia wave (ACT01–ACT20 / AUDITOR_CORE_SPEC, 2026-10-16) analyzed & harvested into DAIS** —
+   master `docs/ALETHEIA_AUDITOR_CORE_HARVEST_2026-10-16.md`. The wave-2 harvest (author column, №0,
    OpenSpec) covered *epistemics*; wave 3 covers *executive discipline*: how the engine stops, does not
    invent, does not erase history, and cannot self-legitimize.
 2. **TOP-3 for DAIS** (priority order): (1) TRACE CONTINUITY + HISTORY/EPISTEMIC status separation +
@@ -82,10 +82,10 @@ rules, no undefined downstream consequences.
    ARGUS-OS1. P0 = status separation + STOP CARD; P1 = membrane + dependency-policy.
 
 ### What was written
-- `docs/NOEPEDIA_DEMON_CORE_HARVEST_2026-10-16.md` (new master: 15 findings, top-3, confirmation table,
+- `docs/ALETHEIA_AUDITOR_CORE_HARVEST_2026-10-16.md` (new master: 15 findings, top-3, confirmation table,
   weak spots, meta-analysis, roadmap P0–P3)
 - `THEORY.md` §8–11 (trace continuity, STOP/NEED, membrane, termination≠confluence/composition)
-- `EVIDENCE.md` §Demon Core Harvest (confirmation table + weak spots)
+- `EVIDENCE.md` §Auditor Core Harvest (confirmation table + weak spots)
 - `TODO.md` Phase 5 (P0–P3 tasks)
 - `docs/SIMILAR_IDEAS.md` (new similar-ideas additions)
 - `docs/GLOSSARY_KNOWLEDGE_STATUS.md` (history/epistemic split + composition semantics)
@@ -95,20 +95,20 @@ DAIS already had 80% of the append-only foundation (event store + delta + valida
 **in-place status mutation** — it silently violates TRACE CONTINUITY. Separating
 `HistoryStatus`/`CurrentEpistemicStatus` + epoch is the single highest-value code change.
 
-## 2026-09-15 — Noepedia grammar integrated (v3.0)
+## 2026-09-15 — Aletheia grammar integrated (v3.0)
 
 ### Decisions
-1. **Noepedia grammar as a Rust module** (`core/src/noepedia.rs`) — objects, networks, RULE_CARD, replication, coverage, context, placement, session/outcome as first-class types, exported in prelude. Aligns with the rewritten Gakely Noepedia README (1029 lines) and AISocket README.
+1. **Aletheia grammar as a Rust module** (`core/src/aletheia.rs`) — objects, networks, RULE_CARD, replication, coverage, context, placement, session/outcome as first-class types, exported in prelude. Aligns with the rewritten Aletheia README (1029 lines) and AISocket README.
 2. **Body Law fixed to 6 layers** (firmware, capability, emergency, offline, delegation, context) per the rewritten AISocket README; earlier docs said "7 layers".
-3. **Four pillars** — DAISocket Core, Proven Core, Noepedia Field, DAIS Web.
-4. **Python Noepedia client extended** — `define_network`, `revise_rule_card`, `submit_replication`, `record_coverage`, `add_placement`.
+3. **Four pillars** — DAISocket Core, Proven Core, Aletheia Field, DAIS Web.
+4. **Python Aletheia client extended** — `define_network`, `revise_rule_card`, `submit_replication`, `record_coverage`, `add_placement`.
 
 ### What was built
-- `core/src/noepedia.rs`: Network+RuleCard+RuleRevision, Relation/RelationKind, Replication, Coverage, KnowledgeContext, Observation/Test, Placement/PlacementArgument, Session/Outcome, KnowledgeStatus (OPEN/CONFLICT/VALID-IN-CONTEXT). 4 new unit tests; full suite 91 green.
+- `core/src/aletheia.rs`: Network+RuleCard+RuleRevision, Relation/RelationKind, Replication, Coverage, KnowledgeContext, Observation/Test, Placement/PlacementArgument, Session/Outcome, KnowledgeStatus (OPEN/CONFLICT/VALID-IN-CONTEXT). 4 new unit tests; full suite 91 green.
 - README/CONCEPT/THEORY/STATE updated to v3.0.
 
 ### Key insight
-DAIS already had the Proven half (claims→sources→evidence→status, delta/event-store/consolidator with OPEN/CONFLICT). The gap was Noepedia's *semiotic layer*: explicit networks with RULE_CARD, coverage (≠ confidence), and replication as a first-class operation. That is what turns traces into reusable, inspectable knowledge rather than an ever-larger prompt.
+DAIS already had the Proven half (claims→sources→evidence→status, delta/event-store/consolidator with OPEN/CONFLICT). The gap was Aletheia's *semiotic layer*: explicit networks with RULE_CARD, coverage (≠ confidence), and replication as a first-class operation. That is what turns traces into reusable, inspectable knowledge rather than an ever-larger prompt.
 
 ## 2026-08-01 — Full Implementation Day
 
@@ -140,7 +140,7 @@ The passport interview IS the product, not the data structure. The Rust Passport
 ## 2026-07-31 — Project Creation
 Decision: Created DAIS as umbrella project under Marketing/ — merging DAISocket + Proven into single implementation.
 Rationale:
-- Gakely's DAISocket and Proven are conceptually strong but lacked code
+- DAISocket and Proven are conceptually strong but lacked code
 - ARGUS-OS1 is the perfect first integration target
 - Rust for core protocol (safety + performance), Python for AI/ML, Phoenix for web
 Key insights from code review:
@@ -148,27 +148,27 @@ Key insights from code review:
 - Proven: pure concept paper, no implementation — need MVP with 3-4 object types
 - Both share architectural DNA: addressable, append-only, deterministic safety boundaries
 
-## 2026-10-12 — Noepedia Harvest: author column + №0 axiom
+## 2026-10-12 — Aletheia Harvest: author column + №0 axiom
 
 ### Decisions
-1. **Author column as first-class theory+code** — the second-wave external review of the Noepedia philosophy produced two deliverables DAIS adopts: (a) author-column transition rule v0.1 (subjectivity = 1 − foreign share over window W, threshold >½ by count), and (b) №0 axiom (option B, "axiom named axiom").
+1. **Author column as first-class theory+code** — the second-wave external review of the Aletheia philosophy produced two deliverables DAIS adopts: (a) author-column transition rule v0.1 (subjectivity = 1 − foreign share over window W, threshold >½ by count), and (b) №0 axiom (option B, "axiom named axiom").
 2. **№0 = root record; Body Law split** — layers 1–2 (Firmware, Capability, CANNOT be overridden) are the axiom's hard core; layers 3–6 are the revisable part, amended by sessions with a quorum.
 3. **Observer = read-only, never a subject** — RBAC Observer reads without writing the column; observer and subject are non-overlapping classes; "the field is honest because its guarantees live outside the field."
-4. **Journal is inside the field** — provenance records are SPO triplets (noepedia.rs), so the "two floors" (content vs act-of-recording) collapse for labels; act-as-performance stays outside by design (OPEN-BY-DESIGN).
+4. **Journal is inside the field** — provenance records are SPO triplets (aletheia.rs), so the "two floors" (content vs act-of-recording) collapse for labels; act-as-performance stays outside by design (OPEN-BY-DESIGN).
 5. **Open = unknown + constraints + validation rule** — add `validation_rule` to `KnowledgeStatus::Open`; OPEN is never rendered as "absent/denied".
 
 ### What was built (docs)
-- `docs/NOEPEDIA_HARVEST_2026-10-12.md` (8 principles → DAIS mapping, rule, axiom, corollaries, weaknesses, refs)
+- `docs/ALETHEIA_EPISTEMIC_HARVEST_2026-10-12.md` (8 principles → DAIS mapping, rule, axiom, corollaries, weaknesses, refs)
 - `THEORY.md` §6 (author column & subjectivity) + §7 (№0 axiom)
-- `EVIDENCE.md` §Noepedia Harvest (epistemic standard + verified refs)
+- `EVIDENCE.md` §Aletheia Harvest (epistemic standard + verified refs)
 - `TODO.md` Phase 4 (implementation tasks)
 
 ## 2026-10-12 (2) — Code analysis & fixes: contradictions resolved
 
 ### Analysis (found)
-1. **Three divergent status ladders** — `types::ClaimStatus` (9 variants), `noepedia::KnowledgeStatus` (8 variants), `argus::ClaimStatus` (Observed/Inferred/Hypothesized/Falsified, name collision shadowing `types::ClaimStatus`). Same concept modeled 3 ways → inconsistency.
+1. **Three divergent status ladders** — `types::ClaimStatus` (9 variants), `aletheia::KnowledgeStatus` (8 variants), `argus::ClaimStatus` (Observed/Inferred/Hypothesized/Falsified, name collision shadowing `types::ClaimStatus`). Same concept modeled 3 ways → inconsistency.
 2. **Validator transitions were string-based** and lacked ValidInContext/Tested/Stale paths; no two-witness rule for REPLICATED.
-3. **OPEN had no validation rule** (Noepedia harvest: OPEN = addressable unknown + constraints + validation rule).
+3. **OPEN had no validation rule** (Aletheia harvest: OPEN = addressable unknown + constraints + validation rule).
 4. **Body Law code claimed "7-layer"** (0–7) while docs canonically say 6 layers + 2 boundary gates.
 5. **Stale test counts** in docs (EVIDENCE 33 / README·CONCEPT·STATE 91 vs actual 98).
 6. **8 build warnings** (unused imports, deprecated rand::thread_rng/gen_range, unused command in ros2 simulated body law that ignored the command — a logic gap).
@@ -176,7 +176,7 @@ Key insights from code review:
 ### Fixes
 1. **Unified the ladder:** `KnowledgeStatus` is now the canonical K-ladder (added `Tested`, `Stale`); `types::ClaimStatus` is an alias; `argus::ClaimStatus` renamed to `ArgusEvidenceStatus` with `to_knowledge_status()` mapping. Wire format unchanged (UPPERCASE).
 2. **Validator now type-safe** on `KnowledgeStatus` (via `TryFrom<&str>`), full transition graph incl. ValidInContext/Tested/Stale, plus a two-witness warning for transitions to REPLICATED.
-3. **`OpenSpec`** (address + constraints + validation_rule) added to `noepedia.rs`.
+3. **`OpenSpec`** (address + constraints + validation_rule) added to `aletheia.rs`.
 4. **New module `core/src/authority.rs`** — author column v0.1 (`AuthorColumn`), subjectivity criterion `1 − foreign-authored wakings/all`, `is_subject` (>½), `is_observer`, `StatuteNo0` (axiom named axiom), `observer_never_subject` theorem. Wired into lib.rs + prelude.
 5. **Body Law model aligned:** 6 canonical layers + 2 boundary gates (Hardware Safety, RBAC) documented in code header.
 6. **Warnings fixed:** unused imports, `rand::rng().random_range(...)`, `simulate_body_law` now uses the command (topic must match the safe topic).
@@ -188,7 +188,7 @@ Key insights from code review:
 ## 2026-10-12 (3) — Phase 4 completed: REQUIRED_ROLE, glossary, journal decision
 
 ### Decisions
-1. **REQUIRED_ROLE as first-class relation kind** — `RelationKind::RequiresRole` + `RoleRequirement { role, constraints, validation_rule }` in `noepedia.rs`. A formed unknown (role known, identity unknown) must carry a validation rule, or it is apophenia.
+1. **REQUIRED_ROLE as first-class relation kind** — `RelationKind::RequiresRole` + `RoleRequirement { role, constraints, validation_rule }` in `aletheia.rs`. A formed unknown (role known, identity unknown) must carry a validation rule, or it is apophenia.
 2. **Glossary mapping adopted** — `docs/GLOSSARY_KNOWLEDGE_STATUS.md`: KnowledgeStatus → GRADE (PMID 18436948) / Murad pyramid (PMID 27339128) / Oxford CEBM / NASA TRL; independence criterion for Replication→REPLICATED (≥2 witnesses differing in agent/method/source); κ ≥ 0.6 accept, κ ≥ 0.8 strong, < 0.6 do not promote.
 3. **Journal location — decision made:** journal = inside the field (provenance objects are SPO triplets per README 127/153/484/701); act-as-performance = outside by design (the same residue as the story's smile, OPEN-BY-DESIGN). No further README change needed.
 

@@ -1,6 +1,6 @@
 # Glossary — KnowledgeStatus → Evidence ladders (2026-10-12)
 
-**Purpose:** make the canonical `KnowledgeStatus` K-ladder (Noepedia harvest) comparable
+**Purpose:** make the canonical `KnowledgeStatus` K-ladder (Aletheia harvest) comparable
 with established evidence-grading systems: GRADE, the New Evidence Pyramid (Murad),
 Oxford CEBM Levels of Evidence, and NASA TRL. One ladder, mapped — not a new religion.
 
@@ -54,7 +54,7 @@ When replications are human-annotated, record agreement:
 κ is a property of the *replication record*, stored alongside `Replication.conditions`.
 
 ## 4. Where this lives in code
-- Enum: `core/src/noepedia.rs` → `KnowledgeStatus` (+ `TryFrom<&str>`).
+- Enum: `core/src/aletheia.rs` → `KnowledgeStatus` (+ `TryFrom<&str>`).
 - OPEN spec: `OpenSpec` (address, constraints, validation_rule).
 - Formed unknown: `RoleRequirement` + `RelationKind::RequiresRole`.
 - Transition enforcement: `core/src/validator.rs` (`is_valid_transition`, two-witness warning).

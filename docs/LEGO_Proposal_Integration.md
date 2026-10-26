@@ -1,6 +1,6 @@
 # LEGO Proposal → DAIS Feature Extraction
 
-**Source:** `~/Desktop/DAISocket_Play_LEGO_Executive_Proposal.md` (Giorgi Tsomaia / Gakely)
+**Source:** `~/Desktop/DAISocket_Play_LEGO_Executive_Proposal.md` (Aletheia team)
 **Date:** 2026-08-01
 **Status:** ✅ All 9 features implemented (2026-08-02)
 
