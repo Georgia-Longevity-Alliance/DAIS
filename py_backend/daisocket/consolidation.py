@@ -1,7 +1,7 @@
-"""consolidation.py — Trace → Noepedia consolidation with Vygotsky fading.
+"""consolidation.py — Trace → Aletheia consolidation with Vygotsky fading.
 
 A trace is experience, not automatically knowledge. This module turns resolved,
-repeated flight-recorder traces into Noepedia claims with provenance, and applies
+repeated flight-recorder traces into Aletheia claims with provenance, and applies
 ZPD fading so that over repetitions the same procedure needs less LLM help until
 it is *internalized* (green, deterministic — cost → O(1)).
 
@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 from uuid import UUID, uuid4
 
-from .proven_api import ClaimData, NoepediaClient, ReplicationData
+from .proven_api import ClaimData, AletheiaClient, ReplicationData
 
 
 @dataclass
@@ -64,7 +64,7 @@ class ConsolidatedResult:
 class Consolidator:
     """Group traces and consolidate resolved, repeated procedures into claims."""
 
-    def __init__(self, client: Optional[NoepediaClient] = None,
+    def __init__(self, client: Optional[AletheiaClient] = None,
                  min_independent_repeats: int = 2):
         self.client = client
         self.min_independent_repeats = min_independent_repeats

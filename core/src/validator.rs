@@ -8,7 +8,7 @@
 
 use crate::delta::Delta;
 use crate::event_store::EventStore;
-use crate::noepedia::KnowledgeStatus;
+use crate::aletheia::KnowledgeStatus;
 use crate::types::*;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -112,7 +112,7 @@ impl Validator {
         // consequence is undefined → lawful BLOCK (NEED / MISSING_RULE).
         errors.extend(self.dependency_policy_check(delta));
 
-        // 3b. Two-witness rule (Noepedia harvest): REPLICATED requires ≥2
+        // 3b. Two-witness rule (Aletheia harvest): REPLICATED requires ≥2
         // independent sources/replications, not two claims from one pool.
         if let Some(new_status) = delta.payload.get("status").and_then(|v| v.as_str()) {
             if new_status == "REPLICATED" {
@@ -277,8 +277,8 @@ impl Validator {
     pub fn find_applicable_policy(
         &self,
         transition: &str,
-    ) -> Option<crate::noepedia::DependencyPolicy> {
-        use crate::noepedia::DependencyPolicy;
+    ) -> Option<crate::aletheia::DependencyPolicy> {
+        use crate::aletheia::DependencyPolicy;
         if let Some(objects) = self.state["objects"].as_object() {
             for (_, obj) in objects {
                 if obj.get("role").and_then(|v| v.as_str()) != Some("POLICY") {
@@ -326,13 +326,13 @@ impl Validator {
 
     /// Convenience: return a NEED STOP CARD when a dependency policy is missing
     /// (lawful BLOCK with a classified stop).
-    pub fn missing_policy_stop_card(&self, transition: &str) -> crate::noepedia::StopCard {
-        crate::noepedia::StopCard::new(
+    pub fn missing_policy_stop_card(&self, transition: &str) -> crate::aletheia::StopCard {
+        crate::aletheia::StopCard::new(
             "validator / dependency-policy check",
             "propagate upstream status transition downstream",
             &format!("transition: {transition}; dependents exist"),
             "applicable DependencyPolicy rule",
-            crate::noepedia::NeedClass::MissingRule,
+            crate::aletheia::NeedClass::MissingRule,
             false,
             None,
             vec![],

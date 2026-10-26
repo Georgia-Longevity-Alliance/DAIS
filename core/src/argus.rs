@@ -74,8 +74,8 @@ pub enum ArgusEvidenceStatus {
 
 impl ArgusEvidenceStatus {
     /// Map an ARGUS evidence state onto the canonical K-ladder.
-    pub fn to_knowledge_status(&self) -> crate::noepedia::KnowledgeStatus {
-        use crate::noepedia::KnowledgeStatus;
+    pub fn to_knowledge_status(&self) -> crate::aletheia::KnowledgeStatus {
+        use crate::aletheia::KnowledgeStatus;
         match self {
             // Observed by instrument → supported by evidence.
             Self::Observed => KnowledgeStatus::Supported,

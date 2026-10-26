@@ -1,16 +1,16 @@
-//! Noepedia grammar — explicit, addressable, inspectable knowledge field.
+//! Aletheia grammar — explicit, addressable, inspectable knowledge field.
 //!
-//! Noepedia stores knowledge OUTSIDE any model's weights: objects participate
+//! Aletheia stores knowledge OUTSIDE any model's weights: objects participate
 //! in many independent rule-governed evaluative networks. Every network carries
 //! a RULE_CARD; every placement is inspectable; coverage is recorded separately
 //! from confidence; replication is an operation, not decoration; OPEN and
 //! CONFLICT are legal knowledge states.
 //!
-//! This module implements the Noepedia minimal working objects so that DAIS can
+//! This module implements the Aletheia minimal working objects so that DAIS can
 //! consolidate flight-recorder traces and experiment outcomes into reusable
 //! knowledge with full provenance (see `delta.rs`, `event_store.rs`, `consolidator.rs`).
 //!
-//! Mapping to the Noepedia spec:
+//! Mapping to the Aletheia spec:
 //! ```text
 //! ENTITY/CLAIM/RELATION/NETWORK  -> Network, Relation, objects
 //! RULE_CARD                      -> RuleCard (+ RuleRevision history)
@@ -29,14 +29,14 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-/// Unique identifier for every addressable Noepedia object.
-pub type NoepediaId = Uuid;
+/// Unique identifier for every addressable Aletheia object.
+pub type AletheiaId = Uuid;
 
 /// Knowledge state of an object. OPEN and CONFLICT are first-class.
 ///
-/// This is the canonical K-ladder (Noepedia harvest, 2026-10-12): a verifiable
+/// This is the canonical K-ladder (Aletheia harvest, 2026-10-12): a verifiable
 /// ladder of evidence, not a float confidence. `types::ClaimStatus` is an alias
-/// of this enum so Proven and the Noepedia field share ONE ladder.
+/// of this enum so Proven and the Aletheia field share ONE ladder.
 /// Map: GRADE (PMID 18436948), Murad pyramid (PMID 27339128), CEBM, NASA TRL.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "UPPERCASE")]
@@ -112,22 +112,22 @@ pub enum HistoryStatus {
 /// `history_status` tracks the committed fact independently.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusAssertion {
-    pub assertion_id: NoepediaId,
-    pub record_id: NoepediaId,
+    pub assertion_id: AletheiaId,
+    pub record_id: AletheiaId,
     pub status: KnowledgeStatus,
     /// Scope of applicability (SCOPE/TIME qualifiers, DCT13–DCT14).
     pub scope: Vec<String>,
     /// Monotonic epoch: each new assertion increments it; the previous one
     /// stays in the assertion log.
     pub epoch: u64,
-    pub asserted_by: NoepediaId,
+    pub asserted_by: AletheiaId,
     pub asserted_at: DateTime<Utc>,
     pub history_status: HistoryStatus,
 }
 
 impl StatusAssertion {
     /// Create the first assertion for a record (epoch 1).
-    pub fn initial(record_id: NoepediaId, status: KnowledgeStatus, asserted_by: NoepediaId) -> Self {
+    pub fn initial(record_id: AletheiaId, status: KnowledgeStatus, asserted_by: AletheiaId) -> Self {
         Self {
             assertion_id: Uuid::new_v4(),
             record_id,
@@ -180,7 +180,7 @@ pub enum NeedClass {
 /// is a successful behavior, not a failure.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StopCard {
-    pub stop_id: NoepediaId,
+    pub stop_id: AletheiaId,
     /// Where the run got stuck (session/scene/step).
     pub where_: String,
     /// What the demon wanted to achieve.
@@ -194,7 +194,7 @@ pub struct StopCard {
     pub can_ask_outside: bool,
     /// The precise permitted query, if any.
     pub query: Option<String>,
-    pub provenance: Vec<NoepediaId>,
+    pub provenance: Vec<AletheiaId>,
     pub scope: Vec<String>,
 }
 
@@ -208,7 +208,7 @@ impl StopCard {
         stop_class: NeedClass,
         can_ask_outside: bool,
         query: Option<String>,
-        provenance: Vec<NoepediaId>,
+        provenance: Vec<AletheiaId>,
         scope: Vec<String>,
     ) -> Self {
         Self {
@@ -245,11 +245,11 @@ pub enum JustificationComposition {
 /// Addressable composition policy for a result's justifications (DCT20).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CompositionPolicy {
-    pub policy_id: NoepediaId,
+    pub policy_id: AletheiaId,
     /// The result/record this policy governs.
-    pub result_id: NoepediaId,
+    pub result_id: AletheiaId,
     pub composition: JustificationComposition,
-    pub justification_ids: Vec<NoepediaId>,
+    pub justification_ids: Vec<AletheiaId>,
     pub scope: Vec<String>,
 }
 
@@ -305,7 +305,7 @@ pub fn evaluate_composition(
 /// exists, the demon returns `NEED / MISSING_RULE`.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DependencyPolicy {
-    pub policy_id: NoepediaId,
+    pub policy_id: AletheiaId,
     pub name: String,
     /// Upstream transition this policy applies to, e.g. "PREMISE -> CONFLICTED".
     pub upstream_transition: String,
@@ -313,7 +313,7 @@ pub struct DependencyPolicy {
     pub downstream_consequence: KnowledgeStatus,
     pub scope: Vec<String>,
     /// REFERS_TO target — the dependency edge / rule this policy qualifies.
-    pub rule_ref: NoepediaId,
+    pub rule_ref: AletheiaId,
     /// ROLE = "POLICY".
     pub role: String,
 }
@@ -323,7 +323,7 @@ impl DependencyPolicy {
         name: &str,
         upstream_transition: &str,
         downstream_consequence: KnowledgeStatus,
-        rule_ref: NoepediaId,
+        rule_ref: AletheiaId,
     ) -> Self {
         Self {
             policy_id: Uuid::new_v4(),
@@ -339,7 +339,7 @@ impl DependencyPolicy {
 
 /// OPEN is a legal knowledge state: an addressable unknown with constraints and
 /// a validation rule — the rule that would close it. OPEN is never a denial.
-/// (Noepedia harvest, 2026-10-12: "OPEN = addressable unknown + constraints +
+/// (Aletheia harvest, 2026-10-12: "OPEN = addressable unknown + constraints +
 /// validation rule".)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OpenSpec {
@@ -371,7 +371,7 @@ impl OpenSpec {
 /// Conditions under which knowledge applies (VALID-IN-CONTEXT).
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct KnowledgeContext {
-    pub context_id: NoepediaId,
+    pub context_id: AletheiaId,
     /// e.g. "hardware revision B", "C. elegans at 25C", "protocol v2".
     pub label: String,
     pub conditions: Vec<String>,
@@ -392,9 +392,9 @@ pub enum ResultStatus {
 /// Observations are the raw material that later becomes claims.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Observation {
-    pub observation_id: NoepediaId,
-    pub agent_id: NoepediaId,
-    pub session_id: NoepediaId,
+    pub observation_id: AletheiaId,
+    pub agent_id: AletheiaId,
+    pub session_id: AletheiaId,
     pub description: String,
     pub method: String,
     pub conditions: KnowledgeContext,
@@ -404,8 +404,8 @@ pub struct Observation {
 /// A verification procedure and its result.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Test {
-    pub test_id: NoepediaId,
-    pub claim_id: NoepediaId,
+    pub test_id: AletheiaId,
+    pub claim_id: AletheiaId,
     pub procedure: String,
     pub conditions: KnowledgeContext,
     pub result: ResultStatus,
@@ -416,10 +416,10 @@ pub struct Test {
 /// not decoration: thresholds depend on domain and consequence.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Replication {
-    pub replication_id: NoepediaId,
-    pub claim_id: NoepediaId,
+    pub replication_id: AletheiaId,
+    pub claim_id: AletheiaId,
     /// who/what repeated it (human, another lab, another ARGUS device...).
-    pub agent_id: NoepediaId,
+    pub agent_id: AletheiaId,
     pub method: String,
     pub conditions: KnowledgeContext,
     pub outcome: ResultStatus,
@@ -441,8 +441,8 @@ pub struct RuleRevision {
 /// The navigator reads the rule card; it does not hold the rule in weights.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RuleCard {
-    pub rule_id: NoepediaId,
-    pub network_id: NoepediaId,
+    pub rule_id: AletheiaId,
+    pub network_id: AletheiaId,
     pub title: String,
     /// What the network evaluates.
     pub evaluates: String,
@@ -456,14 +456,14 @@ pub struct RuleCard {
 /// A typed relation between two objects. The governing rule is explicit.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Relation {
-    pub relation_id: NoepediaId,
-    pub source: NoepediaId,
-    pub target: NoepediaId,
+    pub relation_id: AletheiaId,
+    pub source: AletheiaId,
+    pub target: AletheiaId,
     pub kind: RelationKind,
-    pub rule_id: NoepediaId,
+    pub rule_id: AletheiaId,
 }
 
-/// Relation kinds from the Noepedia semiotic networks.
+/// Relation kinds from the Aletheia semiotic networks.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum RelationKind {
@@ -486,7 +486,7 @@ pub enum RelationKind {
 
 /// A formed unknown (REQUIRED_ROLE): the field has already learned something
 /// — that a role must be filled — before it knows what fills it.
-/// (Noepedia harvest, 2026-10-12.)
+/// (Aletheia harvest, 2026-10-12.)
 ///
 /// Without a validation rule this degrades into apophenia (false projection of
 /// roles onto systems that have none); every role requirement must therefore
@@ -517,43 +517,43 @@ impl RoleRequirement {
 /// `Network = objects + relations + rule card + history`.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Network {
-    pub network_id: NoepediaId,
+    pub network_id: AletheiaId,
     pub name: String,
     pub description: String,
     pub rule_card: RuleCard,
-    pub objects: Vec<NoepediaId>,
+    pub objects: Vec<AletheiaId>,
     pub relations: Vec<Relation>,
-    pub history: Vec<NoepediaId>,
+    pub history: Vec<AletheiaId>,
     pub created: DateTime<Utc>,
 }
 
 /// An object's position inside a network, with inspectable support structure.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Placement {
-    pub placement_id: NoepediaId,
-    pub network_id: NoepediaId,
-    pub object_id: NoepediaId,
-    pub prototype: Option<NoepediaId>,
+    pub placement_id: AletheiaId,
+    pub network_id: AletheiaId,
+    pub object_id: AletheiaId,
+    pub prototype: Option<AletheiaId>,
     pub supporting_features: Vec<String>,
     pub important_differences: Vec<String>,
-    pub alternatives_considered: Vec<NoepediaId>,
-    pub missing_tests: Vec<NoepediaId>,
+    pub alternatives_considered: Vec<AletheiaId>,
+    pub missing_tests: Vec<AletheiaId>,
     pub arguments: Vec<PlacementArgument>,
 }
 
 /// Why a placement is proposed or accepted — the meaning-edit protocol.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlacementArgument {
-    pub argument_id: NoepediaId,
-    pub placement_id: NoepediaId,
-    pub network_id: NoepediaId,
+    pub argument_id: AletheiaId,
+    pub placement_id: AletheiaId,
+    pub network_id: AletheiaId,
     /// Evidence supporting the placement.
-    pub supporting: Vec<NoepediaId>,
+    pub supporting: Vec<AletheiaId>,
     /// Evidence contradicting it.
-    pub counterevidence: Vec<NoepediaId>,
+    pub counterevidence: Vec<AletheiaId>,
     pub alternatives_considered: Vec<String>,
     pub accepted: bool,
-    pub argued_by: NoepediaId,
+    pub argued_by: AletheiaId,
     pub argued_at: DateTime<Utc>,
 }
 
@@ -561,8 +561,8 @@ pub struct PlacementArgument {
 /// "the relevant networks have been sufficiently surveyed".
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Coverage {
-    pub coverage_id: NoepediaId,
-    pub conclusion_id: NoepediaId,
+    pub coverage_id: AletheiaId,
+    pub conclusion_id: AletheiaId,
     pub relevant_networks: u32,
     pub evaluated: u32,
     pub not_yet_evaluated: u32,
@@ -575,12 +575,12 @@ pub struct Coverage {
 /// A bounded episode of work (agent + objective + traces + outcome).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Session {
-    pub session_id: NoepediaId,
-    pub agent_id: NoepediaId,
+    pub session_id: AletheiaId,
+    pub agent_id: AletheiaId,
     pub started: DateTime<Utc>,
     pub ended: Option<DateTime<Utc>>,
     pub objective: String,
-    pub traces: Vec<NoepediaId>,
+    pub traces: Vec<AletheiaId>,
     pub outcome: Option<Outcome>,
     /// Demon regime at the end of the session (GO / ASK / BLOCK / NEED).
     pub regime: Option<RegimeState>,
@@ -591,11 +591,11 @@ pub struct Session {
 /// Real-world feedback from a session or experiment.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Outcome {
-    pub outcome_id: NoepediaId,
-    pub session_id: NoepediaId,
+    pub outcome_id: AletheiaId,
+    pub session_id: AletheiaId,
     pub kind: OutcomeKind,
     pub description: String,
-    pub evidence_id: Option<NoepediaId>,
+    pub evidence_id: Option<AletheiaId>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -614,7 +614,7 @@ pub enum OutcomeKind {
     Need,
 }
 
-/// Convenience constructors for the most common Noepedia objects.
+/// Convenience constructors for the most common Aletheia objects.
 impl Network {
     /// Create a new network with a fresh rule card (v1).
     pub fn new(name: &str, description: &str, evaluates: &str, ranking: &str) -> Self {

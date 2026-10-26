@@ -70,7 +70,7 @@ pub mod flight_recorder;
 pub mod formal;
 pub mod genome;
 pub mod neural;
-pub mod noepedia;
+pub mod aletheia;
 pub mod ota;
 pub mod passport;
 pub mod proof;
@@ -93,7 +93,7 @@ pub mod prelude {
     pub use crate::delta::Delta;
     pub use crate::event_store::EventStore;
     pub use crate::flight_recorder::FlightRecorder;
-    pub use crate::noepedia::*;
+    pub use crate::aletheia::*;
     pub use crate::passport::Passport;
     pub use crate::renderer::{RenderFormat, Renderer};
     pub use crate::trace::TraceNetwork;

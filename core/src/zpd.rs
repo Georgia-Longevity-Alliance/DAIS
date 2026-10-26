@@ -8,12 +8,12 @@
 //!   2. **extragsychic** — the learner guides itself aloud;
 //!   3. **intrapsychic** — the skill is internalized and automatic.
 //!
-//! Applied to DAIS/AISocket/Noepedia this formalizes a principle AISocket already states
+//! Applied to DAIS/AISocket/Aletheia this formalizes a principle AISocket already states
 //! ("known action should not repeatedly consume general intelligence"):
 //! - The **more competent other** is the LLM; it scaffolds *just at the boundary*,
 //!   never doing what the body already knows.
 //! - Help is **faded** across repetitions (geometric decay): interpsychic → intrapsychic.
-//! - When the scaffolded result is consolidated into Noepedia as a REPLICATED claim,
+//! - When the scaffolded result is consolidated into Aletheia as a REPLICATED claim,
 //!   the task moves from **proximal** to **actual development** and becomes Green
 //!   (deterministic, ~pJ). This is the energy-honest asymptote `Cost(anomaly) → O(1)`.
 //!
@@ -22,14 +22,14 @@
 //! - **Proximal development** — can do with scaffolding (LLM at the boundary).
 //! - **Inaccessible** — cannot do even with help (human / OPEN).
 //!
-//! See also: `noepedia.rs` (consolidation into reusable knowledge), `trace.rs`
+//! See also: `aletheia.rs` (consolidation into reusable knowledge), `trace.rs`
 //! (traces as evidence), `consolidator.rs` (OPEN/CONFLICT are legal states).
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::noepedia::OutcomeKind;
+use crate::aletheia::OutcomeKind;
 
 /// The three zones, after Vygotsky.
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]

@@ -1,7 +1,7 @@
 {
   "publication": {
     "title": "ARGUS-OS1 centriole biology knowledge field (MVP)",
-    "description": "MVP of the Noepedia field for the centriole-biology domain: pilots P0-P8 as CLAIM nodes with evidence, Go/No-Go rule cards, coverage. Source: ARGUS-OS1 CONCEPT.md.",
+    "description": "MVP of the Aletheia field for the centriole-biology domain: pilots P0-P8 as CLAIM nodes with evidence, Go/No-Go rule cards, coverage. Source: ARGUS-OS1 CONCEPT.md.",
     "license": "CC-BY 4.0"
   },
   "networks": [

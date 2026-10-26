@@ -2,25 +2,25 @@
 
 **Open-source protocol for safe embodied AI + hallucination-resistant knowledge.**
 
-DAIS gives every autonomous device a **passport** — so any LLM can safely understand it, help it, and leave a trace that every other machine learns from. Built as the implementation layer of the AISocket + Noepedia architecture:
+DAIS gives every autonomous device a **passport** — so any LLM can safely understand it, help it, and leave a trace that every other machine learns from. Built as the implementation layer of the AISocket + Aletheia architecture:
 
 | Protocol | Role |
 |----------|------|
 | **AISocket (DAISocket)** | Safe, bounded control of physical devices — Passport, Body Law, Flight Recorder, Trace Network |
 | **Proven** | Structured knowledge with provenance — claims → sources → evidence → status (delta protocol, event store) |
-| **Noepedia Field** | Persistent, addressable, inspectable knowledge — objects + rule-governed networks + history (RULE_CARD, replication, coverage) |
+| **Aletheia Field** | Persistent, addressable, inspectable knowledge — objects + rule-governed networks + history (RULE_CARD, replication, coverage) |
 
-The loop: AISocket observes/tests/acts and leaves **traces** (evidence of what happened); Proven/Noepedia consolidate those traces into **reusable knowledge** (with provenance); the next device starts where the previous one stopped instead of rediscovering from zero.
+The loop: AISocket observes/tests/acts and leaves **traces** (evidence of what happened); Proven/Aletheia consolidate those traces into **reusable knowledge** (with provenance); the next device starts where the previous one stopped instead of rediscovering from zero.
 
 **Principle:** safety-critical decisions are deterministic (firmware, Rust, SQL, graph traversal). LLMs are confined to marked non-deterministic lanes — novelty, conflict, open questions. `Cost(anomaly) → O(1)` as the trace/network grows.
 
 ## Quick Start
 
 ```bash
-# Rust core (protocol: passport, body law, flight recorder, traces, deltas, noepedia grammar)
+# Rust core (protocol: passport, body law, flight recorder, traces, deltas, aletheia grammar)
 cd core && cargo build && cargo test
 
-# Python backend (LLM bridge, Noepedia client, passport interview)
+# Python backend (LLM bridge, Aletheia client, passport interview)
 cd py_backend && pip install -e .
 
 # Phoenix web (dashboard, registry, knowledge browser)
@@ -31,11 +31,11 @@ cd web && mix setup && mix phx.server
 
 | Layer | Language | Role |
 |-------|----------|------|
-| Core | Rust | Passport, Body Law, Flight Recorder, Event Store, Delta/Validator/Consolidator, **Noepedia grammar** (`noepedia.rs`), **ZPD scaffolding** (`zpd.rs`, Vygotsky) |
-| Backend | Python | LLM bridge, HTTP client, ML integration, Noepedia API client |
+| Core | Rust | Passport, Body Law, Flight Recorder, Event Store, Delta/Validator/Consolidator, **Aletheia grammar** (`aletheia.rs`), **ZPD scaffolding** (`zpd.rs`, Vygotsky) |
+| Backend | Python | LLM bridge, HTTP client, ML integration, Aletheia API client |
 | Web | Elixir/Phoenix | Dashboard, Device Registry, Knowledge Browser (claims/evidence/review) |
 
-## Noepedia grammar (core/src/noepedia.rs)
+## Aletheia grammar (core/src/aletheia.rs)
 
 | Object | Purpose |
 |--------|---------|
@@ -57,12 +57,12 @@ cd web && mix setup && mix phx.server
 
 ## Status
 
-- ✅ Rust core (v0.1): passport, body law, flight recorder, trace network, delta/event-store/validator/consolidator, **noepedia grammar** — 122 tests green.
-- ✅ Python backend: `llm_bridge`, `client`, `passport_interview`, `noepedia_api` (networks, rule cards, replication, coverage, placement).
+- ✅ Rust core (v0.1): passport, body law, flight recorder, trace network, delta/event-store/validator/consolidator, **aletheia grammar** — 122 tests green.
+- ✅ Python backend: `llm_bridge`, `client`, `passport_interview`, `aletheia_api` (networks, rule cards, replication, coverage, placement).
 - 🟡 Phoenix web: dashboard, registry, knowledge browser (foundation).
 - 🟢 **First physical instance: ARGUS-OS1** (autonomous centriole-tracking microscope, mounted as `dais/` submodule).
 
 ## License
 
-Core (Rust): Apache 2.0 · Proven/Noepedia components: AGPL v3.0 · Web: MIT
-*Born from DAISocket + Proven. Built for ARGUS-OS1. Aligned with the AISocket + Noepedia architecture (Gakely).*
+Core (Rust): Apache 2.0 · Proven/Aletheia components: AGPL v3.0 · Web: MIT
+*Born from DAISocket + Proven. Built for ARGUS-OS1. Aligned with the AISocket + Aletheia architecture (Gakely).*

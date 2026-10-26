@@ -1,5 +1,5 @@
 """
-Proven API Client — Python interface to the Proven/Noepedia knowledge system.
+Proven API Client — Python interface to the Proven/Aletheia knowledge system.
 
 Operations:
 - Create publication
@@ -10,7 +10,7 @@ Operations:
 - Add placements with arguments
 - Query claims / export consolidated view
 
-Maps to the Noepedia grammar (core/src/noepedia.rs).
+Maps to the Aletheia grammar (core/src/aletheia.rs).
 """
 import json
 from dataclasses import dataclass, field
@@ -103,8 +103,8 @@ class PlacementData:
     placement_id: UUID = field(default_factory=uuid4)
 
 
-class NoepediaClient:
-    """Client for the Noepedia knowledge system."""
+class AletheiaClient:
+    """Client for the Aletheia knowledge system."""
 
     def __init__(self, api_url: str = "http://localhost:4000/api"):
         self.api_url = api_url.rstrip("/")
@@ -163,7 +163,7 @@ class NoepediaClient:
         res.raise_for_status()
         return res.json()
 
-    # ── Noepedia networks / rule cards ─────────────────────────────────
+    # ── Aletheia networks / rule cards ─────────────────────────────────
     def define_network(self, publication_id: UUID, network: NetworkData) -> dict:
         """Define a rule-governed network (objects + relations + RULE_CARD)."""
         res = self._client.post(

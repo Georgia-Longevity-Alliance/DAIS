@@ -1,7 +1,7 @@
 //! FIRST RUN — demon core end-to-end walk over an ARGUS-OS1 flavoured scenario.
 //!
-//! No hardware is required: this exercises the whole Demon Core pipeline
-//! (Demon Core Harvest 2026-10-16, DCT01–DCT20) on a simulated centriole-
+//! No hardware is required: this exercises the whole Auditor Core pipeline
+//! (Auditor Core Harvest 2026-10-16, DCT01–DCT20) on a simulated centriole-
 //! tracking anomaly, mirroring the real seed field
 //! (`py_backend/daisocket/seed_centriole_field.json`):
 //!
@@ -13,10 +13,10 @@
 //!   5. dependency policy present → transition passes
 //!   6. Ed25519 journal signing + tamper detection + compaction w/ trace continuity
 //!
-//! Run: `cargo test --test demon_first_run`
+//! Run: `cargo test --test auditor_first_run`
 
 use dais_core::event_store::{EventStore, JournalGuard};
-use dais_core::noepedia::{
+use dais_core::aletheia::{
     CompositionVerdict, JustificationComposition, NeedClass,
 };
 use dais_core::validator::Validator;
@@ -160,8 +160,8 @@ fn first_run_argus_os1_demon_pipeline() {
     );
 
     // ── 6. Composition semantics (DCT19–DCT20): one path challenged ─────
-    let verdict = dais_core::noepedia::evaluate_composition(
-        &dais_core::noepedia::CompositionPolicy {
+    let verdict = dais_core::aletheia::evaluate_composition(
+        &dais_core::aletheia::CompositionPolicy {
             policy_id: Uuid::new_v4(),
             result_id: Uuid::new_v4(),
             composition: JustificationComposition::Alternative,

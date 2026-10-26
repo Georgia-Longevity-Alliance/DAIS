@@ -48,7 +48,7 @@ If you are confident, invoke act(). Otherwise, ask questions.
 """
 
 
-# ── Demon regime (Noepedia DEMON_CORE_SPEC §7–8; Harvest 2026-10-16) ─────────
+# ── Demon regime (Aletheia DEMON_CORE_SPEC §7–8; Harvest 2026-10-16) ─────────
 # The LLM lane is bounded by the demon's regime: GO / ASK (precise permitted
 # query) / BLOCK (a rule forbids the path) / NEED (the network's own working
 # structure is missing — a correct query cannot yet be formed). Stopping at

@@ -1,6 +1,6 @@
 //! Author column & №0 axiom — who actually controls an autonomous body.
 //!
-//! (Noepedia harvest, 2026-10-12; author-column rule v0.1)
+//! (Aletheia harvest, 2026-10-12; author-column rule v0.1)
 //!
 //! - Every decision/mandate record carries an author column: signature
 //!   (provenance object), door (modality lane), time (F1 order).
